@@ -422,6 +422,9 @@ def my(request):
     return render(request, 'my.html', {"incu": incu})
     # return render(request,'my.html')
 
+def more(request):
+    return render(request, 'more.html')
+
 
 def writePurchase(request):
     return render(request, 'writePurchase.html')
