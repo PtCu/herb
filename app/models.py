@@ -276,6 +276,7 @@ class User(models.Model):
     usersex = models.IntegerField(db_column='userSex',default=0)
     userintroduction =models.CharField(db_column='userIntroduction', max_length=255 ,default="22")
     userlastlogintime = models.DateTimeField(db_column='userLastlogintime',null=True)
+    birthday = models.DateField(db_column='userBirthday',null=True)
 
     class Meta:
         managed = True
