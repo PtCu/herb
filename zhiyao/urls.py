@@ -43,6 +43,7 @@ urlpatterns = [
     path('getbbs/sellingDetail/<id>', views.getSDetail, name='sDetail'),
     path('getbbs/communicationDetail/<id>', views.getCDetail, name='cDetail'),
     path('my/', views.my),
+    path('more/', views.more),
     path('test/', views.test),
     path('backendlogin/', views.backendlogin),
     path('backend/', views.backend),
