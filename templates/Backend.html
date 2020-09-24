@@ -226,14 +226,15 @@
                               </thead>
                               <tbody>
 
-
-                                <tr>
-                                  <td>Uma</td>
-                                  <td>Pune</td>
-                                  <td>411027</td>
-                                     <td>560001</td>
-                                    <td>560001</td>
+                                {% for plant in userplant %}
+                                  <tr>
+                                  <td>{{plant.name}}</td>
+                                 <td>{{plant.num}}</td>
+                                 <td>{{plant.time}}</td>
+                                      <td>{{plant.point}}</td>
+                                     <td>{{plant.case}}</td>
                                 </tr>
+                              {% endfor %}
                               </tbody>
                             </table>
                     </div>
@@ -272,60 +273,19 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr>
-                                  <td>一月</td>
-                                  <td>Bangalore</td>
-                                  <td>560001</td>
-                                     <td>560001</td>
+                                {% for ord in order %}
+                                  <tr>
+                                  <td>{{ord.sid}}</td>
+                                  <td>{{ord.stype}}</td>
+                                  <td>{{ord.state}}</td>
+                                     <td>{{ord.sname}}</td>
+
                                 </tr>
-                                <tr>
-                                  <td>Sachin</td>
-                                  <td>Mumbai</td>
-                                  <td>400003</td>
-                                     <td>560001</td>
-                                </tr>
-                                <tr>
-                                  <td>Uma</td>
-                                  <td>Pune</td>
-                                  <td>411027</td>
-                                     <td>560001</td>
-                                </tr>
+                              {% endfor %}
                               </tbody>
                             </table>
                     </div>
-                    <div class="col-md-12 table-sell">
-                        <h4>用户正在情况</h4>
-                        <table class="table table-bordered">
-                              <thead>
-                                <tr>
-                                  <th>植物名</th>
-                                  <th>种植状态</th>
-                                  <th>种植开始种植时间</th>
-                                  <th>预计收获时间</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td>一月</td>
-                                  <td>Bangalore</td>
-                                  <td>560001</td>
-                                     <td>560001</td>
-                                </tr>
-                                <tr>
-                                  <td>Sachin</td>
-                                  <td>Mumbai</td>
-                                  <td>400003</td>
-                                     <td>560001</td>
-                                </tr>
-                                <tr>
-                                  <td>Uma</td>
-                                  <td>Pune</td>
-                                  <td>411027</td>
-                                     <td>560001</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                    </div>
+
                     <div class="col-md-12 table-sell">
                         <h4>用户维修情况</h4>
                         <table class="table table-bordered">
@@ -338,24 +298,15 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr>
-                                  <td>一月</td>
-                                  <td>Bangalore</td>
-                                  <td>560001</td>
-                                     <td>560001</td>
+                                 {% for f in fix %}
+                                  <tr>
+                                  <td>{{f.fixinfoid}}</td>
+                                   <td>{{f.state}}</td>
+                                 <td>{{f.fname}}</td>
+                                      <td>{{f.score}}</td>
+
                                 </tr>
-                                <tr>
-                                  <td>Sachin</td>
-                                  <td>Mumbai</td>
-                                  <td>400003</td>
-                                     <td>560001</td>
-                                </tr>
-                                <tr>
-                                  <td>Uma</td>
-                                  <td>Pune</td>
-                                  <td>411027</td>
-                                     <td>560001</td>
-                                </tr>
+                              {% endfor %}
                               </tbody>
                             </table>
                     </div>

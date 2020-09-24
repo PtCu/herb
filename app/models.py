@@ -250,14 +250,17 @@ class Repository(models.Model):
 
 class Sellpost(models.Model):
     sid = models.CharField(db_column='SID', primary_key=True, max_length=30)  # Field name made lowercase.
-    splant = models.TextField(db_column='SPlant')  # Field name made lowercase.
+    '''splant = models.TextField(db_column='SPlant')  # Field name made lowercase.
     sdescription = models.TextField(db_column='SDescription')  # Field name made lowercase.
     sphonenum = models.CharField(db_column='SPhoneNum', max_length=11)  # Field name made lowercase.
     sprice = models.DecimalField(db_column='SPrice', max_digits=6, decimal_places=2)  # Field name made lowercase.
     simage = models.TextField(db_column='SImage', blank=True, null=True)  # Field name made lowercase.
     sscore = models.IntegerField(db_column='SScore', blank=True, null=True)  # Field name made lowercase.
     releasestime = models.DateTimeField(db_column='releaseSTime')  # Field name made lowercase.
-    user_userid = models.ForeignKey('User', models.DO_NOTHING, db_column='User_userId', blank=True, null=True)  # Field name made lowercase.
+    user_userid = models.ForeignKey('User', models.DO_NOTHING, db_column='User_userId', blank=True, null=True)  # Field name made lowercase.'''
+    stype = models.CharField(db_column='stype', null=True, max_length=40)# 药品类型
+    sname = models.CharField(db_column='sname', null=True, max_length=40)# 药品名称
+    state = models.BooleanField(db_column='state', null=False, default=None)
 
     class Meta:
         managed = True
@@ -373,12 +376,33 @@ class SellManger(models.Model):
 
 class Fixinfo(models.Model):
     fixinfoid = models.CharField(db_column='fixinfoID',max_length=45, primary_key=True)
-    incubator_incuno = models.ForeignKey(Incubator, models.DO_NOTHING, db_column='Incubator_IncuNo', blank=True,null=True)
-    user_userid = models.ForeignKey('User', models.DO_NOTHING, db_column='User_userId', blank=True, null=True)
+    ''' incubator_incuno = models.ForeignKey(Incubator, models.DO_NOTHING, db_column='Incubator_IncuNo', blank=True,null=True)
     ifover = models.IntegerField(db_column='ifOver',null=True)
     fixmanager = models.CharField(db_column='fixManager',max_length=45,null=True)
-    fixputdate = models.DateField(db_column='fixputDate', auto_now=True)
+    fixputdate = models.DateField(db_column='fixputDate', auto_now=True)'''
+    user_userid = models.ForeignKey('User', models.DO_NOTHING, db_column='User_userId', blank=True, null=True)
+    score = models.CharField(db_column='score', null=True, max_length=40)  # 药品类型
+    fname = models.CharField(db_column='fname', null=True, max_length=40)  # 药品名称
+    state = models.BooleanField(db_column='state', null=False, default=None)
 
     class Meta:
         managed =True
         db_table = 'fixinfo'
+# 新增用户后台数据库
+
+
+class User_plant(models.Model):
+
+    id = models.CharField(db_column='No', primary_key=True, max_length=20)  # Field name made lowercase.
+    name = models.CharField(db_column='Name', max_length=45)  # Field name made lowercase.
+    time = models.DateTimeField(db_column='time', blank=True, null=True)  # Field name made lowercase.
+    num = models.IntegerField(db_column='num', null=True)
+    user_userid = models.ForeignKey('User', models.DO_NOTHING, db_column='User_userId', blank=True,
+                                null=True)  # Field name made lowercase.
+    point = models.IntegerField(db_column='point', null=True)
+    case = models.CharField(db_column='case', max_length=45, null=True)
+
+# 表示用户所种植的植物
+    class Meta:
+        managed = True
+        db_table = 'User_plant'
