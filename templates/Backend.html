@@ -261,24 +261,14 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr>
-                                  <td>一月</td>
-                                  <td>Bangalore</td>
-                                  <td>560001</td>
-                                     <td>560001</td>
+                                  {% for inc in incubator1 %}
+                                  <tr>
+                                  <td>{{inc.incuno}}</td>
+                                  <td>{{inc.managerstate}}</td>
+                                  <td>{{inc.purchasetime}}</td>
+                                     <td>{{inc.usetime}}</td>
                                 </tr>
-                                <tr>
-                                  <td>Sachin</td>
-                                  <td>Mumbai</td>
-                                  <td>400003</td>
-                                     <td>560001</td>
-                                </tr>
-                                <tr>
-                                  <td>Uma</td>
-                                  <td>Pune</td>
-                                  <td>411027</td>
-                                     <td>560001</td>
-                                </tr>
+                              {% endfor %}
                               </tbody>
                             </table>
                     </div>

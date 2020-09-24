@@ -3,7 +3,7 @@ from django.shortcuts import redirect, reverse
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from app import models
-from app.models import Incubatorusing
+from app.models import Incubatorusing, Incubator
 from app.models import Monitorinform
 
 # 作图
@@ -384,7 +384,11 @@ def backendlogin(request):
 
 
 def backend(request):
-    return render(request, 'Backend.html')
+    incubator1 = Incubator.objects.all();
+    context = {
+        'incubator1': incubator1,
+    }
+    return render(request, 'Backend.html', context)
 
 
 def plantinf_old(request):
