@@ -1,3 +1,4 @@
 *.pyc
 .vscode
-.idea
+# .idea
+db.sqlite3

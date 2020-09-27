@@ -1,6 +1,7 @@
+from django.core import serializers
 from django.shortcuts import render
 from django.shortcuts import redirect, reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.http import HttpResponse
 from app import models
 from app.models import Incubatorusing, Incubator, Fixinfo, Sellpost
@@ -65,7 +66,6 @@ def index(request):
     """
     return render(request, 'index1.html')
 
-
 # #实现用户登陆功能
 def login(request):
     if request.method == 'POST':
@@ -77,9 +77,13 @@ def login(request):
                 user = models.User.objects.get(userphonenum=userphone)
                 if user.password == password:
                     request.session['is_login'] = True
+                    request.session['userid'] = user.userid
                     request.session['userphone'] = user.userphonenum
                     request.session['username'] = user.username
                     request.session['userimg'] = user.userimg
+                    # request.session['userbirthday'] = user.birthday
+                    request.session['userintroduction'] = user.userintroduction
+                    request.session['usersex'] = user.usersex
 
                     # get是获取单个对象，filte是设置筛选条件
                     incubators = models.Incubator.objects.filter(user_userid=userphone)
@@ -133,6 +137,7 @@ def register(request):
                     newUser.save()
                     return redirect('/login/')
     return render(request, '../temp/register.html')
+
 
 # 用户登录
 def signin(request):
@@ -432,6 +437,9 @@ def my(request):
     return render(request, 'my.html', {"incu": incu})
     # return render(request,'my.html')
 
+def more(request):
+    return render(request, 'more.html')
+
 
 def writePurchase(request):
     return render(request, 'writePurchase.html')
@@ -699,3 +707,23 @@ def graph(x, y, file):
 # 用作测试
 def test(request):
     return render(request, 'test.html')
+
+
+def updateUserInfo(request):
+    if request.method == 'POST':
+        userid = request.POST.get('userid')
+        user = models.User.objects.get(userid=userid)
+        user.usersex = request.POST.get('sex')
+        user.userintroduction = request.POST.get('userintroduction')
+        user.birthday = request.POST.get('userbirthday')
+        user.username = request.POST.get('username')
+        user.save()
+        request.session['userid'] = user.userid
+        request.session['userphone'] = user.userphonenum
+        request.session['username'] = user.username
+        request.session['userimg'] = user.userimg
+        # request.session['userbirthday'] = user.birthday
+        request.session['userintroduction'] = user.userintroduction
+        request.session['usersex'] = user.usersex
+        print(user)
+    return redirect('/incubator/')
