@@ -4,9 +4,9 @@ from django.shortcuts import redirect, reverse
 from django.http import HttpResponseRedirect, JsonResponse
 from django.http import HttpResponse
 from app import models
-from app.models import Incubatorusing
+from app.models import Incubatorusing, Incubator, Fixinfo, Sellpost
 from app.models import Monitorinform
-
+from app.models import User_plant
 # 作图
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
@@ -389,7 +389,17 @@ def backendlogin(request):
 
 
 def backend(request):
-    return render(request, 'Backend.html')
+    incubator1 = Incubator.objects.all()
+    userplant = User_plant.objects.all()
+    fix = Fixinfo.objects.all()
+    order = Sellpost.objects.all()
+    context = {
+        'incubator1': incubator1,
+        'userplant': userplant,
+        'fix': fix,
+        'order': order,
+    }
+    return render(request, 'Backend.html', context)
 
 
 def plantinf_old(request):
