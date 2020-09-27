@@ -8,6 +8,6 @@ python3 manage.py makemigrations
 会进行初始化，根据模型生成迁移文件，然后再运行执行命令：  
 python3 manage.py migrate  
 根据迁移文件生成表，并将表都写入db.sqlite3文件中  
-如果
+
 
 
