@@ -1,7 +1,7 @@
 # herb
 中草药
 
-###数据库文件db.sqlite3不要上传，git无法对比冲突
+### 数据库文件db.sqlite3不要上传，git无法对比冲突
 
 每次pull到本地后，运行:  
 python3 manage.py makemigrations  
