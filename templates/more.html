@@ -35,7 +35,7 @@
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span
                     class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button>
             <a class="navbar-brand" href="/"><img src="/static/assets/images/logo.png" height="38"
-                                                            alt="Progressus HTML5 template"></a>
+                                                  alt="Progressus HTML5 template"></a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav pull-right">
@@ -51,7 +51,7 @@
                 <li><a href="/contact">联系我们</a></li>
                 {#                <li><a class="btn" href="signin.html">登录/ 注册</a></li>#}
                 {% if request.session.is_login %}
-                    <li><a href="/incubator"><img src="/static/img/personInfo/{{ request.session.userimg }}"></a></li>
+                    <li><a href="/incubator"><img class="head_img" src="/static/img/personInfo/{{ request.session.userimg }}"></a></li>
                     {% comment %}<div class="userimg-sm">
                         <a href="/incubator">
                             <img src="/static/img/personInfo/{{ request.session.userimg }}">
@@ -61,7 +61,7 @@
                     {% comment %}<button class="btn btn-lg btn-danger" style="margin-top: -60px;margin-left: 100px"
                             onclick="window.location='/logout/'">注销
                     </button>{% endcomment %}
-                    <li><a href="/logout/">注销</a></li>
+                    <li><a onclick="window.location='/logout/'">注销</a></li>
                 {% endif %}
                 {% if not request.session.is_login %}
                     {% comment %}<div class="userimg-sm">
@@ -76,6 +76,7 @@
     </div>
 </div>
 <!-- /.navbar -->
+
 <div class="jumbotron">
 <div class="container top-space">
     <h1 class="text-center thin top-space" style=" margin-bottom:30px; font-size: 40px">相关链接</h1>

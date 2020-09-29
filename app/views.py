@@ -441,6 +441,10 @@ def more(request):
     return render(request, 'more.html')
 
 
+def contact(request):
+    return render(request, 'contact.html')
+
+    
 def writePurchase(request):
     return render(request, 'writePurchase.html')
 

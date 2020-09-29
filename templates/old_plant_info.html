@@ -62,7 +62,7 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav pull-right">
-                <li class="active"><a href="/">主页</a></li>
+                <li><a href="/">主页</a></li>
                 <li><a href="/bbs">论坛</a></li>
                 <li class="dropdown">
                     <a href="/showplant" class="dropdown-toggle">药材 </a>
@@ -74,7 +74,7 @@
                 <li><a href="/contact">联系我们</a></li>
                 {#                <li><a class="btn" href="signin.html">登录/ 注册</a></li>#}
                 {% if request.session.is_login %}
-                    <li><a href="/incubator"><img class="head_img" src="/static/img/personInfo/{{ request.session.userimg }}"></a></li>
+                    <li  class="active"><a href="/incubator"><img class="head_img" src="/static/img/personInfo/{{ request.session.userimg }}"></a></li>
                     {% comment %}<div class="userimg-sm">
                         <a href="/incubator">
                             <img src="/static/img/personInfo/{{ request.session.userimg }}">
@@ -101,9 +101,9 @@
 <!-- /.navbar -->
 
 {% comment %}内容开始{% endcomment %}
-<div style="margin-left: 50px;margin-right: 50px;width: auto">
-    <div class="col-md-12 box-detail-title">
-        <h1 class="col-md-4">TC-001 培养箱往期数据</h1>
+<div class="top-space" style="margin-left: 50px;margin-right: 50px;width: auto">
+    <div class="col-md-12 box-detail-title top-space">
+        <h1 class="top-margin">TC-001 培养箱往期数据</h1>
     </div>
     <div id="box-detail" class="col-md-12">
 
@@ -135,7 +135,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="col-md-offset-2 col-md-1 btn btn-lg btn-info" style="margin-top: 20px">查询</button>
+                    <button class="btn btn-lg btn-info" style="margin: 10px">查询</button>
                 </div>
                 <div class="col-md-12 averinf">
 

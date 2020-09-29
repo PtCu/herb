@@ -45,6 +45,7 @@ urlpatterns = [
     path('my/', views.my),
     path('more/', views.more),
     path('test/', views.test),
+    path('contact/', views.contact),
     path('backendlogin/', views.backendlogin),
     path('backend/', views.backend),
     path('oldplantinfo/', views.plantinf_old),
