@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path
+
 from app import views
 from django.views.static import serve
 from zhiyao.settings import MEDIA_ROOT
@@ -45,7 +46,6 @@ urlpatterns = [
     path('my/', views.my),
     path('more/', views.more),
     path('test/', views.test),
-    path('contact/', views.contact),
     path('backendlogin/', views.backendlogin),
     path('backend/', views.backend),
     path('oldplantinfo/', views.plantinf_old),

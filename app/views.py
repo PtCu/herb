@@ -66,6 +66,7 @@ def index(request):
     """
     return render(request, 'index1.html')
 
+
 # #实现用户登陆功能
 def login(request):
     if request.method == 'POST':
@@ -98,11 +99,11 @@ def login(request):
                     return render(request, 'index1.html', {"incu": incu})
                 else:
                     message = '密码错误'
-                    return render(request, 'index1.html', {'message': message})
+                    return render(request, 'signin.html', {'message': message})
             except:
                 message = '用户不存在'
-                return render(request, 'index1.html', {'message': message})
-    return render(request, 'index1.html')
+                return render(request, 'signin.html', {'message': message})
+    return render(request, 'signin.html')
 
 
 # 用户注册
@@ -271,6 +272,7 @@ def incubatorDeatil(request, incubatorno):
     monitorDatas2 = {"Mtimes": json.dumps(time[:10]), "Mtemperatures": temperature[:10], "Mhumiditys": humidity[:10],
                      "Mpressures": pressure[:10], "MlightIntensitys": lightIntensity[:10]}
     print(time)
+    print(monitorDatas)
     info.update(monitorDatas2)
 
     dir = 'realtime_images'
@@ -284,6 +286,7 @@ def incubatorDeatil(request, incubatorno):
     adviceData = getAdvice(category)
     # adviceData的内容为：{"state":state,"adviceHumidity":humidity[category],"adviceTemperature":temperature[category],"advicepressure":pressure[category],"adviceLight":light[category]}
     info.update(adviceData)
+    print(info)
     return render(request, "incubator_details.html", info)
 
 
@@ -322,7 +325,9 @@ def getInital(ino):
         ihum = incubatorUsing.ihumidity
         ipre = incubatorUsing.ipressure
         ilig = incubatorUsing.ilightlntensity
-        info = {"Itemperature": item, "Ihumidity": ihum, "Ipressure": ipre, "IlightIntensity": ilig, "IisSucceed": True}
+        plant_name = incubatorUsing.plant_plantname
+        info = {"Itemperature": item, "Ihumidity": ihum, "Ipressure": ipre, "IlightIntensity": ilig,
+                "plant_name": plant_name, "IisSucceed": True}
         return info
     except:
         info = {"IisSucceed": True}
@@ -437,14 +442,11 @@ def my(request):
     return render(request, 'my.html', {"incu": incu})
     # return render(request,'my.html')
 
+
 def more(request):
     return render(request, 'more.html')
 
 
-def contact(request):
-    return render(request, 'contact.html')
-
-    
 def writePurchase(request):
     return render(request, 'writePurchase.html')
 

@@ -22,9 +22,18 @@
     <!--[if lt IE 9]>
     <script src="/static/assets/js/html5shiv.js"></script>
     <script src="/static/assets/js/respond.min.js"></script>
+    <script src="/static/js/loginAndRegister.js"></script>
     <![endif]-->
 </head>
-
+<script type="text/javascript" src="/static/js/jquery-3.3.1.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#selectMe").click(function () {
+            var obj = $("#next").get(0);
+            obj.disabled = !$("#selectMe")[0].checked;
+        });
+    });
+</script>
 <body>
 
 <!-- Fixed navbar -->
@@ -84,6 +93,7 @@
 
                         <form id="signup" method="post" action="/signup/">
                             {% csrf_token %}
+                            <p id="error" class="errorMessage">{{message}}</p>
                             <div class="top-margin">
                                 <label>用户名<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="username" maxlength="50"
@@ -118,12 +128,12 @@
                             <div class="row">
                                 <div class="col-lg-8">
                                     <label class="checkbox">
-                                        <input type="checkbox">
+                                        <input type="checkbox" id="selectMe">
                                         我已阅读<a href="page_terms.html">用户条款</a>
                                     </label>
                                 </div>
                                 <div class="col-lg-4 text-right">
-                                    <button class="btn btn-action" type="submit">注册</button>
+                                    <button id="next" class="btn btn-action" type="submit" disabled="disabled">注册</button>
                                 </div>
                             </div>
                         </form>
