@@ -70,34 +70,12 @@
                     </ul> -->
                 </li>
                 <li><a href="/contact">联系我们</a></li>
-                {#
-                <li><a class="btn" href="signin.html">登录/ 注册</a></li>
-                #}
                 {% if request.session.is_login %}
                 <li><a href="/incubator"><img class="head_img"
                                               src="/static/img/personInfo/{{ request.session.userimg }}"></a></li>
-                {% comment %}
-                <div class="userimg-sm">
-                    <a href="/incubator">
-                        <img src="/static/img/personInfo/{{ request.session.userimg }}">
-                    </a>
-                </div>
-                {% endcomment %}
-                {# <h3 style="margin-left: 100px">{{ request.session.username }}</h3>#}
-                {% comment %}
-                <button class="btn btn-lg btn-danger" style="margin-top: -60px;margin-left: 100px"
-                        onclick="window.location='/logout/'">注销
-                </button>
-                {% endcomment %}
                 <li><a href="/logout/">注销</a></li>
                 {% endif %}
                 {% if not request.session.is_login %}
-                {% comment %}
-                <div class="userimg-sm">
-                    <img src="/static/img/wdl.jpg">
-                </div>
-                <button class="btn btn-lg btn-info" data-toggle="modal" data-target="#myModal">登录</button>
-                {% endcomment %}
                 <li><a class="btn" href="/signin">登录/ 注册</a></li>
                 {% endif %}
             </ul>
@@ -208,7 +186,7 @@
                 <h2 class="col-md-12" style="border-bottom: 5px solid brown;border-radius: 2px">传感器状态</h2>
                 <div class="col-md-12 sensor-show">
                     <div class="col-md-7">
-                        <div class="col-md-3 sensor-simple-info">
+                        <div class="col-md-3 sensor-simple-info" style="width: 30%">
                             <div class="col-md-12 sensor-now">
                                 <h5 style="color: brown">温度传感器</h5>
                                 <h5>{{ Mtemperatures.0 }} ℃</h5>
@@ -226,7 +204,7 @@
 
 
                         </div>
-                        <div class="col-md-3 sensor-simple-info">
+                        <div class="col-md-3 sensor-simple-info" style="width: 30%">
                             <div class="col-md-12 sensor-now">
                                 <h5 style="color: brown">湿度传感器</h5>
                                 <h5>{{ Mhumiditys.0 }} %</h5>
@@ -244,7 +222,7 @@
 
 
                         </div>
-                        <div class="col-md-3 sensor-simple-info">
+                        <div class="col-md-3 sensor-simple-info" style="width: 30%">
                             <div class="col-md-12 sensor-now">
                                 <h5 style="color: brown">压强传感器</h5>
                                 <h5>{{ Mpressures.0 }}</h5>
@@ -262,7 +240,7 @@
 
 
                         </div>
-                        <div class="col-md-3 sensor-simple-info">
+                        <div class="col-md-3 sensor-simple-info" style="width: 30%">
                             <div class="col-md-12 sensor-now">
                                 <h5 style="color: brown">光照传感器</h5>
                                 <h5>{{ MlightIntensitys.0 }} lux</h5>
@@ -280,7 +258,7 @@
 
 
                         </div>
-                        <div class="col-md-3 sensor-simple-info">
+                        <div class="col-md-3 sensor-simple-info" style="width: 30%">
                             <div class="col-md-12 sensor-now">
                                 <h5 style="color: brown">光照传感器</h5>
                                 <h5>{{ MlightIntensitys.0 }} lux</h5>
@@ -298,7 +276,7 @@
 
 
                         </div>
-                        <div class="col-md-3 sensor-simple-info">
+                        <div class="col-md-3 sensor-simple-info" style="width: 30%">
                             <div class="col-md-12 sensor-now">
                                 <h5 style="color: brown">光照传感器</h5>
                                 <h5>{{ MlightIntensitys.0 }} lux</h5>
@@ -316,7 +294,7 @@
 
 
                         </div>
-                        <div class="col-md-3 sensor-simple-info">
+                        <div class="col-md-3 sensor-simple-info" style="width: 30%">
                             <div class="col-md-12 sensor-now">
                                 <h5 style="color: brown">光照传感器</h5>
                                 <h5>{{ MlightIntensitys.0 }} lux</h5>
@@ -334,7 +312,7 @@
 
 
                         </div>
-                        <div class="col-md-3 sensor-simple-info">
+                        <div class="col-md-3 sensor-simple-info" style="width: 30%">
                             <div class="col-md-12 sensor-now">
                                 <h5 style="color: brown">光照传感器</h5>
                                 <h5>{{ MlightIntensitys.0 }} lux</h5>
@@ -352,7 +330,7 @@
 
 
                         </div>
-                        <div class="col-md-3 sensor-simple-info">
+                        <div class="col-md-3 sensor-simple-info" style="width: 30%">
                             <div class="col-md-12 sensor-now">
                                 <h5 style="color: brown">光照传感器</h5>
                                 <h5>{{ MlightIntensitys.0 }} lux</h5>
@@ -369,7 +347,7 @@
                             </button>
 
 
-                        </div>
+                        </div >
                     </div>
                     <form>
 
