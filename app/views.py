@@ -415,6 +415,9 @@ def howtoplant(request):
     return render(request, 'how_to_plant.html')
 
 
+def contact(request):
+    return render(request, 'contact.html')
+
 def showplant(request):
     return render(request, 'show_plant.html')
 
