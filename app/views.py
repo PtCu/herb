@@ -4,9 +4,8 @@ from django.shortcuts import redirect, reverse
 from django.http import HttpResponseRedirect, JsonResponse
 from django.http import HttpResponse
 from app import models
-from app.models import Incubatorusing, Incubator, Fixinfo, Sellpost, User
-from app.models import Monitorinform
-from app.models import User_plant
+from app.models import *
+
 # 作图
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
@@ -544,197 +543,197 @@ def getCDetail(request, id):
         return render(request, '../temp2/../temp/bbs.html', {'success': False})
 
 
-#########################################################################################################
-# 以下是有关硬件的请求处理代码
-#########################################################################################################
-from django.shortcuts import render
-from app.models import ChangeLog
-from app.models import ViewParam
-from django.http import HttpResponse
-import os
-# 1.处理来自 硬件的请求
-# 在ViewLog中添加一条环境参数，查看并返回最新的一条ChangeLog表的记录
-# 2.返回一张最新的监控图片
-# 3.网页上来自用户的修改记录被存库，并返回箱子的实时数据
+# #########################################################################################################
+# # 以下是有关硬件的请求处理代码
+# #########################################################################################################
+# from django.shortcuts import render
+# from app.models import ChangeLog
+# from app.models import ViewParam
+# from django.http import HttpResponse
+# import os
+# # 1.处理来自 硬件的请求
+# # 在ViewLog中添加一条环境参数，查看并返回最新的一条ChangeLog表的记录
+# # 2.返回一张最新的监控图片
+# # 3.网页上来自用户的修改记录被存库，并返回箱子的实时数据
 
-# 1.
-from django.views.decorators.csrf import csrf_exempt
-
-
-@csrf_exempt
-def proHard(request):
-    request.encode = "utf-8"
-    response = ''
-    clg = ChangeLog.objects.all().order_by("-addtime")
-    clg = clg[0]
-    tem_ctl = clg.tem
-    hum_ctl = clg.hum
-    pre_ctl = clg.pre
-    led_ctl = clg.led
-    tem_ctl_need = 5 - len(tem_ctl)
-    hum_ctl_need = 5 - len(hum_ctl)
-    led_ctl_need = 5 - len(led_ctl)
-    pre_ctl_need = 6 - len(pre_ctl)
-    a = "0"
-    for i in range(tem_ctl_need):
-        tem_ctl = a + tem_ctl
-    for i in range(led_ctl_need):
-        led_ctl = a + led_ctl
-    for i in range(pre_ctl_need):
-        pre_ctl = a + pre_ctl
-    for i in range(hum_ctl_need):
-        hum_ctl = a + hum_ctl
-    response += 't=' + tem_ctl + '&' + 'l=' + led_ctl + '&p=' + pre_ctl + '&h=' + hum_ctl
-    # response+='_*_'+'t='+tem_ctl+'&'+'l='+led_ctl+'&p='+pre_ctl+'&h='+hum_ctl
-    print(request)
-    if request.method == 'POST':
-        txt = request.POST['text']
-        print("get text:", txt)
-        # 处理文本数据并存库
-        param_split = txt.split('&')
-        param_t = param_split[0].split('=')[1]
-        param_l = param_split[1].split('=')[1]
-        param_p = param_split[2].split('=')[1]
-        param_h = param_split[3].split('=')[1]
-
-        mif = Monitorinform()
-        mif.mpressure = param_p
-        mif.mtemperature = param_t
-        mif.mlightlntensity = param_l
-        mif.mhumidity = param_h
-        mif.mplantstage = 1
-        mif.save()
-
-        vpm = ViewParam()
-        vpm.tem = param_t
-        vpm.led = param_l
-        vpm.pre = param_p
-        vpm.hum = param_h
-        vpm.save()
-
-    return HttpResponse(response)
+# # 1.
+# from django.views.decorators.csrf import csrf_exempt
 
 
-# 2.
-def returnImage(request):
-    dir = 'realtime_images'
-    lists = os.listdir(dir)  # 列出目录的下所有文件和文件夹保存到lists
-    # print(lists)
-    lists.sort(key=lambda fn: os.path.getmtime(dir + "/" + fn))  # 按时间排序
-    file_new = os.path.join(dir, lists[-1])  # 获取最新的文件保存到file_new
-    # print(file_new)
-    f = open(file_new, 'rb')
-    data = f.read()
-    f.close()
-    return HttpResponse(data, content_type="image/jpeg")
+# @csrf_exempt
+# def proHard(request):
+#     request.encode = "utf-8"
+#     response = ''
+#     clg = ChangeLog.objects.all().order_by("-addtime")
+#     clg = clg[0]
+#     tem_ctl = clg.tem
+#     hum_ctl = clg.hum
+#     pre_ctl = clg.pre
+#     led_ctl = clg.led
+#     tem_ctl_need = 5 - len(tem_ctl)
+#     hum_ctl_need = 5 - len(hum_ctl)
+#     led_ctl_need = 5 - len(led_ctl)
+#     pre_ctl_need = 6 - len(pre_ctl)
+#     a = "0"
+#     for i in range(tem_ctl_need):
+#         tem_ctl = a + tem_ctl
+#     for i in range(led_ctl_need):
+#         led_ctl = a + led_ctl
+#     for i in range(pre_ctl_need):
+#         pre_ctl = a + pre_ctl
+#     for i in range(hum_ctl_need):
+#         hum_ctl = a + hum_ctl
+#     response += 't=' + tem_ctl + '&' + 'l=' + led_ctl + '&p=' + pre_ctl + '&h=' + hum_ctl
+#     # response+='_*_'+'t='+tem_ctl+'&'+'l='+led_ctl+'&p='+pre_ctl+'&h='+hum_ctl
+#     print(request)
+#     if request.method == 'POST':
+#         txt = request.POST['text']
+#         print("get text:", txt)
+#         # 处理文本数据并存库
+#         param_split = txt.split('&')
+#         param_t = param_split[0].split('=')[1]
+#         param_l = param_split[1].split('=')[1]
+#         param_p = param_split[2].split('=')[1]
+#         param_h = param_split[3].split('=')[1]
+
+#         mif = Monitorinform()
+#         mif.mpressure = param_p
+#         mif.mtemperature = param_t
+#         mif.mlightlntensity = param_l
+#         mif.mhumidity = param_h
+#         mif.mplantstage = 1
+#         mif.save()
+
+#         vpm = ViewParam()
+#         vpm.tem = param_t
+#         vpm.led = param_l
+#         vpm.pre = param_p
+#         vpm.hum = param_h
+#         vpm.save()
+
+#     return HttpResponse(response)
 
 
-# 3.
-def proIncubator2(request):
-    res = {}  # 存储箱子的相关信息
-    # 取出最早的一条数据
-    Obj = ViewParam.objects.all().order_by('-addtime')
-    if Obj:
-        Obj = Obj[0]
-        res['pressure'] = Obj.pre
-        res['light'] = Obj.led
-    else:
-        pass
-    # 事实上这些生成图像的代码应该放到处理硬件的视图中
-    vplist = ViewParam.objects.all()
-    timelist = []
-    temperaturelist = []
-    humiditylist = []
-    pressurelist = []
-    lightlist = []
-    for vp in vplist:
-        timelist.append(vp.addtime)
-        temperaturelist.append(vp.tem)
-        humiditylist.append(vp.hum)
-        pressurelist.append(vp.pre)
-        lightlist.append(vp.led)
-    dir = 'media'
-    file = os.path.join(dir, "humidityChart.jpg")  # 图片要保存到的位置
-    graph(timelist, humiditylist, file)
-    file = os.path.join(dir, "temperatureChart.jpg")  # 图片要保存到的位置
-    graph(timelist, temperaturelist, file)
-    file = os.path.join(dir, "pressureChart.jpg")  # 图片要保存到的位置
-    graph(timelist, pressurelist, file)
-    file = os.path.join(dir, "lightChart.jpg")  # 图片要保存到的位置
-    graph(timelist, lightlist, file)
-
-    if request.POST:
-        clg = ChangeLog()
-        clg.tem = request.POST['tem_ctl']
-        clg.hum = request.POST['hum_ctl']
-        clg.led = request.POST['led_ctl']
-        clg.pre = request.POST['pre_ctl']
-        clg.save()
-        res['response'] = "修改已经收到：" + clg.tem
-    return render(request, 'incubatorDetail2.html', res)
+# # 2.
+# def returnImage(request):
+#     dir = 'realtime_images'
+#     lists = os.listdir(dir)  # 列出目录的下所有文件和文件夹保存到lists
+#     # print(lists)
+#     lists.sort(key=lambda fn: os.path.getmtime(dir + "/" + fn))  # 按时间排序
+#     file_new = os.path.join(dir, lists[-1])  # 获取最新的文件保存到file_new
+#     # print(file_new)
+#     f = open(file_new, 'rb')
+#     data = f.read()
+#     f.close()
+#     return HttpResponse(data, content_type="image/jpeg")
 
 
-# 4.
-def proIncubator(request, incubatorno):
-    if request.POST:
-        print("开始处理++++++++++++++++++++++++++++++++++++++++++")
-        clg = ChangeLog()
-        clg.tem = request.POST['tem_ctl']
-        clg.hum = request.POST['hum_ctl']
-        clg.led = request.POST['led_ctl']
-        clg.pre = request.POST['pre_ctl']
+# # 3.
+# def proIncubator2(request):
+#     res = {}  # 存储箱子的相关信息
+#     # 取出最早的一条数据
+#     Obj = ViewParam.objects.all().order_by('-addtime')
+#     if Obj:
+#         Obj = Obj[0]
+#         res['pressure'] = Obj.pre
+#         res['light'] = Obj.led
+#     else:
+#         pass
+#     # 事实上这些生成图像的代码应该放到处理硬件的视图中
+#     vplist = ViewParam.objects.all()
+#     timelist = []
+#     temperaturelist = []
+#     humiditylist = []
+#     pressurelist = []
+#     lightlist = []
+#     for vp in vplist:
+#         timelist.append(vp.addtime)
+#         temperaturelist.append(vp.tem)
+#         humiditylist.append(vp.hum)
+#         pressurelist.append(vp.pre)
+#         lightlist.append(vp.led)
+#     dir = 'media'
+#     file = os.path.join(dir, "humidityChart.jpg")  # 图片要保存到的位置
+#     graph(timelist, humiditylist, file)
+#     file = os.path.join(dir, "temperatureChart.jpg")  # 图片要保存到的位置
+#     graph(timelist, temperaturelist, file)
+#     file = os.path.join(dir, "pressureChart.jpg")  # 图片要保存到的位置
+#     graph(timelist, pressurelist, file)
+#     file = os.path.join(dir, "lightChart.jpg")  # 图片要保存到的位置
+#     graph(timelist, lightlist, file)
 
-        clg.save()
-
-        incubator = Incubatorusing.objects.get(iuno=incubatorno)
-
-        ino1 = incubator.incubator_incuno.incuno
-        ino = (ino1,)
-    return HttpResponseRedirect(reverse('incubatorDetail', args=ino))
-
-
-# 用户初次使用系统流程
-def guide(request):
-    return render(request, 'connectingGuide.html')
+#     if request.POST:
+#         clg = ChangeLog()
+#         clg.tem = request.POST['tem_ctl']
+#         clg.hum = request.POST['hum_ctl']
+#         clg.led = request.POST['led_ctl']
+#         clg.pre = request.POST['pre_ctl']
+#         clg.save()
+#         res['response'] = "修改已经收到：" + clg.tem
+#     return render(request, 'incubatorDetail2.html', res)
 
 
-# 作图：
+# # 4.
+# def proIncubator(request, incubatorno):
+#     if request.POST:
+#         print("开始处理++++++++++++++++++++++++++++++++++++++++++")
+#         clg = ChangeLog()
+#         clg.tem = request.POST['tem_ctl']
+#         clg.hum = request.POST['hum_ctl']
+#         clg.led = request.POST['led_ctl']
+#         clg.pre = request.POST['pre_ctl']
 
-def graph(x, y, file):
-    # y = [0.236, 0.256, 0.288, 0.483, 0.621, 0.737, 0.796, 0.845, 0.833, 0.802]
-    # x = [20, 30, 40, 80, 150, 250, 350, 400, 450, 500]
-    fig = plt.figure()
-    ax1 = fig.add_subplot(1, 1, 1, facecolor='white')
-    ax1.set_xlabel('时间')  # 设置x轴名称
-    ax1.set_ylabel('值')  # 设置y轴名称
-    # 设置y轴坐标范围
-    plt.title("Figure1_GrayLevel&F1core")
+#         clg.save()
 
-    ax1.yaxis.grid(True, which='minor')
-    ax1.plot(x, y, marker='v', color='k', label='fun1', linestyle='dashed')
-    plt.savefig(file)
+#         incubator = Incubatorusing.objects.get(iuno=incubatorno)
 
-
-# 用作测试
-def test(request):
-    return render(request, 'test.html')
+#         ino1 = incubator.incubator_incuno.incuno
+#         ino = (ino1,)
+#     return HttpResponseRedirect(reverse('incubatorDetail', args=ino))
 
 
-def updateUserInfo(request):
-    if request.method == 'POST':
-        userid = request.POST.get('userid')
-        user = models.User.objects.get(userid=userid)
-        user.usersex = request.POST.get('sex')
-        user.userintroduction = request.POST.get('userintroduction')
-        user.birthday = request.POST.get('userbirthday')
-        user.username = request.POST.get('username')
-        user.save()
-        request.session['userid'] = user.userid
-        request.session['userphone'] = user.userphonenum
-        request.session['username'] = user.username
-        request.session['userimg'] = user.userimg
-        # request.session['userbirthday'] = user.birthday
-        request.session['userintroduction'] = user.userintroduction
-        request.session['usersex'] = user.usersex
-        print(user)
-    return redirect('/incubator/')
+# # 用户初次使用系统流程
+# def guide(request):
+#     return render(request, 'connectingGuide.html')
+
+
+# # 作图：
+
+# def graph(x, y, file):
+#     # y = [0.236, 0.256, 0.288, 0.483, 0.621, 0.737, 0.796, 0.845, 0.833, 0.802]
+#     # x = [20, 30, 40, 80, 150, 250, 350, 400, 450, 500]
+#     fig = plt.figure()
+#     ax1 = fig.add_subplot(1, 1, 1, facecolor='white')
+#     ax1.set_xlabel('时间')  # 设置x轴名称
+#     ax1.set_ylabel('值')  # 设置y轴名称
+#     # 设置y轴坐标范围
+#     plt.title("Figure1_GrayLevel&F1core")
+
+#     ax1.yaxis.grid(True, which='minor')
+#     ax1.plot(x, y, marker='v', color='k', label='fun1', linestyle='dashed')
+#     plt.savefig(file)
+
+
+# # 用作测试
+# def test(request):
+#     return render(request, 'test.html')
+
+
+# def updateUserInfo(request):
+#     if request.method == 'POST':
+#         userid = request.POST.get('userid')
+#         user = models.User.objects.get(userid=userid)
+#         user.usersex = request.POST.get('sex')
+#         user.userintroduction = request.POST.get('userintroduction')
+#         user.birthday = request.POST.get('userbirthday')
+#         user.username = request.POST.get('username')
+#         user.save()
+#         request.session['userid'] = user.userid
+#         request.session['userphone'] = user.userphonenum
+#         request.session['username'] = user.username
+#         request.session['userimg'] = user.userimg
+#         # request.session['userbirthday'] = user.birthday
+#         request.session['userintroduction'] = user.userintroduction
+#         request.session['usersex'] = user.usersex
+#         print(user)
+#     return redirect('/incubator/')

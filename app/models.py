@@ -3,8 +3,8 @@ from django.db import models
 
 
 class User(models.Model):
-    user_id = models.CharField(primary_key=True)
-    phone = models.CharField(max_length=11)
+    user_id = models.CharField(primary_key=True,max_length=20)
+    phone = models.CharField(max_length=15)
     mail = models.CharField(max_length=20)
     name = models.CharField(max_length=10)
     password = models.CharField(max_length=20)
@@ -18,7 +18,7 @@ class User(models.Model):
 
 
 class Incubator(models.Model):
-    incubator_id = models.CharField(primary_key=True)
+    incubator_id = models.CharField(primary_key=True, max_length=20)
     state = models.BooleanField()  # 是否正常运行
     user = models.ForeignKey(
         User, on_delete=models.CASCADE)  # 培养箱的用户（一个用户可以多个培养箱）
@@ -29,12 +29,12 @@ class Incubator(models.Model):
 
 
 class LightSensor(models.Model):
-    id = models.CharField(primary_key=True)
+    id = models.CharField(primary_key=True, max_length=20)
     incubator = models.ForeignKey(Incubator, on_delete=models.CASCADE)  # 箱子
-    model_type = models.CharField()  # 型号
+    model_type = models.CharField(max_length=20)  # 型号
     state = models.BooleanField()  # 是否坏了
     start_time = models.DateTimeField()  # 开始运行时间
-    data = models.CharField()  # 当前数据
+    data = models.CharField(max_length=20)  # 当前数据
 
     class Meta:
         managed = True
@@ -42,12 +42,12 @@ class LightSensor(models.Model):
 
 
 class PressureSensor(models.Model):
-    id = models.CharField(primary_key=True)
+    id = models.CharField(primary_key=True, max_length=20)
     incubator = models.ForeignKey(Incubator, on_delete=models.CASCADE)  # 箱子
-    model_type = models.CharField()  # 型号
+    model_type = models.CharField(max_length=20)  # 型号
     state = models.BooleanField()  # 是否坏了
     start_time = models.DateTimeField()  # 开始运行时间
-    data = models.CharField()  # 当前数据
+    data = models.CharField(max_length=20)  # 当前数据
 
     class Meta:
         managed = True
@@ -55,12 +55,12 @@ class PressureSensor(models.Model):
 
 
 class TemperatureSensor(models.Model):
-    id = models.CharField(primary_key=True)
+    id = models.CharField(primary_key=True, max_length=20)
     incubator = models.ForeignKey(Incubator, on_delete=models.CASCADE)  # 箱子
-    model_type = models.CharField()  # 型号
+    model_type = models.CharField(max_length=20)  # 型号
     state = models.BooleanField()  # 是否坏了
     start_time = models.DateTimeField()  # 开始运行时间
-    data = models.CharField()  # 当前数据
+    data = models.CharField(max_length=20)  # 当前数据
 
     class Meta:
         managed = True
@@ -68,12 +68,12 @@ class TemperatureSensor(models.Model):
 
 
 class HumiditySensor(models.Model):
-    id = models.CharField(primary_key=True)
+    id = models.CharField(primary_key=True, max_length=20)
     incubator = models.ForeignKey(Incubator, on_delete=models.CASCADE)  # 箱子
-    model_type = models.CharField()  # 型号
+    model_type = models.CharField(max_length=20)  # 型号
     state = models.BooleanField()  # 是否坏了
     start_time = models.DateTimeField()  # 开始运行时间
-    data = models.CharField()  # 当前数据
+    data = models.CharField(max_length=20)  # 当前数据
 
     class Meta:
         managed = True
@@ -81,12 +81,12 @@ class HumiditySensor(models.Model):
 
 
 class Camera(models.Model):
-    id = models.CharField(primary_key=True)
+    id = models.CharField(primary_key=True, max_length=20)
     incubator = models.ForeignKey(Incubator, on_delete=models.CASCADE)  # 箱子
-    model_type = models.CharField()  # 型号
+    model_type = models.CharField(max_length=20)  # 型号
     state = models.BooleanField()  # 是否坏了
     start_time = models.DateTimeField()  # 开始运行时间
-    data = models.CharField()  # 当前数据
+    data = models.CharField(max_length=20)  # 当前数据
 
     class Meta:
         managed = True
@@ -94,12 +94,12 @@ class Camera(models.Model):
 
 
 class Plant(models.Model):
-    id = models.CharField(primary_key=True)
-    plant_type = models.CharField()  # 植物的种类
-    name = models.CharField()  # 名字
+    id = models.CharField(primary_key=True, max_length=20)
+    plant_type = models.CharField(max_length=20)  # 植物的种类
+    name = models.CharField(max_length=20)  # 名字
     img = models.ImageField(upload_to='image')  # 图像
     mark = models.IntegerField()  # 评分
-    state = models.CharField()  # 开花结果
+    state = models.CharField(max_length=20)  # 开花结果
     # 培养箱 (一个培养箱可以多个植物，但需要保证为一种)
     incubator = models.ForeignKey(Incubator, on_delete=models.CASCADE)
 
@@ -115,11 +115,11 @@ class IncubatorHistory(models.Model):
     curTime = models.DateTimeField()  # 查找时间
     incubator = models.ForeignKey(
         Incubator, on_delete=models.CASCADE)  # 对应的培养箱
-    light = models.CharField()  # 这个时间下的light
-    pressure = models.CharField()  # 这个时间下的压强
-    humidity = models.CharField()
-    temperature = models.CharField()
-    plant = models.CharField()  # 这个时间下的植物
+    light = models.CharField(max_length=20)  # 这个时间下的light
+    pressure = models.CharField(max_length=20)  # 这个时间下的压强
+    humidity = models.CharField(max_length=20)
+    temperature = models.CharField(max_length=20)
+    plant = models.CharField(max_length=20)  # 这个时间下的植物
 
     class Meta:
         unique_together = ("curTime", "incubator")
@@ -131,7 +131,7 @@ class IncubatorHistory(models.Model):
 
 
 class FixList(models.Model):
-    id = models.CharField(primary_key=True)  # 订单编号
+    id = models.CharField(primary_key=True, max_length=20)  # 订单编号
     time = models.DateTimeField()  # 订单生成时间
     # 培养箱 #django 1对多时，foreigneKey在多的一方
     incubator = models.ForeignKey(Incubator, on_delete=models.CASCADE)

@@ -28,7 +28,7 @@ urlpatterns = [
     path('logout/', views.logout),
     path('register/', views.register, name='register'),
     path('incubator/', views.incubator, name='incubator'),
-    path('updateUserInfo/', views.updateUserInfo),
+    # path('updateUserInfo/', views.updateUserInfo),
     path('bbs/', views.bbs, name='bbs'),
     path('incubatorDetail/<incubatorno>/', views.incubatorDeatil, name='incubatorDetail'),
     path('alterenviroment/<incubatorno>/', views.alterenviroment, name="alterenviroment"),
@@ -45,7 +45,7 @@ urlpatterns = [
     path('getbbs/communicationDetail/<id>', views.getCDetail, name='cDetail'),
     path('my/', views.my),
     path('more/', views.more),
-    path('test/', views.test),
+    # path('test/', views.test),
     path('contact/', views.contact),
     path('backendlogin/', views.backendlogin),
     path('backend/', views.backend),
@@ -54,11 +54,11 @@ urlpatterns = [
     path('showplant', views.showplant),
     path('showplant/plantdetail', views.plantdetail),
     #############################路径需要修改
-    path('guide', views.guide),
-    path('changeEnvironment/<incubatorno>/', views.proIncubator, name="changeEnvironment"),
+    # path('guide', views.guide),
+    # path('changeEnvironment/<incubatorno>/', views.proIncubator, name="changeEnvironment"),
     path('', views.index),  # 登陆信息
-    path('hard', views.proHard),  # 接收本地sock服务器转发的硬件相关数据
-    re_path(r'image.*', views.returnImage),  # 由页面自动发起请求，获取箱内图片
+    # path('hard', views.proHard),  # 接收本地sock服务器转发的硬件相关数据
+    # re_path(r'image.*', views.returnImage),  # 由页面自动发起请求，获取箱内图片
     # 处理图片显示的url,使用Django自带serve,传入参数告诉它去哪个路径找，我们有配置好的路径MEDIAROOT
     re_path(r'^media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT})
 ]
