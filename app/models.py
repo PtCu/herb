@@ -273,12 +273,12 @@ class User(models.Model):
     usermail = models.CharField(db_column='userMail', unique=True, max_length=50)  # Field name made lowercase.
     username = models.CharField(db_column='userName', unique=True, max_length=50)  # Field name made lowercase.
     password = models.CharField(max_length=50)
-    userstate = models.IntegerField(db_column='userState',default=0)  # Field name made lowercase.
+    userstate = models.CharField(db_column='userState',choices=(('活跃', '活跃'), ('不活跃', '不活跃')),default=0,max_length=10)  # Field name made lowercase.
     registrationdate = models.DateTimeField(db_column='registrationDate',auto_now=True)  # Field name made lowercase.
     userimg = models.CharField(db_column='userImg', max_length=50, default="md.ipg")
-    usersex = models.IntegerField(db_column='userSex',default=0)
-    userintroduction =models.CharField(db_column='userIntroduction', max_length=255 ,default="22")
-    userlastlogintime = models.DateTimeField(db_column='userLastlogintime',null=True)
+    usersex = models.CharField(db_column='userSex', choices=(('男', '男'), ('女', '女')),default=0, max_length=20)
+    userage =models.CharField(db_column='userIntroduction', max_length=255 ,default="22")
+    userlastlogintime = models.DateField(db_column='userLastlogintime',null=True, blank=True)
 
     class Meta:
         managed = True
