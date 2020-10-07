@@ -266,7 +266,7 @@ body{
     box-shadow:3px 3px 1px #888888;
     border: 1px solid lightgray;
     height: 100px;
-    padding: 10px;
+   ''' padding: 10px;'''
 }
 .back-user-info img{
     height: 100%;

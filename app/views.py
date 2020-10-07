@@ -4,7 +4,7 @@ from django.shortcuts import redirect, reverse
 from django.http import HttpResponseRedirect, JsonResponse
 from django.http import HttpResponse
 from app import models
-from app.models import Incubatorusing, Incubator, Fixinfo, Sellpost
+from app.models import Incubatorusing, Incubator, Fixinfo, Sellpost, User
 from app.models import Monitorinform
 from app.models import User_plant
 # 作图
@@ -398,11 +398,13 @@ def backend(request):
     userplant = User_plant.objects.all()
     fix = Fixinfo.objects.all()
     order = Sellpost.objects.all()
+    user = User.objects.all();
     context = {
         'incubator1': incubator1,
         'userplant': userplant,
         'fix': fix,
         'order': order,
+        'user': user,
     }
     return render(request, 'Backend.html', context)
 

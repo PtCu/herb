@@ -203,11 +203,12 @@
 
                 </div>
             </div>
+
             <div class="col-md-12 xianxiinf" id="extra-page-user">
                 <div class="col-md-4 xianxiinf-left">
                 </div>
                 <div class="col-md-8 xianxiinf-right">
-                    <h1 class="col-md-10">沈药农</h1>
+                    <h1 class="col-md-10">{{us.username}}</h1>
                     <button class="col-md-2 btn btn-lg btn-default close-page" id="close-page-user" > <span class="glyphicon glyphicon-remove"></span></button>
                     <div class="col-md-12 money">
                         <h3>用户信息简介</h3>
@@ -401,26 +402,31 @@
                                         </div>
                                     </div>
 
-                                    <div class="panel-group" id="accordion" style="padding: 10px">
+                                   <div class="panel-group" id="accordion" >
+                                        {% for us in user %}
                                         <div class="col-md-12 back-user-info">
                                             <div class="col-md-1">
                                                 <img class="img-circle " src="/static/img/personInfo/me.PNG">
                                             </div>
-                                            <h2 class="col-md-2">沈药农</h2>
-                                            <div class="col-md-3 back-user-info-more">
-                                                <p>用户ID</p>
-                                                <p>用户使用培养箱型号</p>
-                                                <p>用户使用时长</p>
-                                            </div>
-                                            <div class="col-md-3 back-user-info-more">
-                                                <p>用户注册时间</p>
-                                                <p>用户活跃时长</p>
-                                                <p>用户上次登录时间</p>
-                                            </div>
-                                            <button class="col-md-1 btn btn-lg btn-default" style="margin-top: 20px" id="open-page-user">详情</button>
-                                        </div>
+                                            <h2 class="col-md-2">{{us.username}}</h2>
 
+                                            <div class="col-md-3 back-user-info-more">
+                                                <p>用户年龄  {{us.userage}}</p>
+                                                <p>用户电话  {{us.userphonenum}}</p>
+                                                <p>用户注册邮箱 {{us.usermail}}</p>
+                                            </div>
+                                            <div class="col-md-3 back-user-info-more">
+                                                <p>用户性别  {{us.usersex}}</p>
+                                                <p>用户活跃状态 {{us.userstate}}</p>
+                                                <p>用户上次登录时间 {{us.userlastlogintime}}</p>
+                                            </div>
+
+                                            <button class="col-md-1 btn btn-lg btn-default" style="margin-top: 20px" id="open-page-user">详情</button>
+
+                                        </div>
+                                        {% endfor %}
                                     </div>
+
                                 </div>
                              <ul class="pagination" style="margin-top:20px ;margin-left: 40%">
                                 <li><a href="#">&laquo;</a></li>
