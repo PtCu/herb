@@ -11,6 +11,8 @@ class User(models.Model):
     img = models.ImageField(upload_to='image')  # 图像
     gender = models.NullBooleanField()  # 1为男,0为女.允许为空
     lastLoginTime = models.DateTimeField()
+    signature = models.TextField(null=True, blank=True) #个性签名
+    registration_date=models.DateTimeField(default=datetime.now()) #创建时间
 
     class Meta:
         managed = True
