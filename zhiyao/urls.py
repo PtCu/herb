@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path
+
 from app import views
 from django.views.static import serve
 from zhiyao.settings import MEDIA_ROOT
@@ -27,6 +28,7 @@ urlpatterns = [
     path('logout/', views.logout),
     path('register/', views.register, name='register'),
     path('incubator/', views.incubator, name='incubator'),
+    path('updateUserInfo/', views.updateUserInfo),
     path('bbs/', views.bbs, name='bbs'),
     path('incubatorDetail/<incubatorno>/', views.incubatorDeatil, name='incubatorDetail'),
     path('alterenviroment/<incubatorno>/', views.alterenviroment, name="alterenviroment"),
@@ -42,7 +44,9 @@ urlpatterns = [
     path('getbbs/sellingDetail/<id>', views.getSDetail, name='sDetail'),
     path('getbbs/communicationDetail/<id>', views.getCDetail, name='cDetail'),
     path('my/', views.my),
+    path('more/', views.more),
     path('test/', views.test),
+    path('contact/', views.contact),
     path('backendlogin/', views.backendlogin),
     path('backend/', views.backend),
     path('oldplantinfo/', views.plantinf_old),

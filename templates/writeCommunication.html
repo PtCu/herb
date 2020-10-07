@@ -1,55 +1,99 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:fb="http://www.w3.org/1999/xhtml" xmlns:g="http://www.w3.org/1999/xhtml">
 
-	<!--
-	作者：1758522370@qq.com
-	时间：2018-10-06
-	描述：只作为一个框架的模板，并不在真正的页面中显示
--->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <title>herber</title>
 
-	<head>
-		<meta charset="utf-8">
-		<title>发布经验交流信息</title>
-		<link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-		<link rel="stylesheet" href="/static/css/all.css" />
-        <link rel="stylesheet" href="/static/css/index.css" />
-		<link rel="stylesheet" href="/static/css/bbs.css" />
-		<script src="/static/js/jquery-3.3.1.js"></script>
-		<!--<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>-->
-		<script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-	</head>
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/all.css"/>
+    <link rel="stylesheet" href="/static/css/index.css"/>
+    <link rel="stylesheet" href="/static/css/bbs.css"/>
+    <link rel="stylesheet" href="/static/css/bbs-sell.css"/>
+    <script src="/static/js/jquery-3.3.1.js"></script>
+    <!--<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>-->
+    <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script src="/static/js/bbs.js"></script>
+    <link rel="shortcut icon" href="/static/assets/images/gt_favicon.png">
 
-	<body>
-		<div class="col-md-12 title-lead row">
-            <ul class="col-md-3">
-                <li><a id="logo" href="/login">智药</a></li>
-                <li class="tile-link" style="margin-left: 80px;"><a href="/login">主页</a></li>
-                <li class="tile-link"><a >产品</a></li>
-                <li class="tile-link"><a href="/bbs">论坛</a></li>
-            </ul>
-            <div class="col-md-1"></div>
-            <div class="col-md-4 top-search">
-                <input type="text" >
-                <button class="btn btn-default">搜索</button>
-            </div>
-            <div class="col-md-1"></div>
-            <div class="col-md-3 top-login">
-                <div class="userimg-sm">
-                   <img src="/static/img/wdl.jpg">
-                </div>
-                <button class="btn btn-lg btn-info" data-toggle="modal" data-target="#myModal">登录</button>
+    <link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+    <link rel="stylesheet" href="/static/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/assets/css/font-awesome.min.css">
 
-            </div>
+    <!-- Custom styles for our template -->
+    <link rel="stylesheet" href="/static/assets/css/bootstrap-theme.css" media="screen">
+    <link rel="stylesheet" href="/static/assets/css/main.css">
+    <link rel="stylesheet" href="/static/assets/css/contentbox.css">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="/static/assets/js/html5shiv.js"></script>
+    <script src="/static/assets/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="home">
+
+<!-- Fixed navbar -->
+<div class="navbar navbar-inverse navbar-fixed-top headroom">
+    <div class="container">
+        <div class="navbar-header">
+            <!-- Button for smallest screens -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button>
+            <a class="navbar-brand" href="/"><img src="/static/assets/images/logo.png" height="38"
+                                                            alt="Progressus HTML5 template"></a>
         </div>
-		<div id="body-container"  class="col-md-12 bbs-main">
-			<!--
-            	container 类不可嵌套使用
-            -->
-            <div class="col-md-offset-1 col-md-3 bbs-left">
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav pull-right">
+                <li><a href="/">主页</a></li>
+                <li  class="active"><a href="/bbs">论坛</a></li>
+                <li class="dropdown">
+                    <a href="/showplant" class="dropdown-toggle">药材 </a>
+                    <!-- <ul class="dropdown-menu">
+                        <li><a href="sidebar-left.html">Left Sidebar</a></li>
+                        <li class="active"><a href="sidebar-right.html">Right Sidebar</a></li>
+                    </ul> -->
+                </li>
+                <li><a href="/contact">联系我们</a></li>
+                {#                <li><a class="btn" href="signin.html">登录/ 注册</a></li>#}
+                {% if request.session.is_login %}
+                    <li><a href="/incubator"><img class="head_img" src="/static/img/personInfo/{{ request.session.userimg }}"></a></li>
+                    {% comment %}<div class="userimg-sm">
+                        <a href="/incubator">
+                            <img src="/static/img/personInfo/{{ request.session.userimg }}">
+                        </a>
+                    </div>{% endcomment %}
+                    {#                    <h3 style="margin-left: 100px">{{ request.session.username }}</h3>#}
+                    {% comment %}<button class="btn btn-lg btn-danger" style="margin-top: -60px;margin-left: 100px"
+                            onclick="window.location='/logout/'">注销
+                    </button>{% endcomment %}
+                    <li><a onclick="window.location='/logout/'">注销</a></li>
+                {% endif %}
+                {% if not request.session.is_login %}
+                    {% comment %}<div class="userimg-sm">
+                        <img src="/static/img/wdl.jpg">
+                    </div>
+                    <button class="btn btn-lg btn-info" data-toggle="modal" data-target="#myModal">登录</button>{% endcomment %}
+                    <li><a class="btn" href="/signin">登录/ 注册</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+</div>
+<!-- /.navbar -->
 
-            </div>
-			<div class="col-md-7 bbs-right">
-				<div style="margin-left:140px;margin-top: 40px;" class="row">
+{% comment %}内容开始{% endcomment %}
+<div id="body-container" class="col-md-12 bbs-main">
+    <!--
+        container 类不可嵌套使用
+    -->
+
+			<div class="col-md-offset-1 col-md-10 bbs-right">
+				<div style="margin-left:140px;margin-top: 80px;" class="row">
 					<blockquote>
 						<h4>编辑经验交流信息</h4>
 					</blockquote>

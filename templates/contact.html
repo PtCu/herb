@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:fb="http://www.w3.org/1999/xhtml" xmlns:g="http://www.w3.org/1999/xhtml"
+      xmlns:margin-bottom="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Sergey Pozhilov (GetTemplate.com)">
 
-    <title>Sign in - Progressus Bootstrap template</title>
+    <title>herber</title>
 
     <link rel="shortcut icon" href="/static/assets/images/gt_favicon.png">
 
@@ -17,6 +19,8 @@
     <!-- Custom styles for our template -->
     <link rel="stylesheet" href="/static/assets/css/bootstrap-theme.css" media="screen">
     <link rel="stylesheet" href="/static/assets/css/main.css">
+    <link rel="stylesheet" href="/static/assets/css/rotation.css">
+    <link rel="stylesheet" href="/static/assets/css/contentbox.css">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -44,12 +48,32 @@
                 <li class="dropdown">
                     <a href="/showplant" class="dropdown-toggle">药材 </a>
                     <!-- <ul class="dropdown-menu">
-                            <li><a href="sidebar-left.html">Left Sidebar</a></li>
-                            <li class="active"><a href="sidebar-right.html">Right Sidebar</a></li>
-                        </ul> -->
+                        <li><a href="sidebar-left.html">Left Sidebar</a></li>
+                        <li class="active"><a href="sidebar-right.html">Right Sidebar</a></li>
+                    </ul> -->
                 </li>
-                <li><a href="/contact">联系我们</a></li>
-                <li class="active"><a class="btn" href="/signin">登录/ 注册</a></li>
+                <li class="active"><a href="/contact">联系我们</a></li>
+                {#                <li><a class="btn" href="signin.html">登录/ 注册</a></li>#}
+                {% if request.session.is_login %}
+                    <li><a href="/incubator"><img class="head_img" src="/static/img/personInfo/{{ request.session.userimg }}"></a></li>
+                    {% comment %}<div class="userimg-sm">
+                        <a href="/incubator">
+                            <img src="/static/img/personInfo/{{ request.session.userimg }}">
+                        </a>
+                    </div>{% endcomment %}
+                    {#                    <h3 style="margin-left: 100px">{{ request.session.username }}</h3>#}
+                    {% comment %}<button class="btn btn-lg btn-danger" style="margin-top: -60px;margin-left: 100px"
+                            onclick="window.location='/logout/'">注销
+                    </button>{% endcomment %}
+                    <li><a onclick="window.location='/logout/'">注销</a></li>
+                {% endif %}
+                {% if not request.session.is_login %}
+                    {% comment %}<div class="userimg-sm">
+                        <img src="/static/img/wdl.jpg">
+                    </div>
+                    <button class="btn btn-lg btn-info" data-toggle="modal" data-target="#myModal">登录</button>{% endcomment %}
+                    <li><a class="btn" href="/signin">登录/ 注册</a></li>
+                {% endif %}
             </ul>
         </div>
         <!--/.nav-collapse -->
@@ -62,65 +86,84 @@
 <!-- container -->
 <div class="container">
 
-    <ol class="breadcrumb">
-        <li><a href="/">主页</a></li>
-        <li class="active">登陆</li>
-    </ol>
-
     <div class="row">
 
         <!-- Article main content -->
-        <article class="col-xs-12 maincontent">
+        <article class="col-sm-9 maincontent">
             <header class="page-header">
-                <h1 class="page-title">登陆</h1>
+                <h1 class="page-title">联系我们</h1>
             </header>
 
-            <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <h3 class="thin text-center">登陆到你的账户</h3>
-                        <p class="text-center text-muted">没有账户？<a href="/signup">注册</a>一个 </p>
-                        <hr>
-
-                        <form id="signin" method="post" action="/login/">
-                            {% comment %}防止跨站请求伪造{% endcomment %}
-                            {% csrf_token %}
-                            <div class="top-margin">
-                                <label>手机号/Email <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="username" name="username"
-                                       onblur="checkPhone()">
-                                <p id="telephoneError" class="errorMessage">{{message}}</p>
-                            </div>
-                            <div class=" top-margin">
-                                <label>密码 <span class="text-danger">*</span></label>
-                                <input type="password" class="form-control" name="password" onblur="checkPassword()">
-                                <p id="passwordError" class="errorMessage"></p>
-                            </div>
-
-                            <hr>
-
-                            <div class="row">
-                                <div class="col-lg-8">
-                                    <b><a href="">忘记密码?</a></b>
-                                </div>
-                                <div class="col-lg-4 text-right">
-                                    <button class="btn btn-action" type="submit">登陆</button>
-                                </div>
-                            </div>
-                        </form>
+            <p>
+               我们很想听听你的意见。有兴趣一起工作吗？或者网站出了什么问题？在下面的表格里填上一些你的项目信息，我们会尽快回复你。
+            </p>
+            <br>
+            <form>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" placeholder="姓名">
+                    </div>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" placeholder="电子邮箱">
+                    </div>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" placeholder="手机号">
                     </div>
                 </div>
-
-            </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <textarea placeholder="请输入您的问题..." class="form-control" rows="9"></textarea>
+                    </div>
+                </div>
+                <br>
+                    <div class="col-sm-6 text-right" style="float:right">
+                        <input class="btn btn-action" type="submit" value="发送">
+                    </div>
+            </form>
 
         </article>
         <!-- /Article -->
 
+        <!-- Sidebar -->
+        <aside class="col-sm-3 sidebar sidebar-right">
+
+            <div class="widget">
+                <h4>Address</h4>
+                <address>
+                    2002 Holcombe Boulevard, Houston, TX 77030, USA
+                </address>
+                <h4>Phone:</h4>
+                <address>
+                    (713) 791-1414
+                </address>
+            </div>
+
+        </aside>
+        <!-- /Sidebar -->
+
     </div>
-</div>    <!-- /container -->
+</div> <!-- /container -->
 
 
-<footer id="footer" class="top-space">
+<!-- Social links. @TODO: replace by link/instructions in template -->
+<section id="social" style="margin: 10px">
+    <div class="container">
+        <div class="wrapper clearfix">
+            <!-- AddThis Button BEGIN -->
+            <div class="addthis_toolbox addthis_default_style">
+                <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+                <a class="addthis_button_tweet"></a>
+                <a class="addthis_button_linkedin_counter"></a>
+                <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+            </div>
+            <!-- AddThis Button END -->
+        </div>
+    </div>
+</section>
+</div>
+
+<footer id="footer">
 
     <div class="footer1">
         <div class="container">
@@ -150,7 +193,6 @@
 
 
                 <!--<div class="col-md-3 widget">
-
                     <h3 class="widget-title">Follow me</h3>
                     <div class="widget-body">
                         <p class="follow-me-icons">
@@ -164,7 +206,7 @@
 
 
                 <div class="col-md-6 widget">
-                    <h3 class="widget-title">Text widget</h3>
+                    <h3 class="widget-title">許可</h3>
                     <div class="widget-body">
                         <p>镜像:日本 教育网 科技网 呼叫热线：4008-100-300 服务邮箱：kf@people.cn 违法和不良信息举报电话：010-65363263
                             举报邮箱：jubao@people.cn</p>
@@ -173,6 +215,7 @@
                         <p>网络文化经营许可证 京网文[2017]9786-1126号 | 网络出版服务许可证（京）字258号 | 京ICP证000006号 | 京公网安备11000002000008号 </p>
                     </div>
                 </div>
+
 
             </div> <!-- /row of widgets -->
         </div>
@@ -214,6 +257,7 @@
 <script src="/static/assets/js/headroom.min.js"></script>
 <script src="/static/assets/js/jQuery.headroom.min.js"></script>
 <script src="/static/assets/js/template.js"></script>
-
+<script src="/static/assets/js/nt.js"></script>
 </body>
+
 </html>

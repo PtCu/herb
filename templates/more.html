@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:fb="http://www.w3.org/1999/xhtml" xmlns:g="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
-    <meta name="author" content="Sergey Pozhilov (GetTemplate.com)">
-
-    <title>Sign in - Progressus Bootstrap template</title>
+    <title>herber</title>
 
     <link rel="shortcut icon" href="/static/assets/images/gt_favicon.png">
 
@@ -17,6 +16,7 @@
     <!-- Custom styles for our template -->
     <link rel="stylesheet" href="/static/assets/css/bootstrap-theme.css" media="screen">
     <link rel="stylesheet" href="/static/assets/css/main.css">
+    <link rel="stylesheet" href="/static/assets/css/contentbox.css">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -25,7 +25,7 @@
     <![endif]-->
 </head>
 
-<body>
+<body class="home">
 
 <!-- Fixed navbar -->
 <div class="navbar navbar-inverse navbar-fixed-top headroom">
@@ -39,17 +39,37 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav pull-right">
-                <li><a href="/">主页</a></li>
+                <li class="active"><a href="/">主页</a></li>
                 <li><a href="/bbs">论坛</a></li>
                 <li class="dropdown">
                     <a href="/showplant" class="dropdown-toggle">药材 </a>
                     <!-- <ul class="dropdown-menu">
-                            <li><a href="sidebar-left.html">Left Sidebar</a></li>
-                            <li class="active"><a href="sidebar-right.html">Right Sidebar</a></li>
-                        </ul> -->
+                        <li><a href="sidebar-left.html">Left Sidebar</a></li>
+                        <li class="active"><a href="sidebar-right.html">Right Sidebar</a></li>
+                    </ul> -->
                 </li>
                 <li><a href="/contact">联系我们</a></li>
-                <li class="active"><a class="btn" href="/signin">登录/ 注册</a></li>
+                {#                <li><a class="btn" href="signin.html">登录/ 注册</a></li>#}
+                {% if request.session.is_login %}
+                    <li><a href="/incubator"><img class="head_img" src="/static/img/personInfo/{{ request.session.userimg }}"></a></li>
+                    {% comment %}<div class="userimg-sm">
+                        <a href="/incubator">
+                            <img src="/static/img/personInfo/{{ request.session.userimg }}">
+                        </a>
+                    </div>{% endcomment %}
+                    {#                    <h3 style="margin-left: 100px">{{ request.session.username }}</h3>#}
+                    {% comment %}<button class="btn btn-lg btn-danger" style="margin-top: -60px;margin-left: 100px"
+                            onclick="window.location='/logout/'">注销
+                    </button>{% endcomment %}
+                    <li><a onclick="window.location='/logout/'">注销</a></li>
+                {% endif %}
+                {% if not request.session.is_login %}
+                    {% comment %}<div class="userimg-sm">
+                        <img src="/static/img/wdl.jpg">
+                    </div>
+                    <button class="btn btn-lg btn-info" data-toggle="modal" data-target="#myModal">登录</button>{% endcomment %}
+                    <li><a class="btn" href="/signin">登录/ 注册</a></li>
+                {% endif %}
             </ul>
         </div>
         <!--/.nav-collapse -->
@@ -57,70 +77,52 @@
 </div>
 <!-- /.navbar -->
 
-<header id="head" class="secondary"></header>
+<div class="jumbotron">
+<div class="container top-space">
+    <h1 class="text-center thin top-space" style=" margin-bottom:30px; font-size: 40px">相关链接</h1>
+    <table cellpadding="0" cellspacing="30" width="1150" class="top-space">
+        <tr>
+            <th><p><a href="http://www.gov.cn/zhengce/content/2020-08/28/content_5538191.htm">国务院关于中新广州知识城总体发展规划（2020—2035年）的批复</a>
+        </p></th>
+            <th><p>国务院</p></th> <th><p>20-08-26</p></th>
+        </tr>
+       <tr>
+           <th><p><a href="http://www.gov.cn/zhengce/content/2020-08/28/content_5538191.htm">国务院关于中新广州知识城总体发展规划（2020—2035年）的批复</a>
+        </p></th>
+            <th><p>国务院</p></th> <th><p>20-08-26</p></th>
+       </tr>
+        <tr>
+            <th><p><a href="http://www.gov.cn/zhengce/content/2020-08/28/content_5538191.htm">国务院关于中新广州知识城总体发展规划（2020—2035年）的批复</a>
+        </p></th>
+            <th><p>国务院</p></th> <th><p>20-08-26</p></th>
+        </tr>
+        <tr>
+            <th><p><a href="http://www.gov.cn/zhengce/content/2020-08/28/content_5538191.htm">国务院关于中新广州知识城总体发展规划（2020—2035年）的批复</a>
+        </p></th>
+            <th><p>国务院</p></th> <th><p>20-08-26</p></th>
+        </tr>
 
-<!-- container -->
-<div class="container">
+    </table>
+</div>
+</div>
 
-    <ol class="breadcrumb">
-        <li><a href="/">主页</a></li>
-        <li class="active">登陆</li>
-    </ol>
-
-    <div class="row">
-
-        <!-- Article main content -->
-        <article class="col-xs-12 maincontent">
-            <header class="page-header">
-                <h1 class="page-title">登陆</h1>
-            </header>
-
-            <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <h3 class="thin text-center">登陆到你的账户</h3>
-                        <p class="text-center text-muted">没有账户？<a href="/signup">注册</a>一个 </p>
-                        <hr>
-
-                        <form id="signin" method="post" action="/login/">
-                            {% comment %}防止跨站请求伪造{% endcomment %}
-                            {% csrf_token %}
-                            <div class="top-margin">
-                                <label>手机号/Email <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="username" name="username"
-                                       onblur="checkPhone()">
-                                <p id="telephoneError" class="errorMessage">{{message}}</p>
-                            </div>
-                            <div class=" top-margin">
-                                <label>密码 <span class="text-danger">*</span></label>
-                                <input type="password" class="form-control" name="password" onblur="checkPassword()">
-                                <p id="passwordError" class="errorMessage"></p>
-                            </div>
-
-                            <hr>
-
-                            <div class="row">
-                                <div class="col-lg-8">
-                                    <b><a href="">忘记密码?</a></b>
-                                </div>
-                                <div class="col-lg-4 text-right">
-                                    <button class="btn btn-action" type="submit">登陆</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
+<!-- Social links. @TODO: replace by link/instructions in template -->
+<section id="social" style="margin: 0">
+    <div class="container">
+        <div class="wrapper clearfix">
+            <!-- AddThis Button BEGIN -->
+            <div class="addthis_toolbox addthis_default_style">
+                <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+                <a class="addthis_button_tweet"></a>
+                <a class="addthis_button_linkedin_counter"></a>
+                <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
             </div>
-
-        </article>
-        <!-- /Article -->
-
+            <!-- AddThis Button END -->
+        </div>
     </div>
-</div>    <!-- /container -->
+</section>
 
-
-<footer id="footer" class="top-space">
+<footer id="footer">
 
     <div class="footer1">
         <div class="container">
@@ -148,23 +150,8 @@
                     </div>
                 </div>
 
-
-                <!--<div class="col-md-3 widget">
-
-                    <h3 class="widget-title">Follow me</h3>
-                    <div class="widget-body">
-                        <p class="follow-me-icons">
-                            <a href=""><i class="fa fa-twitter fa-2"></i></a>
-                            <a href=""><i class="fa fa-dribbble fa-2"></i></a>
-                            <a href=""><i class="fa fa-github fa-2"></i></a>
-                            <a href=""><i class="fa fa-facebook fa-2"></i></a>
-                        </p>
-                    </div>
-                </div>-->
-
-
                 <div class="col-md-6 widget">
-                    <h3 class="widget-title">Text widget</h3>
+                    <h3 class="widget-title">許可</h3>
                     <div class="widget-body">
                         <p>镜像:日本 教育网 科技网 呼叫热线：4008-100-300 服务邮箱：kf@people.cn 违法和不良信息举报电话：010-65363263
                             举报邮箱：jubao@people.cn</p>
@@ -205,8 +192,8 @@
             </div> <!-- /row of widgets -->
         </div>
     </div>
-</footer>
 
+</footer>
 
 <!-- JavaScript libs are placed at the end of the document so the pages load faster -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -214,6 +201,7 @@
 <script src="/static/assets/js/headroom.min.js"></script>
 <script src="/static/assets/js/jQuery.headroom.min.js"></script>
 <script src="/static/assets/js/template.js"></script>
-
+<script src="/static/assets/js/nt.js"></script>
 </body>
+
 </html>

@@ -47,8 +47,8 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav pull-right">
-                <li class="active"><a href="/">主页</a></li>
-                <li><a href="about.html">论坛</a></li>
+                <li><a href="/">主页</a></li>
+                <li><a href="/bbs">论坛</a></li>
                 <li class="dropdown">
                     <a href="/showplant" class="dropdown-toggle">药材 </a>
                     <!-- <ul class="dropdown-menu">
@@ -57,26 +57,14 @@
                     </ul> -->
                 </li>
                 <li><a href="/contact">联系我们</a></li>
-                {#                <li><a class="btn" href="signin.html">登录/ 注册</a></li>#}
                 {% if request.session.is_login %}
-                    <li><a href="/incubator"><img class="head_img" style="height: 44px; width: 51px" src="/static/img/personInfo/{{ request.session.userimg }}"></a></li>
-                    {% comment %}<div class="userimg-sm">
-                        <a href="/incubator">
-                            <img src="/static/img/personInfo/{{ request.session.userimg }}">
-                        </a>
-                    </div>{% endcomment %}
-                    {#                    <h3 style="margin-left: 100px">{{ request.session.username }}</h3>#}
-                    {% comment %}<button class="btn btn-lg btn-danger" style="margin-top: -60px;margin-left: 100px"
-                            onclick="window.location='/logout/'">注销
-                    </button>{% endcomment %}
-                    <li><a onclick="window.location='/logout/'">注销</a></li>
+                <li class="active"><a href="/incubator"><img class="head_img" style="height: 44px; width: 51px"
+                                                             src="/static/img/personInfo/{{ request.session.userimg }}"></a>
+                </li>
+                <li><a onclick="window.location='/logout/'">注销</a></li>
                 {% endif %}
                 {% if not request.session.is_login %}
-                    {% comment %}<div class="userimg-sm">
-                        <img src="/static/img/wdl.jpg">
-                    </div>
-                    <button class="btn btn-lg btn-info" data-toggle="modal" data-target="#myModal">登录</button>{% endcomment %}
-                    <li><a class="btn" href="/signin">登录/ 注册</a></li>
+                <li><a class="btn" href="/signin">登录/ 注册</a></li>
                 {% endif %}
             </ul>
         </div>
@@ -84,10 +72,10 @@
     </div>
 </div>
 <!-- /.navbar -->
-<div id="body-container" class="bbs-main">
+<div id="body-container" class="bbs-main" style="width:1180px">
     <div class="col-md-12 person-inf">
         <ul id="myTab" class="nav nav-tabs">
-            <li class="active" id="grinfBtn">
+            <li class="active" id="grinfBtn" style="margin-left: 0">
                 <a href="#inf" data-toggle="tab">
                     个人信息
                 </a>
@@ -99,58 +87,66 @@
         </ul>
         <div id="myTabContent" class="tab-content">
             <div class="tab-pane fade in active" id="inf">
-                <div class="col-md-12 simple-inf">
+                <div class="col-md-12 top-space">
 
-                    <img class="col-md-offset-1 img-circle userimg" src="/static/img/szc.jpg">
+                    <img class="col-md-offset-1 img-circle userimg" style="height: 100px; width: 100px"
+                         src="/static/img/szc.jpg">
 
                     <div class="col-md-8 info-name">
-                        <p class="col-md-12">沈大师</p>
-                        <div class="col-md-12" id="info-mess">
-                            <p>
-                                个人简介
-                            </p>
+                        <p class="col-md-12" style="font-size: 35px">{{ request.session.username }}</p>
+                        <div class="col-md-12 top-margin" id="info-mess"
+                             style="height: auto; font-size: 14px; padding:10px">
+                            {{request.session.userintroduction}}
                         </div>
                     </div>
-                    <div class="col-md-offset-1 col-md-10 more-inf">
-                        <div class="col-md-12">
-                            <p class="col-md-offset-3 col-md-2">用户名:</p>
-                            <input class="col-md-4" value="沈大师">
-                        </div>
-                        <div class="col-md-12">
-                            <p class="col-md-offset-3 col-md-2">用户ID:</p>
-                            <input class="col-md-4" value="沈大师">
-                        </div>
-                        <div class="col-md-12">
-                            <p class="col-md-offset-3 col-md-2">用户生日:</p>
-                            <input class="col-md-4" value="沈大师">
-                        </div>
-                        <div class="col-md-12">
-                            <p class="col-md-offset-3 col-md-2">用户性别:</p>
-                            <div class="col-md-1 radio">
-                                <input id="radio-1" name="s" type="radio">
-                                <label for="radio-1" class="radio-label">男</label>
+                    <div class="col-md-offset-1 col-md-10 top-margin"
+                         style="border-bottom-color: #8c8c8c; border-bottom-style: solid; border-bottom-width: 3px; font-size: 18px">
+                        <form method="post" id="update_user_info" action="/updateUserInfo/">
+                            {% csrf_token %}
+                            <input type="hidden" name="userid" value="{{request.session.userid}}">
+                            <div class="col-md-12 top-margin" style="padding: 5px">
+                                <p class="col-md-offset-3 col-md-2">用户名:</p>
+                                <input class="col-md-4" name="username" value="{{ request.session.username }}">
                             </div>
-                            <div class="col-md-1 radio" style="margin-top: 20px">
-                                <input id="radio-2" name="s" type="radio">
-                                <label for="radio-2" class="radio-label">女</label>
+                            <!--<div class="col-md-12" style="padding: 5px">
+                                <p class="col-md-offset-3 col-md-2">用户ID:</p>
+                                <input class="col-md-4" value="{{ request.session.userid }}">
+                            </div>-->
+                            <div class="col-md-12" style="padding: 5px">
+                                <p class="col-md-offset-3 col-md-2">用户生日:</p>
+                                <input class="col-md-4" name="userbirthday" type="date" value="{{request.session.userbirthday}}>
                             </div>
-                            <div class="col-md-1 radio " style="margin-top: 20px">
-                                <input id="radio-3" name="s" type="radio" checked>
-                                <label for="radio-3" class="radio-label">保密</label>
+                            <div class=" col-md-12" style="padding: 5px">
+                                <p class="col-md-offset-3 col-md-2">用户性别:</p>
+                                <div class="col-md-1 radio" style="margin-top: 20px">
+                                    <input id="radio-1" name="sex" value="1" type="radio">
+                                    <label for="radio-1" class="radio-label">男</label>
+                                </div>
+                                <div class="col-md-1 radio" style="margin-top: 20px">
+                                    <input id="radio-2" name="sex" value="2" type="radio">
+                                    <label for="radio-2" class="radio-label">女</label>
+                                </div>
+                                <div class="col-md-1 radio " style="margin-top: 20px">
+                                    <input id="radio-3" name="sex" value="0" type="radio" checked>
+                                    <label for="radio-3" class="radio-label">保密</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-12">
-                            <p class="col-md-offset-3 col-md-2">用户简介:</p>
-                            <input class="col-md-4" value="沈大师">
-                        </div>
-                        <button class="col-md-offset-5 btn btn-lg btn-danger" id="save">保存</button>
+                            <div class="col-md-12" style="padding: 5px;">
+                                <p class="col-md-offset-3 col-md-2">用户简介:</p>
+                                <input class="col-md-4" name="userintroduction"
+                                       value="{{ request.session.userintroduction }}">
+                            </div>
+                            <button class="btn btn-lg btn-danger" id="save"
+                                    style="margin-bottom:40px;margin-left: 32%; margin-top: 30px" type="submit">保存
+                            </button>
+                        </form>
 
 
                     </div>
                 </div>
                 <div class="col-md-offset-1 col-md-10 more-inf-goodwork">
                     <h1>优秀药材介绍</h1>
-                    <div>
+                    <div class="top-space">
                         <div class="row">
                             <div class="col-sm-6 col-md-3">
                                 <a href="/showplant/plantdetail" class="thumbnail">
@@ -208,7 +204,7 @@
                                     <p>杂草1号</p>
                                 </a>
                             </div>
-                            <ul class="col-md-offset-4 col-md-4 pagination" style="margin-left: 43%">
+                            <ul class="pagination" style="margin-left: 32%; padding-right: 0">
                                 <li><a href="#">&laquo;</a></li>
                                 <li><a href="#">1</a></li>
                                 <li><a href="#">2</a></li>
@@ -231,140 +227,36 @@
                     <button class="btn btn-default">搜索</button>
                 </div>
 
-                <button class="col-md-offset-2 col-md-1 btn btn-info" id="buy">购买新设备</button>
-                <button class="col-md-1 btn btn-info" id="link" data-toggle="modal" data-target="#myModal">
+                <button class="btn btn-info" id="buy">购买新设备</button>
+                <button class="btn btn-info" id="link" data-toggle="modal" data-target="#myModal">
                     关联新设备
                 </button>
                 <div class="col-md-1"></div>
                 <div class="col-md-offset-1 col-md-10 box-mem">
                     {% for incubator in incu %}
-                        <div class=" box-inf">
-                            <img class="col-md-3 box-img img-thumbnail" src="/static/img/incubator.jpg">
+                    <div class=" box-inf">
+                        <img class="col-md-3 box-img img-thumbnail" src="/static/img/incubator.jpg">
 
-                            <div class="col-md-8 box-word-head">
-                                <p class="">培养箱编号:</p>
-                                <p id="boxID">{{ incubator.0 }}</p>
-                                <p class="">正在种植药材:</p>
-                                <p id="linkdata">xxx</p>
-
-                                <button class="col-md-offset-2 col-md-2 btn btn-info offlink">取消关联</button>
+                        <div class="col-md-8 box-word-head">
+                            <p class="">培养箱编号:</p>
+                            <p>{{ incubator.0 }}</p>
+                            <p class="">正在种植药材:</p>
+                            <p id="linkdata">未知</p>
+                            <span style="float: right; padding-bottom: 5px">
+                                <button class="btn btn-info offlink">取消关联</button>
                                 <form method="get" action="/incubatorDetail/{{ incubator.1 }}/">
-                                    <button class="col-md-2 btn btn-info goinf" type="submit">详细信息</button>
+                                    <button class="btn btn-info goinf" type="submit">详细信息</button>
                                 </form>
-
-                            </div>
-                            <div class="col-md-3"></div>
-                            <!--
-                            用于填入培养箱的简单信息
-                            -->
-                            <div class="col-md-9 box-word-main"></div>
+                            </span>
                         </div>
+
+                        <div class="col-md-3"></div>
+                        <!--
+                        用于填入培养箱的简单信息
+                        -->
+                        <div class="col-md-9 box-word-main"></div>
+                    </div>
                     {% endfor %}
-                    <div class=" box-inf">
-                        <img class="col-md-3 box-img img-thumbnail" src="/static/img/incubator.jpg">
-
-                        <div class="col-md-8 box-word-head">
-                            <p class="">培养箱编号:</p>
-                            <p id="boxID">{{ incubator.0 }}</p>
-                            <p class="">正在种植药材:</p>
-                            <p id="linkdata">xxx</p>
-
-                            <button class="col-md-offset-2 col-md-2 btn btn-info offlink">取消关联</button>
-                            <form method="get" action="/incubatorDetail/{{ incubator.1 }}/">
-                                <button class="col-md-2 btn btn-info goinf" type="submit">详细信息</button>
-                            </form>
-
-                        </div>
-                        <div class="col-md-3"></div>
-                        <!--
-                        用于填入培养箱的简单信息
-                        -->
-                        <div class="col-md-9 box-word-main"></div>
-                    </div>
-                    <div class=" box-inf">
-                        <img class="col-md-3 box-img img-thumbnail" src="/static/img/incubator.jpg">
-
-                        <div class="col-md-8 box-word-head">
-                            <p class="">培养箱编号:</p>
-                            <p id="boxID">{{ incubator.0 }}</p>
-                            <p class="">正在种植药材:</p>
-                            <p id="linkdata">xxx</p>
-
-                            <button class="col-md-offset-2 col-md-2 btn btn-info offlink">取消关联</button>
-                            <form method="get" action="/incubatorDetail/{{ incubator.1 }}/">
-                                <button class="col-md-2 btn btn-info goinf" type="submit">详细信息</button>
-                            </form>
-
-                        </div>
-                        <div class="col-md-3"></div>
-                        <!--
-                        用于填入培养箱的简单信息
-                        -->
-                        <div class="col-md-9 box-word-main"></div>
-                    </div>
-                    <div class=" box-inf">
-                        <img class="col-md-3 box-img img-thumbnail" src="/static/img/incubator.jpg">
-
-                        <div class="col-md-8 box-word-head">
-                            <p class="">培养箱编号:</p>
-                            <p id="boxID">{{ incubator.0 }}</p>
-                            <p class="">正在种植药材:</p>
-                            <p id="linkdata">xxx</p>
-
-                            <button class="col-md-offset-2 col-md-2 btn btn-info offlink">取消关联</button>
-                            <form method="get" action="/incubatorDetail/{{ incubator.1 }}/">
-                                <button class="col-md-2 btn btn-info goinf" type="submit">详细信息</button>
-                            </form>
-
-                        </div>
-                        <div class="col-md-3"></div>
-                        <!--
-                        用于填入培养箱的简单信息
-                        -->
-                        <div class="col-md-9 box-word-main"></div>
-                    </div>
-                    <div class=" box-inf">
-                        <img class="col-md-3 box-img img-thumbnail" src="/static/img/incubator.jpg">
-
-                        <div class="col-md-8 box-word-head">
-                            <p class="">培养箱编号:</p>
-                            <p id="boxID">{{ incubator.0 }}</p>
-                            <p class="">正在种植药材:</p>
-                            <p id="linkdata">xxx</p>
-
-                            <button class="col-md-offset-2 col-md-2 btn btn-info offlink">取消关联</button>
-                            <form method="get" action="/incubatorDetail/{{ incubator.1 }}/">
-                                <button class="col-md-2 btn btn-info goinf" type="submit">详细信息</button>
-                            </form>
-
-                        </div>
-                        <div class="col-md-3"></div>
-                        <!--
-                        用于填入培养箱的简单信息
-                        -->
-                        <div class="col-md-9 box-word-main"></div>
-                    </div>
-                    <div class=" box-inf">
-                        <img class="col-md-3 box-img img-thumbnail" src="/static/img/incubator.jpg">
-
-                        <div class="col-md-8 box-word-head">
-                            <p class="">培养箱编号:</p>
-                            <p id="boxID">{{ incubator.0 }}</p>
-                            <p class="">正在种植药材:</p>
-                            <p id="linkdata">xxx</p>
-
-                            <button class="col-md-offset-2 col-md-2 btn btn-info offlink">取消关联</button>
-                            <form method="get" action="/incubatorDetail/{{ incubator.1 }}/">
-                                <button class="col-md-2 btn btn-info goinf" type="submit">详细信息</button>
-                            </form>
-
-                        </div>
-                        <div class="col-md-3"></div>
-                        <!--
-                        用于填入培养箱的简单信息
-                        -->
-                        <div class="col-md-9 box-word-main"></div>
-                    </div>
 
                 </div>
 
