@@ -11,8 +11,6 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 import time
 import json
-# Create your views here.
-
 from . import predict
 
 

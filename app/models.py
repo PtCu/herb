@@ -21,6 +21,7 @@ class User(models.Model):
 
 class Incubator(models.Model):
     incubator_id = models.CharField(primary_key=True, max_length=20)
+    incubator_type=models.CharField(max_length=20) #型号
     state = models.BooleanField()  # 是否正常运行
     user = models.ForeignKey(
         User, on_delete=models.CASCADE)  # 培养箱的用户（一个用户可以多个培养箱）
@@ -114,14 +115,14 @@ class Plant(models.Model):
 
 
 class IncubatorHistory(models.Model):
-    curTime = models.DateTimeField()  # 查找时间
+    curTime = models.DateTimeField()  # 定时存入数据库的时间
     incubator = models.ForeignKey(
         Incubator, on_delete=models.CASCADE)  # 对应的培养箱
-    light = models.CharField(max_length=20)  # 这个时间下的light
-    pressure = models.CharField(max_length=20)  # 这个时间下的压强
+    light = models.CharField(max_length=20)  # 光强
+    pressure = models.CharField(max_length=20)  # 压强
     humidity = models.CharField(max_length=20)
     temperature = models.CharField(max_length=20)
-    plant = models.CharField(max_length=20)  # 这个时间下的植物
+    plant = models.CharField(max_length=20)  # 植物
 
     class Meta:
         unique_together = ("curTime", "incubator")
@@ -134,7 +135,7 @@ class IncubatorHistory(models.Model):
 
 class FixList(models.Model):
     id = models.CharField(primary_key=True, max_length=20)  # 订单编号
-    time = models.DateTimeField()  # 订单生成时间
+    time = models.DateTimeField(default=datetime.now())  # 订单生成时间
     # 培养箱 #django 1对多时，foreigneKey在多的一方
     incubator = models.ForeignKey(Incubator, on_delete=models.CASCADE)
 
