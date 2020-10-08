@@ -32,14 +32,13 @@ class Alterenvironment(models.Model):
     ahumidity = models.FloatField(db_column='AHumidity', blank=True, null=True)  # Field name made lowercase.
     alightlntensity = models.FloatField(db_column='ALightlntensity', blank=True, null=True)  # Field name made lowercase.
     apressure = models.FloatField(db_column='APressure', blank=True, null=True)  # Field name made lowercase.
-    aplantstage = models.CharField(db_column='APlantStage', max_length=20, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = True
         db_table = 'alterenvironment'
 
 
-class Buypost(models.Model):
+'''class Buypost(models.Model):
     bid = models.CharField(db_column='BID', primary_key=True, max_length=30)  # Field name made lowercase.
     bplant = models.TextField(db_column='BPlant')  # Field name made lowercase.
     bdescription = models.TextField(db_column='BDescription')  # Field name made lowercase.
@@ -51,21 +50,11 @@ class Buypost(models.Model):
     class Meta:
         managed = True
         db_table = 'buypost'
+'''
 
 
-class Cart(models.Model):
-    cartid = models.CharField(db_column='CartID', primary_key=True, max_length=50)  # Field name made lowercase.
-    citemname = models.CharField(db_column='CItemName', max_length=45)  # Field name made lowercase.
-    citemnum = models.IntegerField(db_column='CItemNum')  # Field name made lowercase.
-    citembasicprice = models.DecimalField(db_column='CItemBasicPrice', max_digits=6, decimal_places=2)  # Field name made lowercase.
-    user_userid = models.ForeignKey('User', models.DO_NOTHING, db_column='User_userId', blank=True, null=True)  # Field name made lowercase.
 
-    class Meta:
-        managed = True
-        db_table = 'cart'
-
-
-class Commentpost(models.Model):
+'''class Commentpost(models.Model):
     ctitle = models.CharField(db_column='CTitle', max_length=50)  # Field name made lowercase.
     cid = models.CharField(db_column='CID', primary_key=True, max_length=20)  # Field name made lowercase.
     cdescription = models.TextField(db_column='CDescription')  # Field name made lowercase.
@@ -76,7 +65,7 @@ class Commentpost(models.Model):
     class Meta:
         managed = True
         db_table = 'commentpost'
-
+'''
 
 class Customenvironment(models.Model):
     #自定义信息
