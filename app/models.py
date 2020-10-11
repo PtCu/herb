@@ -9,10 +9,10 @@ class User(models.Model):
     name = models.CharField(max_length=10)
     password = models.CharField(max_length=20)
     img = models.ImageField(upload_to='image')  # 图像
-    gender = models.NullBooleanField()  # 1为男,0为女.允许为空
+    gender = models.CharField(db_column='userSex', choices=(('男', '男'), ('女', '女')), default=0, max_length=20)
     lastLoginTime = models.DateTimeField()
     signature = models.TextField(null=True, blank=True) #个性签名
-    registration_date=models.DateTimeField(default=datetime.now()) #创建时间
+    registration_date = models.DateTimeField(default=datetime.now()) #创建时间
 
     class Meta:
         managed = True
@@ -21,7 +21,7 @@ class User(models.Model):
 
 class Incubator(models.Model):
     incubator_id = models.CharField(primary_key=True, max_length=20)
-    incubator_type=models.CharField(max_length=20) #型号
+    incubator_type = models.CharField(max_length=20) #型号
     state = models.BooleanField()  # 是否正常运行
     user = models.ForeignKey(
         User, on_delete=models.CASCADE)  # 培养箱的用户（一个用户可以多个培养箱）
