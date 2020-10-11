@@ -1,17 +1,19 @@
+import os
+
 from django.core import serializers
 from django.shortcuts import render
 from django.shortcuts import redirect, reverse
 from django.http import HttpResponseRedirect, JsonResponse
 from django.http import HttpResponse
-from app import models
-from app.models import *
+# from app import models
+# from app.models import *
 
 # 作图
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 import time
 import json
-from . import predict
+from . import predict, models
 
 
 # 注释掉的内容为解决错误的另一种方法
@@ -72,26 +74,24 @@ def login(request):
         if userphone and password:
             userphone = userphone.strip()
             try:
-                user = models.User.objects.get(userphonenum=userphone)
+                user = models.User.objects.get(phone=userphone)
                 if user.password == password:
                     request.session['is_login'] = True
-                    request.session['userid'] = user.userid
-                    request.session['userphone'] = user.userphonenum
-                    request.session['username'] = user.username
-                    request.session['userimg'] = user.userimg
+                    request.session['userid'] = user.user_id
+                    request.session['userphone'] = user.phone
+                    request.session['username'] = user.name
+                    request.session['userimg'] = user.img
                     # request.session['userbirthday'] = user.birthday
-                    request.session['userintroduction'] = user.userintroduction
-                    request.session['usersex'] = user.usersex
+                    request.session['userintroduction'] = user.signature
+                    request.session['usersex'] = user.gender
 
                     # get是获取单个对象，filte是设置筛选条件
-                    incubators = models.Incubator.objects.filter(user_userid=userphone)
-                    incuName = []
+                    incubators = models.Incubator.objects.filter(user=userphone)
                     incuID = []
                     incu = []
                     for item in incubators:
-                        incuName.append(item.incuname)
                         incuID.append(item.incuno)
-                        incu = zip(incuName, incuID)
+                        incu = zip(incuID)
                     print('login success')
                     return render(request, 'index1.html', {"incu": incu})
                 else:
@@ -150,26 +150,26 @@ def signup(request):
         usermail = request.POST.get('usermail')
         username = request.POST.get("username")
         try:
-            user = models.User.objects.get(userphonenum=userphone)
+            user = models.User.objects.get(phone=userphone)
             message = '此用户已存在'
             return render(request, 'signup.html', {'message': message})
         except:
             try:
-                user = models.User.objects.get(usermail=usermail)
+                user = models.User.objects.get(mail=usermail)
                 message = '此邮箱已被注册'
                 return render(request, 'signup.html', {'message': message})
             except:
                 try:
-                    user = models.User.objects.get(username=username)
+                    user = models.User.objects.get(name=username)
                     message = '此用户名已被注册'
                     return render(request, 'signup.html', {'message': message})
                 except:
                     # userid和userphone是一样的
                     newUser = models.User()
-                    newUser.userid = userphone
-                    newUser.userphonenum = userphone
-                    newUser.username = username
-                    newUser.usermail = usermail
+                    newUser.user_id = userphone
+                    newUser.phone = userphone
+                    newUser.name = username
+                    newUser.mail = usermail
                     newUser.password = password
                     newUser.save()
                     return redirect('/signin')
@@ -191,14 +191,12 @@ def getIncubator(userid):
 def incubator(request):
     userphone = request.session['userphone']
     # get是获取单个对象，filte是设置筛选条件
-    incubators = models.Incubator.objects.filter(user_userid=userphone)
-    incuName = []
+    incubators = models.Incubator.objects.filter(user=userphone)
     incuID = []
     incu = []
     for item in incubators:
-        incuName.append(item.incuname)
-        incuID.append(item.incuno)
-        incu = zip(incuName, incuID)
+        incuID.append(item.incubator_id)
+        incu = zip(incuID)
     print('jump to incubator success')
     return render(request, 'incubator.html', {"incu": incu})
 
@@ -417,6 +415,7 @@ def howtoplant(request):
 def contact(request):
     return render(request, 'contact.html')
 
+
 def showplant(request):
     return render(request, 'show_plant.html')
 
@@ -539,7 +538,6 @@ def getCDetail(request, id):
     except:
         print('meizhaodao')
         return render(request, '../temp2/../temp/bbs.html', {'success': False})
-
 
 # #########################################################################################################
 # # 以下是有关硬件的请求处理代码
@@ -717,21 +715,21 @@ def getCDetail(request, id):
 #     return render(request, 'test.html')
 
 
-# def updateUserInfo(request):
-#     if request.method == 'POST':
-#         userid = request.POST.get('userid')
-#         user = models.User.objects.get(userid=userid)
-#         user.usersex = request.POST.get('sex')
-#         user.userintroduction = request.POST.get('userintroduction')
-#         user.birthday = request.POST.get('userbirthday')
-#         user.username = request.POST.get('username')
-#         user.save()
-#         request.session['userid'] = user.userid
-#         request.session['userphone'] = user.userphonenum
-#         request.session['username'] = user.username
-#         request.session['userimg'] = user.userimg
-#         # request.session['userbirthday'] = user.birthday
-#         request.session['userintroduction'] = user.userintroduction
-#         request.session['usersex'] = user.usersex
-#         print(user)
-#     return redirect('/incubator/')
+def updateUserInfo(request):
+    if request.method == 'POST':
+        userid = request.POST.get('userid')
+        user = models.User.objects.get(user_id=userid)
+        user.gender = request.POST.get('sex')
+        user.signature = request.POST.get('userintroduction')
+        # user.birthday = request.POST.get('userbirthday')
+        user.name = request.POST.get('username')
+        user.save()
+        request.session['userid'] = user.user_id
+        request.session['userphone'] = user.phone
+        request.session['username'] = user.name
+        request.session['userimg'] = user.img
+        # request.session['userbirthday'] = user.birthday
+        request.session['userintroduction'] = user.signature
+        request.session['usersex'] = user.gender
+        print(user)
+    return redirect('/incubator/')
