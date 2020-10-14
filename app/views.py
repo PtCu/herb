@@ -56,6 +56,8 @@ from . import predict, models
 #     else:
 #         print('predict else')
 #         return "error"
+from .models import Incubator, FixList, User, Plant
+
 
 def index(request):
     """
