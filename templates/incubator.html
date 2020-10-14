@@ -119,17 +119,17 @@
                             <div class=" col-md-12" style="padding: 5px">
                                 <p class="col-md-offset-3 col-md-2">用户性别:</p>
                                 <div class="col-md-1 radio" style="margin-top: 20px">
-                                    <input id="radio-1" name="sex" value="1" type="radio" checked>
+                                    <input id="radio-1" name="sex" value="1" type="radio" ${request.session.usersex=="True"?"checked":""}>
                                     <label for="radio-1" class="radio-label">男</label>
                                 </div>
                                 <div class="col-md-1 radio" style="margin-top: 20px">
-                                    <input id="radio-2" name="sex" value="2" type="radio">
+                                    <input id="radio-2" name="sex" value="2" type="radio" ${request.session.usersex=="False"?"checked":""}>
                                     <label for="radio-2" class="radio-label">女</label>
                                 </div>
-                                <!--<div class="col-md-1 radio " style="margin-top: 20px">
-                                    <input id="radio-3" name="sex" value="0" type="radio" checked>
+                                <div class="col-md-1 radio " style="margin-top: 20px">
+                                    <input id="radio-3" name="sex" value="0" type="radio" ${request.session.usersex=="None"?"checked":"">
                                     <label for="radio-3" class="radio-label">保密</label>
-                                </div>-->
+                                </div>
                             </div>
                             <div class="col-md-12" style="padding: 5px;">
                                 <p class="col-md-offset-3 col-md-2">用户简介:</p>
@@ -244,7 +244,7 @@
                             <p id="linkdata">未知</p>
                             <span style="float: right; padding-bottom: 5px">
                                 <button class="btn btn-info offlink">取消关联</button>
-                                <form method="get" action="/incubatorDetail/{{ incubator.1 }}/">
+                                <form method="get" action="/incubatorDetail/{{ incubator.0 }}/">
                                     <button class="btn btn-info goinf" type="submit">详细信息</button>
                                 </form>
                             </span>

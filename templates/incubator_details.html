@@ -104,14 +104,14 @@
                 <!--箱内属性展示  简单表示 -->
                 <div class="row">
                     <div class="col-md-6 ">
-                        <img style="width:700px;height: 500px" src="/image" id="incubator_img" onload="refreshImg()">
+                        <img style="width:700px;height: 500px" src="/realtime_images" id="incubator_img" onload="refreshImg()">
                         <script>
                             function refreshImg() {
                                 setInterval(a, 5000);
                             }
 
                             function a() {
-                                document.getElementById('incubator_img').src = "/image" + Math.random();
+                                document.getElementById('incubator_img').src = "/realtime_images" + Math.random();
                             }
 
 
@@ -157,23 +157,23 @@
                                 <table class="table table-bordered" style="background: white;">
                                     <tbody>
                                     <tr>
-                                        <td>光照：{{ IlightIntensity }} lux</td>
-                                        <td>光照：{{ adviceLight }} lux;</td>
+                                        <td>光照：{{ MlightIntensitys.0 }} lux</td>
+                                        <td>光照：{{ MlightIntensitys.1 }} lux;</td>
                                         <td>暂无</td>
                                     </tr>
                                     <tr>
-                                        <td>温度：{{Itemperature}} ℃;</td>
-                                        <td>温度：{{ adviceTemperature }} ℃;</td>
+                                        <td>温度：{{Mtemperatures.0}} ℃;</td>
+                                        <td>温度：{{ Mtemperatures.1 }} ℃;</td>
                                         <td>暂无</td>
                                     </tr>
                                     <tr>
-                                        <td>湿度：{{ Ihumidity }} %;</td>
-                                        <td>湿度：{{ adviceHumidity }} %;</td>
+                                        <td>湿度：{{ Mhumiditys.0 }} %;</td>
+                                        <td>湿度：{{ Mhumiditys.1 }} %;</td>
                                         <td>暂无</td>
                                     </tr>
                                     <tr>
-                                        <td>压强：{{ Ipressure }} Pa;</td>
-                                        <td>压强：{{ advicepressure }}Pa;</td>
+                                        <td>压强：{{ Mpressures.0 }} Pa;</td>
+                                        <td>压强：{{ Mpressures.1 }}Pa;</td>
                                         <td>暂无</td>
                                     </tr>
                                     </tbody>
@@ -436,42 +436,42 @@
                                 <tr>
                                     <td>光照强度(lux)</td>
                                     <td>{{ MlightIntensitys.0 }}</td>
-                                    <td>{{ IlightIntensity }}</td>
-                                    <td>{{ adviceLight }}</td>
+                                    <td>{{ MlightIntensitys.1 }}</td>
+                                    <td>{{ MlightIntensitys.1 }}</td>
                                     <td>
-                                        <input name="led_ctl" class="form-control " id="pMedicine "
-                                               style="margin-top=align-content: 20px; " type="text ">
+                                        <input name="led_ctl" class="form-control " 
+                                               style="" type="text ">
                                     </td>
                                 </tr>
 
                                 <tr>
                                     <td>温度（℃）</td>
                                     <td>{{ Mtemperatures.0 }}</td>
-                                    <td>{{ Itemperature }}</td>
-                                    <td>{{ adviceTemperature }}</td>
+                                    <td>{{ Mtemperatures.1 }}</td>
+                                    <td>{{ Mtemperatures.1 }}</td>
                                     <td>
-                                        <input name="tem_ctl" class="form-control " id="pMedicine "
-                                               style="margin-top=align-content: 20px; " type="text ">
+                                        <input name="tem_ctl" class="form-control " 
+                                               style="align-content:center; " type="text ">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>湿度（%）</td>
                                     <td>{{ Mhumiditys.0 }}</td>
-                                    <td>{{ Ihumidity }}</td>
-                                    <td>{{ adviceHumidity }}</td>
+                                    <td>{{ Mhumiditys.1 }}</td>
+                                    <td>{{ Mhumiditys.1 }}</td>
                                     <td>
-                                        <input name="hum_ctl" class="form-control " id="pMedicine "
-                                               style="margin-top=align-content: 20px; " type="text ">
+                                        <input name="hum_ctl" class="form-control " 
+                                               style="align-content: center; " type="text ">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>压强（Pa）</td>
                                     <td>{{ Mpressures.0 }}</td>
-                                    <td>{{ Ipressure }}</td>
-                                    <td>{{ advicepressure }}</td>
+                                    <td>{{ Mhumiditys.1 }}</td>
+                                    <td>{{ Mhumiditys.1 }}</td>
                                     <td>
-                                        <input name="pre_ctl" class="form-control " id="pMedicine "
-                                               style="margin-top=align-content: 20px; " type="text ">
+                                        <input name="pre_ctl" class="form-control " 
+                                               style="align-content: center; " type="text ">
                                     </td>
                                 </tr>
 
@@ -904,7 +904,7 @@
 
 
 </script>
-<script>
+<!--<script>
     // 当网页向下滑动 20px 出现"返回顶部" 按钮
     window.onscroll = function () {
         scrollFunction()
@@ -930,7 +930,7 @@
         window.location.reload();
     })
 
-</script>
+</script>-->
 {% comment %}内容结束{% endcomment %}
 
 <!-- Social links. @TODO: replace by link/instructions in template -->

@@ -86,11 +86,11 @@ def login(request):
                     request.session['usersex'] = user.gender
 
                     # get是获取单个对象，filte是设置筛选条件
-                    incubators = models.Incubator.objects.filter(user=userphone)
+                    incubators = models.Incubator.objects.filter(user_id=userphone)
                     incuID = []
                     incu = []
                     for item in incubators:
-                        incuID.append(item.incuno)
+                        incuID.append(item.incubator_id)
                         incu = zip(incuID)
                     print('login success')
                     return render(request, 'index1.html', {"incu": incu})
@@ -229,28 +229,29 @@ def incubatorDeatil(request, incubatorno):
     print("pie" + incubatorno)
     ino = incubatorno
     # ino = Incubatorusing.objects.filter(incubator_incuno=incubatorno)
-    initalInfo = getInital(ino)
-    monitorInfo = getCurrent(ino)
-    iuno = getIncubatorusingID(ino)
+    # initalInfo = getInital(ino)
+    # monitorInfo = getCurrent(ino)
+    # iuno = getIncubatorusingID(ino)
 
     # 将当前用户访问的培养箱的信息存放再session中
-    request.session['incubatorid'] = iuno
+    # request.session['incubatorid'] = iuno
     # session中的inid用于之后的页面重定向
     request.session['inid'] = ino
     request.session['true'] = True
     # 将包含初始信息和当前监控信息的两个字典合并起来
     info = {}
-    info.update(initalInfo)
-    info.update(monitorInfo)
-    # info=combineDict(initalInfo,monitorInfo)
-    print(info)
+
+    # info.update(initalInfo)
+    # info.update(monitorInfo)
+    # # info=combineDict(initalInfo,monitorInfo)
+    # print(info)
 
     # 处理监控信息
-    incubatorsUsing = models.Incubatorusing.objects.filter(incubator_incuno=incubatorno).order_by('initializetime')
-    iuno = incubatorsUsing[len(incubatorsUsing) - 1].iuno  # 获取这个培养箱的使用编号的最新的那个编号
-    print(iuno)
+    monitor_data = models.IncubatorHistory.objects.filter(incubator=incubatorno).order_by('curTime')
+    # iuno = incubatorsUsing[len(incubatorsUsing) - 1].iuno  # 获取这个培养箱的使用编号的最新的那个编号
+    # print(iuno)
     # monitorDatas = models.Monitorinform.objects.filter(incubatorusing_iuno=iuno).order_by('mtime')
-    monitorDatas = models.Monitorinform.objects.all().order_by('-mtime')
+    # monitorDatas = models.Monitorinform.objects.all().order_by('-mtime')
     # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     # print(monitorDatas)
     time = []
@@ -258,17 +259,17 @@ def incubatorDeatil(request, incubatorno):
     humidity = []
     pressure = []
     lightIntensity = []
-    for data in monitorDatas:
-        time.append(str(data.mtime)[:16])
-        temperature.append(data.mtemperature)
-        humidity.append(data.mhumidity)
-        pressure.append(data.mpressure)
-        lightIntensity.append(data.mlightlntensity)
-    monitorDatas2 = {"Mtimes": json.dumps(time[:10]), "Mtemperatures": temperature[:10], "Mhumiditys": humidity[:10],
-                     "Mpressures": pressure[:10], "MlightIntensitys": lightIntensity[:10]}
+    for data in monitor_data:
+        time.append(str(data.curTime)[:16])
+        temperature.append(data.temperature)
+        humidity.append(data.humidity)
+        pressure.append(data.pressure)
+        lightIntensity.append(data.light)
+    incubator_history = {"Mtimes": json.dumps(time[:10]), "Mtemperatures": temperature[:10], "Mhumiditys": humidity[:10],
+                     "Mpressures": pressure[:10], "MlightIntensitys": lightIntensity[:10], "MisSucceed": True, "IisSucceed": True}
     print(time)
-    print(monitorDatas)
-    info.update(monitorDatas2)
+    # print(monitorDatas)
+    info.update(incubator_history)
 
     dir = 'realtime_images'
     lists = os.listdir(dir)  # 列出目录的下所有文件和文件夹保存到lists
@@ -277,10 +278,10 @@ def incubatorDeatil(request, incubatorno):
     file_new = os.path.join(dir, lists[-1])  # 获取最新的文件保存到file_new
     print(file_new)
 
-    category = predict(file_new)
-    adviceData = getAdvice(category)
+    # category = predict(file_new)
+    # adviceData = getAdvice(category)
     # adviceData的内容为：{"state":state,"adviceHumidity":humidity[category],"adviceTemperature":temperature[category],"advicepressure":pressure[category],"adviceLight":light[category]}
-    info.update(adviceData)
+    # info.update(adviceData)
     print(info)
     return render(request, "incubator_details.html", info)
 
