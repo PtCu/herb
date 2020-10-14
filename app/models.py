@@ -116,8 +116,7 @@ class Plant(models.Model):
 
 class IncubatorHistory(models.Model):
     curTime = models.DateTimeField()  # 定时存入数据库的时间
-    incubator = models.ForeignKey(
-        Incubator, on_delete=models.CASCADE)  # 对应的培养箱
+    incubator = models.ForeignKey(Incubator, on_delete=models.CASCADE)  # 对应的培养箱
     light = models.CharField(max_length=20)  # 光强
     pressure = models.CharField(max_length=20)  # 压强
     humidity = models.CharField(max_length=20)
