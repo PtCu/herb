@@ -218,21 +218,21 @@
                         <table class="table table-bordered">
                               <thead>
                                 <tr>
-                                  <th>植物名</th>
-                                  <th>种植数量</th>
-                                  <th>种植时间</th>
+                                  <th>植物编号</th>
+                                  <th>植物名称</th>
+                                  <th>培养状态</th>
                                   <th>平均评分</th>
                                   <th>培养箱型号</th>
                                 </tr>
                               </thead>
                               <tbody>
 
-                                {% for plant in userplant %}
+                                {% for plant in Plant %}
                                   <tr>
-                                  <td>{{plant.name}}</td>
-                                 <td>{{plant.num}}</td>
-                                 <td>{{plant.time}}</td>
-                                      <td>{{plant.point}}</td>
+                                  <td>{{plant.id}}</td>
+                                 <td>{{plant.name}}</td>
+                                 <td>{{plant.state}}</td>
+                                      <td>{{plant.mark}}</td>
                                      <td>{{plant.case}}</td>
                                 </tr>
                               {% endfor %}
@@ -245,66 +245,66 @@
                               <thead>
                                 <tr>
                                   <th>培养箱编号</th>
+                                  <th>培养箱型号</th>
                                   <th>运行状态</th>
-                                  <th>开始使用时间</th>
-                                  <th>使用时长</th>
+                                  <th>所属用户编号</th>
                                 </tr>
                               </thead>
                               <tbody>
                                   {% for inc in incubator1 %}
                                   <tr>
-                                  <td>{{inc.incuno}}</td>
-                                  <td>{{inc.managerstate}}</td>
-                                  <td>{{inc.purchasetime}}</td>
-                                     <td>{{inc.usetime}}</td>
+                                  <td>{{inc.incubator_id}}</td>
+                                  <td>{{inc.incubator_type}}</td>
+                                  <td>{{inc.state}}</td>
+                                     <td>{{inc.user}}</td>
                                 </tr>
                               {% endfor %}
                               </tbody>
                             </table>
                     </div>
-                    <div class="col-md-12 table-sell">
-                        <h4>用户订单情况</h4>
-                        <table class="table table-bordered">
-                              <thead>
-                                <tr>
-                                  <th>订单编号</th>
-                                  <th>订单类型</th>
-                                  <th>完成情况</th>
-                                  <th>负责人</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {% for ord in order %}
-                                  <tr>
-                                  <td>{{ord.sid}}</td>
-                                  <td>{{ord.stype}}</td>
-                                  <td>{{ord.state}}</td>
-                                     <td>{{ord.sname}}</td>
+<!--                    <div class="col-md-12 table-sell">-->
+<!--                        <h4>用户订单情况</h4>-->
+<!--                        <table class="table table-bordered">-->
+<!--                              <thead>-->
+<!--                                <tr>-->
+<!--                                  <th>订单编号</th>-->
+<!--                                  <th>订单类型</th>-->
+<!--                                  <th>完成情况</th>-->
+<!--                                  <th>负责人</th>-->
+<!--                                </tr>-->
+<!--                              </thead>-->
+<!--                              <tbody>-->
+<!--                                {% for ord in order %}-->
+<!--                                  <tr>-->
+<!--                                  <td>{{ord.sid}}</td>-->
+<!--                                  <td>{{ord.stype}}</td>-->
+<!--                                  <td>{{ord.state}}</td>-->
+<!--                                     <td>{{ord.sname}}</td>-->
 
-                                </tr>
-                              {% endfor %}
-                              </tbody>
-                            </table>
-                    </div>
+<!--                                </tr>-->
+<!--                              {% endfor %}-->
+<!--                              </tbody>-->
+<!--                            </table>-->
+<!--                    </div>-->
 
                     <div class="col-md-12 table-sell">
-                        <h4>用户维修情况</h4>
+                        <h4>培养箱维修情况</h4>
                         <table class="table table-bordered">
                               <thead>
                                 <tr>
                                   <th>维修单号</th>
-                                  <th>完成情况</th>
-                                  <th>负责人</th>
-                                  <th>用户满意度</th>
+                                  <th>订单生成时间</th>
+                                  <th>培养箱号</th>
+<!--                                  <th>用户满意度</th>-->
                                 </tr>
                               </thead>
                               <tbody>
                                  {% for f in fix %}
                                   <tr>
-                                  <td>{{f.fixinfoid}}</td>
-                                   <td>{{f.state}}</td>
-                                 <td>{{f.fname}}</td>
-                                      <td>{{f.score}}</td>
+                                  <td>{{f.id}}</td>
+                                   <td>{{f.time}}</td>
+                                 <td>{{f.incubator}}</td>
+<!--                                      <td>{{f.score}}</td>-->
 
                                 </tr>
                               {% endfor %}
@@ -408,17 +408,17 @@
                                             <div class="col-md-1">
                                                 <img class="img-circle " src="/static/img/personInfo/me.PNG">
                                             </div>
-                                            <h2 class="col-md-2">{{us.username}}</h2>
+                                            <h2 class="col-md-2">{{us.name}}</h2>
 
                                             <div class="col-md-3 back-user-info-more">
-                                                <p>用户年龄  {{us.userage}}</p>
-                                                <p>用户电话  {{us.userphonenum}}</p>
-                                                <p>用户注册邮箱 {{us.usermail}}</p>
+<!--                                                <p>用户年龄  {{us.userage}}</p>-->
+                                                <p>用户电话  {{us.phone}}</p>
+                                                <p>用户注册邮箱 {{us.mail}}</p>
                                             </div>
                                             <div class="col-md-3 back-user-info-more">
-                                                <p>用户性别  {{us.usersex}}</p>
-                                                <p>用户活跃状态 {{us.userstate}}</p>
-                                                <p>用户上次登录时间 {{us.userlastlogintime}}</p>
+                                                <p>用户性别  {{us.gender}}</p>
+<!--                                                <p>用户活跃状态 {{us.userstate}}</p>-->
+                                                <p>用户上次登录时间 {{us.lastLogintime}}</p>
                                             </div>
 
                                             <button class="col-md-1 btn btn-lg btn-default" style="margin-top: 20px" id="open-page-user">详情</button>
@@ -1368,8 +1368,9 @@
             $("#extra-page-plant").hide()
         })
 
-         $("#extra-page-user").hide()
+        $("#extra-page-user").hide()
         $("#open-page-user").click(function () {
+            console.log("here")
             $("#extra-page-user").show()
         })
         $("#close-page-user").click(function () {

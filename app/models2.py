@@ -167,7 +167,7 @@ class Customstatistics(models.Model):
         db_table = 'customstatistics'
 
 
-class Incubator(models.Model):
+class Incubator2(models.Model):
     #培养箱实体的信息
     # Field name made lowercase.
     incuno = models.CharField(
@@ -439,7 +439,7 @@ class User(models.Model):
         db_column='registrationDate', auto_now=True)
     userimg = models.CharField(
         db_column='userImg', max_length=50, default="md.ipg")
-    usersex = models.IntegerField(db_column='userSex', default=0)
+    usersex = models.CharField(db_column='userSex', choices=(('男', '男'), ('女', '女')),default=0, max_length=20)
     userintroduction = models.CharField(
         db_column='userIntroduction', max_length=255, default="22")
     userlastlogintime = models.DateTimeField(
