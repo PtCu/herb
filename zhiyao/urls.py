@@ -28,7 +28,7 @@ urlpatterns = [
     path('logout/', views.logout),
     path('register/', views.register, name='register'),
     path('incubator/', views.incubator, name='incubator'),
-    # path('updateUserInfo/', views.updateUserInfo),
+    path('updateUserInfo/', views.updateUserInfo),
     path('bbs/', views.bbs, name='bbs'),
     path('incubatorDetail/<incubatorno>/', views.incubatorDeatil, name='incubatorDetail'),
     path('alterenviroment/<incubatorno>/', views.alterenviroment, name="alterenviroment"),
