@@ -3,18 +3,16 @@ from django.db import models
 
 
 class User(models.Model):
-    user_id = models.CharField(primary_key=True, max_length=20)
+    user_id = models.CharField(primary_key=True,max_length=20)
     phone = models.CharField(max_length=15)
     mail = models.CharField(max_length=20)
     name = models.CharField(max_length=10)
     password = models.CharField(max_length=20)
-    # img = models.ImageField(upload_to='image')  # 图像
-    img = models.CharField(max_length=100, default='wdl.jpg')  # 图像
-    gender = models.NullBooleanField()  # 1为男,0为女.允许为空
-    lastLoginTime = models.DateTimeField(null=True)
-    signature = models.TextField(null=True, blank=True)  # 个性签名
-    # registration_date = models.DateTimeField(default=datetime.now())  # 创建时间
-    registration_date = models.DateTimeField(auto_now=True)  # 创建时间
+    img = models.ImageField(upload_to='image')  # 图像
+    gender = models.CharField(db_column='userSex', choices=(('男', '男'), ('女', '女')), default=0, max_length=20)
+    lastLoginTime = models.DateTimeField()
+    signature = models.TextField(null=True, blank=True) #个性签名
+    registration_date = models.DateTimeField(default=datetime.now()) #创建时间
 
     class Meta:
         managed = True
@@ -23,9 +21,10 @@ class User(models.Model):
 
 class Incubator(models.Model):
     incubator_id = models.CharField(primary_key=True, max_length=20)
-    incubator_type = models.CharField(max_length=20)  # 型号
+    incubator_type = models.CharField(max_length=20) #型号
     state = models.BooleanField()  # 是否正常运行
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # 培养箱的用户（一个用户可以多个培养箱）
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE)  # 培养箱的用户（一个用户可以多个培养箱）
 
     class Meta:
         managed = True
@@ -65,6 +64,7 @@ class TemperatureSensor(models.Model):
     state = models.BooleanField()  # 是否坏了
     start_time = models.DateTimeField()  # 开始运行时间
     data = models.CharField(max_length=20)  # 当前数据
+
     class Meta:
         managed = True
         db_table = 'TemperatureSensor'
@@ -110,7 +110,6 @@ class Plant(models.Model):
         managed = True
         db_table = 'Plant'
 
-
 # 真正用来存储传感器数据的表
 # 查找植物历史状态时，先查培养箱表，再获取当前植物以获取植物名称
 
@@ -129,7 +128,6 @@ class IncubatorHistory(models.Model):
         unique_together = ("curTime", "incubator")
         managed = True
         db_table = 'IncubatorHistory'
-
 
 # 用户维修设备逻辑：用户查看自己的sensor state，如果坏了就点击提交
 # 提交受理后生成维修订单。维修订单信息包括id和时间，以及培养箱编号
