@@ -267,8 +267,10 @@ def incubatorDeatil(request, incubatorno):
         humidity.append(data.humidity)
         pressure.append(data.pressure)
         lightIntensity.append(data.light)
-    incubator_history = {"Mtimes": json.dumps(time[:10]), "Mtemperatures": temperature[:10], "Mhumiditys": humidity[:10],
-                     "Mpressures": pressure[:10], "MlightIntensitys": lightIntensity[:10], "MisSucceed": True, "IisSucceed": True}
+    incubator_history = {"Mtimes": json.dumps(time[:10]), "Mtemperatures": temperature[:10],
+                         "Mhumiditys": humidity[:10],
+                         "Mpressures": pressure[:10], "MlightIntensitys": lightIntensity[:10], "MisSucceed": True,
+                         "IisSucceed": True}
     print(time)
     # print(monitorDatas)
     info.update(incubator_history)
@@ -419,7 +421,13 @@ def contact(request):
 
 
 def showplant(request):
-    return render(request, 'show_plant.html')
+    plant_list = models.Plant.objects.all().order_by('time')
+    popular_plant = models.Plant.objects.all().order_by('popularity')[:15]
+    content = {
+        'plant_list': plant_list,
+        'popular_plant': popular_plant
+    }
+    return render(request, 'show_plant.html', content)
 
 
 def plantdetail(request):
@@ -540,6 +548,7 @@ def getCDetail(request, id):
     except:
         print('meizhaodao')
         return render(request, '../temp2/../temp/bbs.html', {'success': False})
+
 
 # #########################################################################################################
 # # 以下是有关硬件的请求处理代码
