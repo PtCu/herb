@@ -102,6 +102,8 @@ class Plant(models.Model):
     name = models.CharField(max_length=20)  # 名字
     img = models.ImageField(upload_to='image')  # 图像
     mark = models.IntegerField()  # 评分
+    popularity = models.IntegerField(default=60)
+    time = models.DateTimeField(auto_now=True)
     state = models.CharField(max_length=20)  # 开花结果
     # 培养箱 (一个培养箱可以多个植物，但需要保证为一种)
     incubator = models.ForeignKey(Incubator, on_delete=models.CASCADE)
