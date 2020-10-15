@@ -56,6 +56,8 @@ from . import predict, models
 #     else:
 #         print('predict else')
 #         return "error"
+from .models import Incubator, FixList, User, Plant
+
 
 def index(request):
     """
@@ -393,15 +395,14 @@ def backendlogin(request):
 
 def backend(request):
     incubator1 = Incubator.objects.all()
-    userplant = User_plant.objects.all()
-    fix = Fixinfo.objects.all()
-    order = Sellpost.objects.all()
+    plant = Plant.objects.all()
+    fix = FixList.objects.all()
+    # order = Sellpost.objects.all()
     user = User.objects.all();
     context = {
         'incubator1': incubator1,
-        'userplant': userplant,
+        'Plant': plant,
         'fix': fix,
-        'order': order,
         'user': user,
     }
     return render(request, 'Backend.html', context)
