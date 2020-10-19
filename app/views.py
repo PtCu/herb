@@ -15,7 +15,6 @@ import time
 import json
 from . import predict, models
 
-
 # 注释掉的内容为解决错误的另一种方法
 # from keras.models import load_model
 # import os
@@ -82,7 +81,7 @@ def login(request):
                     request.session['userid'] = user.user_id
                     request.session['userphone'] = user.phone
                     request.session['username'] = user.name
-                    request.session['userimg'] = user.img
+                    request.session['userimg'] = str(user.img)
                     # request.session['userbirthday'] = user.birthday
                     request.session['userintroduction'] = user.signature
                     request.session['usersex'] = user.gender
@@ -249,18 +248,48 @@ def incubatorDeatil(request, incubatorno):
     # print(info)
 
     # 处理监控信息
-    monitor_data = models.IncubatorHistory.objects.filter(incubator=incubatorno).order_by('curTime')
+    monitor_data = models.IncubatorHistory.objects.filter(incubator=incubatorno).order_by('-curTime')
     # iuno = incubatorsUsing[len(incubatorsUsing) - 1].iuno  # 获取这个培养箱的使用编号的最新的那个编号
     # print(iuno)
     # monitorDatas = models.Monitorinform.objects.filter(incubatorusing_iuno=iuno).order_by('mtime')
     # monitorDatas = models.Monitorinform.objects.all().order_by('-mtime')
     # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     # print(monitorDatas)
+
+    # 获取植物相关信息
+    incubator_using = monitor_data[0]
+    print(incubator_using)
+    plant = incubator_using.plant
+    print(plant)
+    plant_name = {'plant_name': plant}
+    info.update(plant_name)
+
+    # 获取建议信息
+    suggest = models.Advice.objects.filter(incubator_id=incubatorno).order_by('-time')
+    suggest = list(suggest)[0]
+    print(suggest)
+    suggest_info = {'suggest': suggest}
+    info.update(suggest_info)
+
+    # 获取传感器信息
+    sensor_list = models.Sensor.objects.filter(incubator_id=incubatorno)
+    sensor_list = list(sensor_list)
+    print(sensor_list)
+    sensor_info = {'sensor': sensor_list}
+    info.update(sensor_info)
+
+    # 获取硬件信息
+    device_list = models.Device.objects.filter(incubator_id=incubatorno)
+    device_list = list(device_list)
+    device_info = {'device': device_list}
+    info.update(device_info)
+
     time = []
     temperature = []
     humidity = []
     pressure = []
     lightIntensity = []
+    monitor_data = list(monitor_data)  # 保证监控数据为list格式
     for data in monitor_data:
         time.append(str(data.curTime)[:16])
         temperature.append(data.temperature)
@@ -270,16 +299,19 @@ def incubatorDeatil(request, incubatorno):
     incubator_history = {"Mtimes": json.dumps(time[:10]), "Mtemperatures": temperature[:10],
                          "Mhumiditys": humidity[:10],
                          "Mpressures": pressure[:10], "MlightIntensitys": lightIntensity[:10], "MisSucceed": True,
-                         "IisSucceed": True}
+                         "IisSucceed": True, }
     print(time)
     # print(monitorDatas)
     info.update(incubator_history)
 
-    dir = 'realtime_images'
+    dir = 'static/realtime_images'
     lists = os.listdir(dir)  # 列出目录的下所有文件和文件夹保存到lists
     print(lists)
     lists.sort(key=lambda fn: os.path.getmtime(dir + "/" + fn), reverse=True)  # 按时间排序
-    file_new = os.path.join(dir, lists[-1])  # 获取最新的文件保存到file_new
+    print(lists)
+    file_new = os.path.join(dir, lists[0])  # 获取最新的文件保存到file_new
+    img = {'plant_image': file_new}
+    info.update(img)
     print(file_new)
 
     # category = predict(file_new)
@@ -287,6 +319,7 @@ def incubatorDeatil(request, incubatorno):
     # adviceData的内容为：{"state":state,"adviceHumidity":humidity[category],"adviceTemperature":temperature[category],"advicepressure":pressure[category],"adviceLight":light[category]}
     # info.update(adviceData)
     print(info)
+
     return render(request, "incubator_details.html", info)
 
 
@@ -365,28 +398,22 @@ def getIncubatorID(iuno):
 def alterenviroment(request, incubatorno):
     print("jingruhanshu")
     if request.method == "POST":
-        AlightIntensity = request.POST.get('AlightIntensity')
-        Atemperature = request.POST.get("Atemperature")
-        Ahumidity = request.POST.get("Ahumidity")
-        Apressure = request.POST.get("Apressure")
-        incubatorusing_iuno = incubatorno
-        # 修改信息的id使用正在使用的培养箱的编号加上提交修改的时间戳
-        alteid = incubatorusing_iuno + str(time.time())
-        print("xiugaile" + alteid)
+        light = request.POST.get('led_ctl')
+        temperature = request.POST.get("tem_ctl")
+        humidity = request.POST.get("hum_ctl")
+        pressure = request.POST.get("pre_ctl")
+        incubator_id = incubatorno
 
-        newAlter = models.Alterenvironment()
-        newAlter.alteid = alteid
-        newAlter.alightlntensity = AlightIntensity
-        newAlter.atemperature = Atemperature
-        newAlter.ahumidity = Ahumidity
-        newAlter.apressure = Apressure
-        # 将植物所处的阶段默认设置为0
-        newAlter.aplantstage = '0'
-        newAlter.save()
-        inno = str(getIncubatorID(incubatorno).incuno)
-        print(inno)
-        urlr = "/incubatorDetail/" + inno + "/"
-    return redirect(urlr)
+        alter_info = models.Control()
+        alter_info.incubator_id = incubator_id
+        alter_info.light = light
+        alter_info.temperature = temperature
+        alter_info.humidity = humidity
+        alter_info.pres = pressure
+        alter_info.save()
+
+        url = "/incubatorDetail/" + incubator_id + "/"
+    return redirect(url)
 
 
 def backendlogin(request):
@@ -744,3 +771,15 @@ def updateUserInfo(request):
         request.session['usersex'] = user.gender
         print(user)
     return redirect('/incubator/')
+
+
+def referfix(request, incubatorno):
+    # TODO 维修信息提交，这是个十分简化的版本，后续待完善，也可能没后续
+    fix_info = models.FixList()
+    incubator_fix = models.Incubator.objects.get(incubator_id=incubatorno)
+    print(incubator_fix)
+    print(incubator_fix.incubator_id)
+    fix_info.incubator_id = incubator_fix
+    fix_info.save()
+    fix_url = "/incubatorDetail/" + incubatorno + "/"
+    return redirect(fix_url)

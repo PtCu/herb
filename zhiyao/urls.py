@@ -53,6 +53,7 @@ urlpatterns = [
     path('howtoplant', views.howtoplant),
     path('showplant', views.showplant),
     path('showplant/plantdetail', views.plantdetail),
+    path('referfix/<incubatorno>/',views.referfix),
     #############################路径需要修改
     # path('guide', views.guide),
     # path('changeEnvironment/<incubatorno>/', views.proIncubator, name="changeEnvironment"),
