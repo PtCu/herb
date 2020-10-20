@@ -1,5 +1,3 @@
-from django.contrib import admin
-
 # Register your models here.
 from django.contrib import admin
 
@@ -14,3 +12,4 @@ admin.site.register(models.TemperatureSensor)
 admin.site.register(models.HumiditySensor)
 admin.site.register(models.Camera)
 admin.site.register(models.IncubatorHistory)
+admin.site.register(models.Administrator)

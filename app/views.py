@@ -425,16 +425,16 @@ def backendlogin(request):
 
 def backend(request):
 #    adminstrator=request[]
-    incubator1 = Incubator.objects.all()
-    plant = Plant.objects.all()
-    fix = FixList.objects.all()
+    incubators = Incubator.objects.all()
+    plants = Plant.objects.all()
+    fixs = FixList.objects.all()
     # order = Sellpost.objects.all()
-    user = User.objects.all()
+    users = User.objects.all()
     context = {
-        'incubator1': incubator1,
-        'Plant': plant,
-        'fix': fix,
-        'user': user,
+        'incubators': incubators,
+        'plants': plants,
+        'fixs': fixs,
+        'users': users,
     }
     return render(request, 'Backend.html', context)
 
