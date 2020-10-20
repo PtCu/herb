@@ -110,13 +110,9 @@
                     </li>
                     <li><a href="/showplant/plantdetail">&nbsp;&nbsp;当归&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;种植人：&nbsp;沈药农</a>
                     </li>
-                    <li><a href="/showplant/plantdetail">&nbsp;&nbsp;当归&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;种植人：&nbsp;沈药农</a>
+                    {% for item in popular_plant %}
                     </li>
-                    <li><a href="/showplant/plantdetail">&nbsp;&nbsp;当归&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;种植人：&nbsp;沈药农</a>
-                    </li>
-                    <li><a href="/showplant/plantdetail">&nbsp;&nbsp;当归&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;种植人：&nbsp;沈药农</a>
-                    </li>
-                    <li><a href="/showplant/plantdetail">&nbsp;&nbsp;当归&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;种植人：&nbsp;沈药农</a>
+                    <li><a href="/showplant/plantdetail">&nbsp;&nbsp;{{ item.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;种植人：&nbsp;沈药农</a>
                     </li>
                        <li><a href="/showplant/plantdetail">&nbsp;&nbsp;当归&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;种植人：&nbsp;沈药农</a>
                     </li>
@@ -140,6 +136,8 @@
                     </li>
                     <li><a href="/showplant/plantdetail">&nbsp;&nbsp;{{ item.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;种植人：&nbsp;沈药农</a>
                     </li>
+                    {% endfor %}
+
                     {% endfor %}
 
 
