@@ -23,6 +23,7 @@ class Incubator(models.Model):
     incubator_id = models.CharField(primary_key=True, max_length=20)
     incubator_type = models.CharField(max_length=20)  # 型号
     state = models.BooleanField()  # 是否正常运行
+    key = models.CharField(max_length=20,default='111111')
     user = models.ForeignKey(
         User, on_delete=models.CASCADE)  # 培养箱的用户（一个用户可以多个培养箱）
 

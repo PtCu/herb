@@ -55,7 +55,7 @@ from . import predict, models
 #     else:
 #         print('predict else')
 #         return "error"
-from .models import Incubator, FixList, User, Plant
+from .models import Incubator, FixList, User, Plant, IncubatorHistory
 
 
 def index(request):
@@ -192,12 +192,19 @@ def getIncubator(userid):
 def incubator(request):
     userphone = request.session['userphone']
     # get是获取单个对象，filte是设置筛选条件
-    incubators = models.Incubator.objects.filter(user=userphone)
+    incubators = models.Incubator.objects.filter(user=userphone).filter(state=True)
     incuID = []
     incu = []
+    plant = []
     for item in incubators:
         incuID.append(item.incubator_id)
-        incu = zip(incuID)
+        p = models.IncubatorHistory.objects.filter(incubator=item.incubator_id).order_by('-curTime')
+        if p:
+            incubator_plant = p[0].plant
+        else:
+            incubator_plant = '未知'
+        plant.append(incubator_plant)
+        incu = zip(incuID, plant)
     print('jump to incubator success')
     return render(request, 'incubator.html', {"incu": incu})
 
@@ -254,7 +261,7 @@ def incubatorDeatil(request, incubatorno):
     # monitorDatas = models.Monitorinform.objects.filter(incubatorusing_iuno=iuno).order_by('mtime')
     # monitorDatas = models.Monitorinform.objects.all().order_by('-mtime')
     # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    # print(monitorDatas)
+    print(monitor_data)
 
     # 获取植物相关信息
     incubator_using = monitor_data[0]
@@ -283,6 +290,10 @@ def incubatorDeatil(request, incubatorno):
     device_list = list(device_list)
     device_info = {'device': device_list}
     info.update(device_info)
+
+    # 获取历史数据
+    old_info = get_old_info(incubatorno)
+    info.update(old_info)
 
     time = []
     temperature = []
@@ -435,8 +446,40 @@ def backend(request):
     return render(request, 'Backend.html', context)
 
 
-def plantinf_old(request):
-    return render(request, 'old_plant_info.html')
+def get_old_info(incubatorno):
+    history = models.IncubatorHistory.objects.filter(incubator=incubatorno).order_by("curTime")[:15]
+    for data in history:
+        data.curTime = data.curTime.strftime("%Y/%m/%d %H:%M:%S")
+    time = []
+    light = []
+    temperature = []
+    humility = []
+    pressure = []
+    plant = []
+    data_list = list(history)
+    for item in data_list:
+        time.append(str(item.curTime)[:16])
+        light.append(item.light)
+        temperature.append(item.temperature)
+        humility.append(item.humidity)
+        pressure.append(item.pressure)
+        plant.append(item.plant)
+    content = {
+        'history': history,
+        'time': json.dumps(time),
+        'temperature': json.dumps(temperature),
+        'light': json.dumps(light),
+        'pressure': json.dumps(pressure),
+        'humidity': json.dumps(humility),
+        'plant': json.dumps(plant)
+    }
+
+    return content
+
+
+def plantinf_old(request, incubatorno):
+    content = get_old_info(incubatorno)
+    return render(request, 'old_plant_info.html', content)
 
 
 def howtoplant(request):
@@ -783,3 +826,39 @@ def referfix(request, incubatorno):
     fix_info.save()
     fix_url = "/incubatorDetail/" + incubatorno + "/"
     return redirect(fix_url)
+
+
+def connect(request):
+    if request.method == 'POST':
+        incubator_id = request.POST.get('incubator_id')
+        key = request.POST.get('key')
+        if incubator_id and key:
+            try:
+                incubator = models.Incubator.objects.get(incubator_id=incubator_id)
+                incubator.state = True
+                incubator.save()
+                return redirect('/incubator/')
+            except:
+                return redirect('/incubator/')
+    return redirect('/incubator/')
+
+def connect(request):
+    if request.method == 'POST':
+        incubator_id = request.POST.get('incubator_id')
+        key = request.POST.get('key')
+        if incubator_id and key:
+            try:
+                incubator = models.Incubator.objects.get(incubator_id=incubator_id)
+                incubator.state = True
+                incubator.save()
+                return redirect('/incubator/')
+            except:
+                return redirect('/incubator/')
+    return redirect('/incubator/')
+
+
+def disconnected(request,incubatorno):
+    incubator = models.Incubator.objects.get(incubator_id=incubatorno)
+    incubator.state = False
+    incubator.save()
+    return redirect('/incubator')
