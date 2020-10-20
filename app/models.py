@@ -19,6 +19,17 @@ class User(models.Model):
         db_table = 'User'
 
 
+class Administrator(models.Model):
+    user_name = models.CharField(primary_key=True,max_length=20)
+    password = models.CharField(max_length=20)
+    img = models.ImageField(upload_to='image', blank=True)  # 图像
+
+    class Meta:
+        managed = True
+        db_table = 'Administrator'
+
+
+
 class Incubator(models.Model):
     incubator_id = models.AutoField(primary_key=True)
     incubator_type = models.CharField(max_length=20) #型号

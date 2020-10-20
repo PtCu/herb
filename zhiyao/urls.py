@@ -48,7 +48,7 @@ urlpatterns = [
     # path('test/', views.test),
     path('contact/', views.contact),
     path('backendlogin/', views.backendlogin),
-    # path('backend/', views.backend),
+    path('backend/', views.backend),
     path('oldplantinfo/', views.plantinf_old),
     path('howtoplant', views.howtoplant),
     path('showplant', views.showplant),
