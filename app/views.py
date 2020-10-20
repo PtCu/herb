@@ -423,11 +423,12 @@ def backendlogin(request):
 
 
 def backend(request):
+#    adminstrator=request[]
     incubator1 = Incubator.objects.all()
     plant = Plant.objects.all()
     fix = FixList.objects.all()
     # order = Sellpost.objects.all()
-    user = User.objects.all();
+    user = User.objects.all()
     context = {
         'incubator1': incubator1,
         'Plant': plant,
