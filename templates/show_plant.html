@@ -218,16 +218,28 @@
 <!--                                    <p>杂草1号</p>-->
 <!--                                </a>-->
 <!--                            </div>-->
-                            <ul class="col-md-offset-4 col-md-4 pagination" style="margin-left: 33%">
-                                <li><a href="#">&laquo;</a></li>
-                                <li><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                                <li><a href="#">&raquo;</a></li>
-                            </ul>
+                           <nav aria-label="Page navigation">
+		                        <div class="pagination">
+			                        <ul class="pagination">
+			                            {% if page.has_previous %}   # 判断当前页是否有上一页
+				                            <li><a href="showplant/{{page.previous_page_number}}" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span></a></li>
+                                        {% endif %}
+                                        {% for num in page.paginator.page_range%}  # 循环遍历页码列表，并展示到底部
+            	                            {%if pindex == page.number%}
+                	                            <li><a href="">{{ num }}</a></li>
+                                            {%else%}
+                                                <li><a href="showplant/{{num}}">{{ num }}</a></li>
+                                            {%endif%}
+                                        {% endfor %}
 
+                                        {% if page.has_next %}  # 判断当前页是否有下一页
+                                            <li><a href="showplant/{{page.next_page_number}}" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span></a></li>
+                                        {% endif %}
+       		                        </ul>
+		                        </div>
+                            </nav>
                         </div>
                     </div>
 

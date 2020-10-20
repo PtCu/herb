@@ -2,6 +2,7 @@ import os
 from typing import List, Any
 
 from django.core import serializers
+from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.shortcuts import redirect, reverse
 from django.http import HttpResponseRedirect, JsonResponse
@@ -450,7 +451,7 @@ def contact(request):
     return render(request, 'contact.html')
 
 
-def showplant(request):
+def showplant(request, pindex):
     plant_list = []
     if request.method == "POST":
         button_list = request.POST.getlist("choice")
@@ -470,11 +471,20 @@ def showplant(request):
             elif "k3" == button_list[0]:
                 plant_list = models.Plant.objects.all().order_by('plant_type')
 
+    #分页
+    paginator = Paginator(plant_list, 5)  # 实例化Paginator, 每页显示5条数据
+    if pindex == "":  # django中默认返回空值，所以加以判断，并设置默认值为1
+        pindex = 1
+    else:  # 如果有返回在值，把返回值转为整数型
+        int(pindex)
+    page = paginator.page(pindex)  # 传递当前页的实例对象到前端
+
     popular_plant = models.Plant.objects.all().order_by('popularity')[:15]
 
     content = {
         'plant_list': plant_list,
-        'popular_plant': popular_plant
+        'popular_plant': popular_plant,
+        "page": page
     }
     return render(request, 'show_plant.html', content)
 
