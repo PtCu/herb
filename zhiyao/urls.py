@@ -52,7 +52,7 @@ urlpatterns = [
     path('oldplantinfo/', views.plantinf_old),
     path('howtoplant', views.howtoplant),
     path('showplant', views.showplant),
-    path('showplant/plantdetail', views.plantdetail),
+    path('showplant/plantdetail/<id>', views.plantdetail, name="plantdetail"),
     path('referfix/<incubatorno>/',views.referfix),
     #############################路径需要修改
     # path('guide', views.guide),

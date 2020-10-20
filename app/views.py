@@ -1,4 +1,5 @@
 import os
+from typing import List, Any
 
 from django.core import serializers
 from django.shortcuts import render
@@ -396,6 +397,7 @@ def getIncubatorID(iuno):
 
 # 修改培养箱的环境信息
 def alterenviroment(request, incubatorno):
+    global url
     print("jingruhanshu")
     if request.method == "POST":
         light = request.POST.get('led_ctl')
@@ -448,8 +450,27 @@ def contact(request):
 
 
 def showplant(request):
-    plant_list = models.Plant.objects.all().order_by('time')
+    plant_list = []
+    if request.method == "POST":
+        button_list = request.POST.getlist("choice")
+        print(button_list)
+        if button_list[1].exist:
+            if "k1" == button_list[0]:
+                plant_list= models.Plant.objects.filter(name__icontains=button_list[1]).order_by('time')
+            elif "k2" == button_list[0]:
+                plant_list = models.Plant.objects.filter(name__icontains=button_list[1]).order_by('mark')
+            elif "k3" == button_list[0]:
+                plant_list = models.Plant.objects.filter(name__icontains=button_list[1]).order_by('plant_type')
+        else:
+            if "k1" == button_list[0]:
+                plant_list = models.Plant.objects.all().order_by('time')
+            elif "k2" == button_list[0]:
+                plant_list = models.Plant.objects.all().order_by('mark')
+            elif "k3" == button_list[0]:
+                plant_list = models.Plant.objects.all().order_by('plant_type')
+
     popular_plant = models.Plant.objects.all().order_by('popularity')[:15]
+
     content = {
         'plant_list': plant_list,
         'popular_plant': popular_plant
@@ -457,8 +478,12 @@ def showplant(request):
     return render(request, 'show_plant.html', content)
 
 
-def plantdetail(request):
-    return render(request, 'plant_detail.html')
+def plantdetail(request, id):
+    plant = models.Plant.objects.filter(id=id)
+    content = {
+        plant: plant
+    }
+    return render(request, 'plant_detail.html', content)
 
 
 def bbs(request):
