@@ -9,6 +9,8 @@ from keras.applications.imagenet_utils import preprocess_input
 
 model=None
 
+default_app_config = 'app.apps.HerbConfig'
+
 def read_image(img_name):
     print('imagename:'+img_name)
     img = image.load_img(img_name, target_size=(224, 224))

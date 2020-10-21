@@ -1,5 +1,7 @@
 from django.apps import AppConfig
 
 
-class AppConfig(AppConfig):
+class HerbConfig(AppConfig):
     name = 'app'
+    verbose_name = '中草药管理'
+
