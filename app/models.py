@@ -35,6 +35,7 @@ class Administrator(models.Model):
 
 
 class Incubator(models.Model):
+
     incubator_id = models.AutoField("ID",primary_key=True)
     incubator_type = models.CharField("型号",max_length=20) #型号
     state = models.BooleanField("是否正常运行",default=True)  # 是否正常运行
