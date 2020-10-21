@@ -1,6 +1,8 @@
 import os
+from typing import List, Any
 
 from django.core import serializers
+from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.shortcuts import redirect, reverse
 from django.http import HttpResponseRedirect, JsonResponse
@@ -407,6 +409,7 @@ def getIncubatorID(iuno):
 
 # 修改培养箱的环境信息
 def alterenviroment(request, incubatorno):
+    global url
     print("jingruhanshu")
     if request.method == "POST":
         light = request.POST.get('led_ctl')
@@ -432,16 +435,17 @@ def backendlogin(request):
 
 
 def backend(request):
-    incubator1 = Incubator.objects.all()
-    plant = Plant.objects.all()
-    fix = FixList.objects.all()
+#    adminstrator=request[]
+    incubators = Incubator.objects.all()
+    plants = Plant.objects.all()
+    fixs = FixList.objects.all()
     # order = Sellpost.objects.all()
-    user = User.objects.all();
+    users = User.objects.all()
     context = {
-        'incubator1': incubator1,
-        'Plant': plant,
-        'fix': fix,
-        'user': user,
+        'incubators': incubators,
+        'plants': plants,
+        'fixs': fixs,
+        'users': users,
     }
     return render(request, 'Backend.html', context)
 
@@ -490,18 +494,50 @@ def contact(request):
     return render(request, 'contact.html')
 
 
-def showplant(request):
-    plant_list = models.Plant.objects.all().order_by('time')
+def showplant(request, pindex):
+    plant_list = []
+    if request.method == "POST":
+        button_list = request.POST.getlist("choice")
+        print(button_list)
+        if button_list[1].exist:
+            if "k1" == button_list[0]:
+                plant_list= models.Plant.objects.filter(name__icontains=button_list[1]).order_by('time')
+            elif "k2" == button_list[0]:
+                plant_list = models.Plant.objects.filter(name__icontains=button_list[1]).order_by('mark')
+            elif "k3" == button_list[0]:
+                plant_list = models.Plant.objects.filter(name__icontains=button_list[1]).order_by('plant_type')
+        else:
+            if "k1" == button_list[0]:
+                plant_list = models.Plant.objects.all().order_by('time')
+            elif "k2" == button_list[0]:
+                plant_list = models.Plant.objects.all().order_by('mark')
+            elif "k3" == button_list[0]:
+                plant_list = models.Plant.objects.all().order_by('plant_type')
+
+    #分页
+    paginator = Paginator(plant_list, 5)  # 实例化Paginator, 每页显示5条数据
+    if pindex == "":  # django中默认返回空值，所以加以判断，并设置默认值为1
+        pindex = 1
+    else:  # 如果有返回在值，把返回值转为整数型
+        int(pindex)
+    page = paginator.page(pindex)  # 传递当前页的实例对象到前端
+
     popular_plant = models.Plant.objects.all().order_by('popularity')[:15]
+
     content = {
         'plant_list': plant_list,
-        'popular_plant': popular_plant
+        'popular_plant': popular_plant,
+        "page": page
     }
     return render(request, 'show_plant.html', content)
 
 
-def plantdetail(request):
-    return render(request, 'plant_detail.html')
+def plantdetail(request, id):
+    plant = models.Plant.objects.filter(id=id)
+    content = {
+        plant: plant
+    }
+    return render(request, 'plant_detail.html', content)
 
 
 def bbs(request):

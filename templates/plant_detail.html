@@ -118,15 +118,11 @@
                     <img src="/static/img/1.jpg" class="col-md-3 img-thumbnail top-margin">
                     <div class="col-md-offset-1 col-md-7">
                         <div class="plantname top-margin">
-                            <h1>多肉</h1>
+                            <h1>{{plant.name}}</h1>
                         </div>
-                        <h4 style ="padding: 10px">植物评分：7.3 <span class="glyphicon glyphicon-info-sign" style="color:red;"></span></h4>
-                        <h4 style="padding: 10px">植物简介：</h4>
-                        <div class="planteven" style="padding: 10px">
-                            <p>
-                                多肉植物喜通风，需要充足的光照，为避免黑腐，宜控水不宜过度浇水。
-                            </p>
-                        </div>
+                        <h4 style ="padding: 10px">植物评分：{{plant.mark}}</h4>
+                        <h4 style="padding: 10px">植物状态：{{plant.state}}</h4>
+
                     </div>
                 </div>
                 <div class="col-md-12 detinf">

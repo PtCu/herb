@@ -111,10 +111,8 @@
                     <li><a href="/showplant/plantdetail">&nbsp;&nbsp;当归&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;种植人：&nbsp;沈药农</a>
                     </li>
                     {% for item in popular_plant %}
+                    <li><a href="/showplant/plantdetail">&nbsp;&nbsp;{{ item.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{item.id}}</a>
                     </li>
-                    <li><a href="/showplant/plantdetail">&nbsp;&nbsp;{{ item.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;种植人：&nbsp;沈药农</a>
-                    </li>
-
                     {% endfor %}
 
 
@@ -125,14 +123,12 @@
                     <div id="bbs-header">
 
                         <div class="row">
-                            <div class="col-md-5 btn-group " style="margin-top: 10px">
-                                <button type="button" class="btn btn-default">按时间</button>
-                                <button type="button" class="btn btn-default">按评分</button>
-                                <button type="button" class="btn btn-default">按药材</button>
-                            </div>
-                            <form class="col-md-offset-2 col-md-4  navbar-form navbar-left" role="search">
+                            <form class="col-md-offset-2 col-md-4  navbar-form navbar-left" role="search" method="post">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Search"/>
+                                    <input type="button" class="btn btn-default active" name="choice" value="k1">按时间</input>
+                                    <input type="button" class="btn btn-default" name="choice" value="k2">按评分</input>
+                                    <input type="button" class="btn btn-default" name="choice" value="k3">按药材</input>
+                                    <input type="text" class="form-control" name="choice" placeholder="Search"/>
                                 </div>
                                 <button type="submit" class="btn btn-default">
                                     <span class="glyphicon glyphicon-search" style="margin-right: 0;"></span>
@@ -157,79 +153,93 @@
                     <div>
 
                         <div class="row">
+                            {%for item in plant_list%}
                             <div class="col-sm-6 col-md-4">
-                                <a href="/showplant/plantdetail" class="thumbnail">
-                                    <img src="static/img/1.jpg"
-                                         alt="通用的占位符缩略图">
-                                    <p>杂草1号</p>
+                                <a href="/showplant/plantdetail/{{item.id}}" class="thumbnail">
+                                    {{item.img}}
+                                    <p>{{item.name}}</p>
                                 </a>
                             </div>
-                            <div class="col-sm-6 col-md-4">
-                                <a href="/showplant/plantdetail" class="thumbnail">
-                                    <img src="static/img/1.jpg"
-                                         alt="通用的占位符缩略图">
-                                    <p>杂草1号</p>
-                                </a>
-                            </div>
-                            <div class="col-sm-6 col-md-4">
-                                <a href="/showplant/plantdetail" class="thumbnail">
-                                    <img src="static/img/1.jpg"
-                                         alt="通用的占位符缩略图">
-                                    <p>杂草1号</p>
-                                </a>
-                            </div>
-                            <div class="col-sm-6 col-md-4">
-                                <a href="/showplant/plantdetail" class="thumbnail">
-                                    <img src="static/img/1.jpg"
-                                         alt="通用的占位符缩略图">
-                                    <p>杂草1号</p>
-                                </a>
-                            </div>
-                            <div class="col-sm-6 col-md-4">
-                                <a href="/showplant/plantdetail" class="thumbnail">
-                                    <img src="static/img/1.jpg"
-                                         alt="通用的占位符缩略图">
-                                    <p>杂草1号</p>
-                                </a>
-                            </div>
-                            <div class="col-sm-6 col-md-4">
-                                <a href="/showplant/plantdetail" class="thumbnail">
-                                    <img src="static/img/1.jpg"
-                                         alt="通用的占位符缩略图">
-                                    <p>杂草1号</p>
-                                </a>
-                            </div>
-                            <div class="col-sm-6 col-md-4">
-                                <a href="/showplant/plantdetail" class="thumbnail">
-                                    <img src="static/img/1.jpg"
-                                         alt="通用的占位符缩略图">
-                                    <p>杂草1号</p>
-                                </a>
-                            </div>
-                            <div class="col-sm-6 col-md-4">
-                                <a href="/showplant/plantdetail" class="thumbnail">
-                                    <img src="static/img/1.jpg"
-                                         alt="通用的占位符缩略图">
-                                    <p>杂草1号</p>
-                                </a>
-                            </div>
-                            <div class="col-sm-6 col-md-4">
-                                <a href="/showplant/plantdetail" class="thumbnail">
-                                    <img src="static/img/1.jpg"
-                                         alt="通用的占位符缩略图">
-                                    <p>杂草1号</p>
-                                </a>
-                            </div>
-                            <ul class="col-md-offset-4 col-md-4 pagination" style="margin-left: 33%">
-                                <li><a href="#">&laquo;</a></li>
-                                <li><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                                <li><a href="#">&raquo;</a></li>
-                            </ul>
+                            {%endfor%}
 
+<!--                            <div class="col-sm-6 col-md-4">-->
+<!--                                <a href="/showplant/plantdetail" class="thumbnail">-->
+<!--                                    <img src="static/img/1.jpg"-->
+<!--                                         alt="通用的占位符缩略图">-->
+<!--                                    <p>杂草1号</p>-->
+<!--                                </a>-->
+<!--                            </div>-->
+<!--                            <div class="col-sm-6 col-md-4">-->
+<!--                                <a href="/showplant/plantdetail" class="thumbnail">-->
+<!--                                    <img src="static/img/1.jpg"-->
+<!--                                         alt="通用的占位符缩略图">-->
+<!--                                    <p>杂草1号</p>-->
+<!--                                </a>-->
+<!--                            </div>-->
+<!--                            <div class="col-sm-6 col-md-4">-->
+<!--                                <a href="/showplant/plantdetail" class="thumbnail">-->
+<!--                                    <img src="static/img/1.jpg"-->
+<!--                                         alt="通用的占位符缩略图">-->
+<!--                                    <p>杂草1号</p>-->
+<!--                                </a>-->
+<!--                            </div>-->
+<!--                            <div class="col-sm-6 col-md-4">-->
+<!--                                <a href="/showplant/plantdetail" class="thumbnail">-->
+<!--                                    <img src="static/img/1.jpg"-->
+<!--                                         alt="通用的占位符缩略图">-->
+<!--                                    <p>杂草1号</p>-->
+<!--                                </a>-->
+<!--                            </div>-->
+<!--                            <div class="col-sm-6 col-md-4">-->
+<!--                                <a href="/showplant/plantdetail" class="thumbnail">-->
+<!--                                    <img src="static/img/1.jpg"-->
+<!--                                         alt="通用的占位符缩略图">-->
+<!--                                    <p>杂草1号</p>-->
+<!--                                </a>-->
+<!--                            </div>-->
+<!--                            <div class="col-sm-6 col-md-4">-->
+<!--                                <a href="/showplant/plantdetail" class="thumbnail">-->
+<!--                                    <img src="static/img/1.jpg"-->
+<!--                                         alt="通用的占位符缩略图">-->
+<!--                                    <p>杂草1号</p>-->
+<!--                                </a>-->
+<!--                            </div>-->
+<!--                            <div class="col-sm-6 col-md-4">-->
+<!--                                <a href="/showplant/plantdetail" class="thumbnail">-->
+<!--                                    <img src="static/img/1.jpg"-->
+<!--                                         alt="通用的占位符缩略图">-->
+<!--                                    <p>杂草1号</p>-->
+<!--                                </a>-->
+<!--                            </div>-->
+<!--                            <div class="col-sm-6 col-md-4">-->
+<!--                                <a href="/showplant/plantdetail" class="thumbnail">-->
+<!--                                    <img src="static/img/1.jpg"-->
+<!--                                         alt="通用的占位符缩略图">-->
+<!--                                    <p>杂草1号</p>-->
+<!--                                </a>-->
+<!--                            </div>-->
+                           <nav aria-label="Page navigation">
+		                        <div class="pagination">
+			                        <ul class="pagination">
+			                            {% if page.has_previous %}   # 判断当前页是否有上一页
+				                            <li><a href="showplant/{{page.previous_page_number}}" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span></a></li>
+                                        {% endif %}
+                                        {% for num in page.paginator.page_range%}  # 循环遍历页码列表，并展示到底部
+            	                            {%if pindex == page.number%}
+                	                            <li><a href="">{{ num }}</a></li>
+                                            {%else%}
+                                                <li><a href="showplant/{{num}}">{{ num }}</a></li>
+                                            {%endif%}
+                                        {% endfor %}
+
+                                        {% if page.has_next %}  # 判断当前页是否有下一页
+                                            <li><a href="showplant/{{page.next_page_number}}" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span></a></li>
+                                        {% endif %}
+       		                        </ul>
+		                        </div>
+                            </nav>
                         </div>
                     </div>
 
