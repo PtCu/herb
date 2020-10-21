@@ -322,7 +322,8 @@ def incubatorDeatil(request, incubatorno):
     print(lists)
     lists.sort(key=lambda fn: os.path.getmtime(dir + "/" + fn), reverse=True)  # 按时间排序
     print(lists)
-    file_new = os.path.join(dir, lists[0])  # 获取最新的文件保存到file_new
+    # file_new = os.path.join(dir, lists[0])  # 获取最新的文件保存到file_new
+    file_new = dir + "/" + str(lists[0])
     img = {'plant_image': file_new}
     info.update(img)
     print(file_new)
