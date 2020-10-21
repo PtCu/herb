@@ -31,7 +31,6 @@
 
     <link rel="shortcut icon" href="/static/assets/images/gt_favicon.png">
 
-    <link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
     <link rel="stylesheet" href="/static/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/assets/css/font-awesome.min.css">
 
@@ -72,8 +71,7 @@
                 </li>
                 <li><a href="/contact">联系我们</a></li>
                 {% if request.session.is_login %}
-                <li><a href="/incubator"><img class="head_img"
-                                              src="/static/img/personInfo/{{ request.session.userimg }}"></a></li>
+                <li><a href="/incubator"><img class="head_img" src="/media/{{ request.session.userimg }}"></a></li>
                 <li><a href="/logout/">注销</a></li>
                 {% endif %}
                 {% if not request.session.is_login %}
