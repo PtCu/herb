@@ -98,13 +98,17 @@
                     </div>
                     <div class="col-md-offset-1 col-md-10 top-margin"
                          style="border-bottom-color: #8c8c8c; border-bottom-style: solid; border-bottom-width: 3px; font-size: 18px">
-                        <form method="post" id="update_user_info" action="/updateUserInfo/">
+                        <form method="post" id="update_user_info" action="/updateUserInfo/" enctype="multipart/form-data">
                             {% csrf_token %}
                             <input type="hidden" name="userid" value="{{request.session.userid}}">
                             <div class="col-md-12 top-margin" style="padding: 5px">
                                 <p class="col-md-offset-3 col-md-2">用户名:</p>
                                 <input class="col-md-4" name="username" value="{{ request.session.username }}">
                             </div>
+
+                                <p class="col-md-offset-3 col-md-2">用户头像:</p>
+                                  <input type="file"  class="col-md-4" name="img" >
+
                             <!--<div class="col-md-12" style="padding: 5px">
                                 <p class="col-md-offset-3 col-md-2">用户ID:</p>
                                 <input class="col-md-4" value="{{ request.session.userid }}">
@@ -114,19 +118,23 @@
                                 <input class="col-md-4" name="userbirthday" type="date" value="{{request.session.userbirthday}}>
                             </div>-->
                             <div class=" col-md-12" style="padding: 5px">
-                                <p class="col-md-offset-3 col-md-2">用户性别:</p>
-                                <div class="col-md-1 radio" style="margin-top: 20px">
-                                    <input id="radio-1" name="sex" value="1" type="radio" ${request.session.usersex=="True"?"checked":""}>
-                                    <label for="radio-1" class="radio-label">男</label>
-                                </div>
-                                <div class="col-md-1 radio" style="margin-top: 20px">
-                                    <input id="radio-2" name="sex" value="2" type="radio" ${request.session.usersex=="False"?"checked":""}>
-                                    <label for="radio-2" class="radio-label">女</label>
-                                </div>
-                                <div class="col-md-1 radio " style="margin-top: 20px">
-                                    <input id="radio-3" name="sex" value="0" type="radio" ${request.session.usersex=="None"?"checked":"">
-                                    <label for="radio-3" class="radio-label">保密</label>
-                                </div>
+                                <p class="col-md-offset-3 col-md-2">用户性别: </p>
+
+                                <select name="sex" >
+                                    <option value="男" selected>男</option>
+                                    <option value="女" selected>女</option>
+                                </select>
+
+
+
+<!--                                <div class="col-md-1 radio" style="margin-top: 20px">-->
+<!--                                    <input id="radio-2" name="sex" value="2" type="radio" ${request.session.usersex=="False"?"checked":""}>-->
+<!--                                    <label for="radio-2" class="radio-label">女</label>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-1 radio " style="margin-top: 20px">-->
+<!--                                    <input id="radio-3" name="sex" value="0" type="radio" ${request.session.usersex=="None"?"checked":"">-->
+<!--                                    <label for="radio-3" class="radio-label">保密</label>-->
+<!--                                </div>-->
                             </div>
                             <div class="col-md-12" style="padding: 5px;">
                                 <p class="col-md-offset-3 col-md-2">用户简介:</p>

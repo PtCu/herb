@@ -9,7 +9,7 @@ class User(models.Model):
     name = models.CharField(max_length=10)
     password = models.CharField(max_length=20)
     img = models.ImageField(null=True, upload_to='image', blank=True)  # 图像
-    gender = models.CharField(db_column='userSex', choices=(('男', '男'), ('女', '女')), default=0, max_length=20)
+    gender = models.CharField(null=True, db_column='userSex', choices=(('男', '男'), ('女', '女')), default=0, max_length=20)
     lastLoginTime = models.DateTimeField(null=True, default=datetime.now())
     signature = models.TextField(null=True, blank=True) #个性签名
     registration_date = models.DateTimeField(null=True, default=datetime.now()) #创建时间

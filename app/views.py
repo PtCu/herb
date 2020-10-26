@@ -1,6 +1,8 @@
 import os
 
+from django.contrib import messages
 from django.core import serializers
+from django.core.files.base import ContentFile
 from django.shortcuts import render
 from django.shortcuts import redirect, reverse
 from django.http import HttpResponseRedirect, JsonResponse
@@ -111,6 +113,7 @@ def register(request):
         password = request.POST.get('password')
         usermail = request.POST.get('usermail')
         username = request.POST.get("username")
+        img = request.POST.get('img')
         try:
             user = models.User.objects.get(userphonenum=userphone)
             message = '此用户已存在'
@@ -133,6 +136,7 @@ def register(request):
                     newUser.username = username
                     newUser.usermail = usermail
                     newUser.password = password
+                    newUser.img = img
                     newUser.save()
                     return redirect('/login/')
     return render(request, '../temp/register.html')
@@ -421,7 +425,7 @@ def backendlogin(request):
 
 
 def backend(request):
-#    adminstrator=request[]
+    #    adminstrator=request[]
     incubator1 = Incubator.objects.all()
     plant = Plant.objects.all()
     fix = FixList.objects.all()
@@ -755,22 +759,31 @@ def getCDetail(request, id):
 
 
 def updateUserInfo(request):
-    if request.method == 'POST':
-        userid = request.POST.get('userid')
-        user = models.User.objects.get(user_id=userid)
-        user.gender = request.POST.get('sex')
-        user.signature = request.POST.get('userintroduction')
-        # user.birthday = request.POST.get('userbirthday')
-        user.name = request.POST.get('username')
-        user.save()
-        request.session['userid'] = user.user_id
-        request.session['userphone'] = user.phone
-        request.session['username'] = user.name
-        request.session['userimg'] = user.img
-        # request.session['userbirthday'] = user.birthday
-        request.session['userintroduction'] = user.signature
-        request.session['usersex'] = user.gender
-        print(user)
+    try:
+            if request.method == 'POST':
+                userid = request.POST.get('userid')
+                user = models.User.objects.get(user_id=userid)
+                user.gender = request.POST.get('sex')
+                user.signature = request.POST.get('userintroduction')
+                # user.birthday = request.POST.get('userbirthday')
+                user.name = request.POST.get('username')
+                imgContent = ContentFile(request.FILES['img'].read())
+                user.img.save(request.FILES['img'].name, imgContent)
+                user.save()
+    except:
+        messages.error(request, '用户名或密码不正确')
+        return redirect('/incubator/')
+    messages.error(request, '用户名或密码不正确')
+    print(type(user.img))
+    request.session['userid'] = user.user_id
+    request.session['userphone'] = user.phone
+    request.session['username'] = user.name
+    request.session['userimg'] = str(user.img)
+    # request.session['userbirthday'] = user.birthday
+    request.session['userintroduction'] = user.signature
+    request.session['usersex'] = user.gender
+
+    print(user)
     return redirect('/incubator/')
 
 
