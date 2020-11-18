@@ -50,41 +50,19 @@
                 <li><a href="/">主页</a></li>
                 <li><a href="/bbs">论坛</a></li>
                 <li class="active dropdown">
-                    <a href="/showplant" class="dropdown-toggle">药材 </a>
+                    <a href="/showplant/1" class="dropdown-toggle">药材 </a>
                     <!-- <ul class="dropdown-menu">
                         <li><a href="sidebar-left.html">Left Sidebar</a></li>
                         <li class="active"><a href="sidebar-right.html">Right Sidebar</a></li>
                     </ul> -->
                 </li>
                 <li><a href="/contact">联系我们</a></li>
-                {#
-                <li><a class="btn" href="signin.html">登录/ 注册</a></li>
-                #}
                 {% if request.session.is_login %}
                 <li><a href="/incubator"><img class="head_img"
                                               src="/static/img/personInfo/{{ request.session.userimg }}"></a></li>
-                {% comment %}
-                <div class="userimg-sm">
-                    <a href="/incubator">
-                        <img src="/static/img/personInfo/{{ request.session.userimg }}">
-                    </a>
-                </div>
-                {% endcomment %}
-                {# <h3 style="margin-left: 100px">{{ request.session.username }}</h3>#}
-                {% comment %}
-                <button class="btn btn-lg btn-danger" style="margin-top: -60px;margin-left: 100px"
-                        onclick="window.location='/logout/'">注销
-                </button>
-                {% endcomment %}
                 <li><a onclick="window.location='/logout/'">注销</a></li>
                 {% endif %}
                 {% if not request.session.is_login %}
-                {% comment %}
-                <div class="userimg-sm">
-                    <img src="/static/img/wdl.jpg">
-                </div>
-                <button class="btn btn-lg btn-info" data-toggle="modal" data-target="#myModal">登录</button>
-                {% endcomment %}
                 <li><a class="btn" href="/signin">登录/ 注册</a></li>
                 {% endif %}
             </ul>
@@ -104,14 +82,8 @@
             <div class="col-md-4 bbs-left">
                 <h2 style="margin-top: 25px">当下高分植物</h2>
                 <ol>
-                    <li><a href="/showplant/plantdetail">&nbsp;&nbsp;当归&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;种植人：&nbsp;沈药农</a>
-                    </li>
-                    <li><a href="/showplant/plantdetail">&nbsp;&nbsp;当归&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;种植人：&nbsp;沈药农</a>
-                    </li>
-                    <li><a href="/showplant/plantdetail">&nbsp;&nbsp;当归&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;种植人：&nbsp;沈药农</a>
-                    </li>
                     {% for item in popular_plant %}
-                    <li><a href="/showplant/plantdetail">&nbsp;&nbsp;{{ item.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{item.id}}</a>
+                    <li><a href="/showplant/plantdetail/{{item.id}}">&nbsp;&nbsp;{{ item.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;评分：{{ item.mark}}</a>
                     </li>
                     {% endfor %}
 
@@ -123,12 +95,16 @@
                     <div id="bbs-header">
 
                         <div class="row">
-                            <form class="col-md-offset-2 col-md-4  navbar-form navbar-left" role="search" method="post">
+                            <form class="col-md-offset-2 col-md-4  navbar-form navbar-left" role="search" method="post" action="/showplant/1">
+                                {% csrf_token %}
                                 <div class="form-group">
-                                    <input type="button" class="btn btn-default active" name="choice" value="k1">按时间</input>
+                                    <!--<input type="button" class="btn btn-default" name="choice" value="k1" checked>按时间</input>
                                     <input type="button" class="btn btn-default" name="choice" value="k2">按评分</input>
-                                    <input type="button" class="btn btn-default" name="choice" value="k3">按药材</input>
-                                    <input type="text" class="form-control" name="choice" placeholder="Search"/>
+                                    <input type="button" class="btn btn-default" name="choice" value="k3">按药材</input>-->
+                                    <button  class="btn btn-default" name="choice" value="k1">按时间</button>
+                                    <button  class="btn btn-default" name="choice" value="k2">按评分</button>
+                                    <button  class="btn btn-default" name="choice" value="k3">按药材</button>
+                                    <input type="text" class="form-control" name="search" placeholder="Search"/>
                                 </div>
                                 <button type="submit" class="btn btn-default">
                                     <span class="glyphicon glyphicon-search" style="margin-right: 0;"></span>
@@ -153,94 +129,45 @@
                     <div>
 
                         <div class="row">
-                            {%for item in plant_list%}
+                            {%for item in page%}
                             <div class="col-sm-6 col-md-4">
                                 <a href="/showplant/plantdetail/{{item.id}}" class="thumbnail">
-                                    {{item.img}}
+                                    <img src="/static/plant-img/{{item.img}}" style="height: 200px;width: 250px">
                                     <p>{{item.name}}</p>
                                 </a>
                             </div>
                             {%endfor%}
 
-<!--                            <div class="col-sm-6 col-md-4">-->
-<!--                                <a href="/showplant/plantdetail" class="thumbnail">-->
-<!--                                    <img src="static/img/1.jpg"-->
-<!--                                         alt="通用的占位符缩略图">-->
-<!--                                    <p>杂草1号</p>-->
-<!--                                </a>-->
-<!--                            </div>-->
-<!--                            <div class="col-sm-6 col-md-4">-->
-<!--                                <a href="/showplant/plantdetail" class="thumbnail">-->
-<!--                                    <img src="static/img/1.jpg"-->
-<!--                                         alt="通用的占位符缩略图">-->
-<!--                                    <p>杂草1号</p>-->
-<!--                                </a>-->
-<!--                            </div>-->
-<!--                            <div class="col-sm-6 col-md-4">-->
-<!--                                <a href="/showplant/plantdetail" class="thumbnail">-->
-<!--                                    <img src="static/img/1.jpg"-->
-<!--                                         alt="通用的占位符缩略图">-->
-<!--                                    <p>杂草1号</p>-->
-<!--                                </a>-->
-<!--                            </div>-->
-<!--                            <div class="col-sm-6 col-md-4">-->
-<!--                                <a href="/showplant/plantdetail" class="thumbnail">-->
-<!--                                    <img src="static/img/1.jpg"-->
-<!--                                         alt="通用的占位符缩略图">-->
-<!--                                    <p>杂草1号</p>-->
-<!--                                </a>-->
-<!--                            </div>-->
-<!--                            <div class="col-sm-6 col-md-4">-->
-<!--                                <a href="/showplant/plantdetail" class="thumbnail">-->
-<!--                                    <img src="static/img/1.jpg"-->
-<!--                                         alt="通用的占位符缩略图">-->
-<!--                                    <p>杂草1号</p>-->
-<!--                                </a>-->
-<!--                            </div>-->
-<!--                            <div class="col-sm-6 col-md-4">-->
-<!--                                <a href="/showplant/plantdetail" class="thumbnail">-->
-<!--                                    <img src="static/img/1.jpg"-->
-<!--                                         alt="通用的占位符缩略图">-->
-<!--                                    <p>杂草1号</p>-->
-<!--                                </a>-->
-<!--                            </div>-->
-<!--                            <div class="col-sm-6 col-md-4">-->
-<!--                                <a href="/showplant/plantdetail" class="thumbnail">-->
-<!--                                    <img src="static/img/1.jpg"-->
-<!--                                         alt="通用的占位符缩略图">-->
-<!--                                    <p>杂草1号</p>-->
-<!--                                </a>-->
-<!--                            </div>-->
-<!--                            <div class="col-sm-6 col-md-4">-->
-<!--                                <a href="/showplant/plantdetail" class="thumbnail">-->
-<!--                                    <img src="static/img/1.jpg"-->
-<!--                                         alt="通用的占位符缩略图">-->
-<!--                                    <p>杂草1号</p>-->
-<!--                                </a>-->
-<!--                            </div>-->
-                           <nav aria-label="Page navigation">
+                            <!--<div class="col-sm-6 col-md-4">
+                                <a href="/showplant/plantdetail" class="thumbnail">
+                                    <img src="/static/img/1.jpg"
+                                         alt="通用的占位符缩略图">
+                                    <p>杂草1号</p>
+                                </a>
+                            </div>-->
+                        </div>
+                        <nav aria-label="Page navigation">
 		                        <div class="pagination">
 			                        <ul class="pagination">
-			                            {% if page.has_previous %}   # 判断当前页是否有上一页
-				                            <li><a href="showplant/{{page.previous_page_number}}" aria-label="Previous">
+			                            {% if page.has_previous %}
+				                            <li><a href="/showplant/{{page.previous_page_number}}">
                                                 <span aria-hidden="true">&laquo;</span></a></li>
                                         {% endif %}
-                                        {% for num in page.paginator.page_range%}  # 循环遍历页码列表，并展示到底部
+                                        {% for num in page.paginator.page_range%}
             	                            {%if pindex == page.number%}
                 	                            <li><a href="">{{ num }}</a></li>
                                             {%else%}
-                                                <li><a href="showplant/{{num}}">{{ num }}</a></li>
+                                                <li><a href="/showplant/{{num}}">{{ num }}</a></li>
                                             {%endif%}
                                         {% endfor %}
 
-                                        {% if page.has_next %}  # 判断当前页是否有下一页
-                                            <li><a href="showplant/{{page.next_page_number}}" aria-label="Next">
+                                        {% if page.has_next %}
+                                            <li><a href="showplant/{{page.next_page_number}}">
                                             <span aria-hidden="true">&raquo;</span></a></li>
                                         {% endif %}
        		                        </ul>
 		                        </div>
                             </nav>
-                        </div>
                     </div>
 
 

@@ -1,8 +1,9 @@
 import os
+from datetime import datetime
 from typing import List, Any
 
 from django.core import serializers
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render
 from django.shortcuts import redirect, reverse
 from django.http import HttpResponseRedirect, JsonResponse
@@ -436,7 +437,7 @@ def backendlogin(request):
 
 
 def backend(request):
-#    adminstrator=request[]
+    #    adminstrator=request[]
     incubators = Incubator.objects.all()
     plants = Plant.objects.all()
     fixs = FixList.objects.all()
@@ -498,32 +499,35 @@ def contact(request):
 def showplant(request, pindex):
     plant_list = []
     if request.method == "POST":
-        button_list = request.POST.getlist("choice")
+        button_list = request.POST.get("choice")
         print(button_list)
-        if button_list[1].exist:
-            if "k1" == button_list[0]:
-                plant_list= models.Plant.objects.filter(name__icontains=button_list[1]).order_by('time')
-            elif "k2" == button_list[0]:
-                plant_list = models.Plant.objects.filter(name__icontains=button_list[1]).order_by('mark')
-            elif "k3" == button_list[0]:
-                plant_list = models.Plant.objects.filter(name__icontains=button_list[1]).order_by('plant_type')
+        search = request.POST.get("search")
+        if search != '':
+            if "k1" == button_list:
+                plant_list = models.Plant.objects.filter(name__icontains=search).order_by('time')
+            elif "k2" == button_list:
+                plant_list = models.Plant.objects.filter(name__icontains=search).order_by('mark')
+            elif "k3" == button_list:
+                plant_list = models.Plant.objects.filter(name__icontains=search).order_by('plant_type')
         else:
-            if "k1" == button_list[0]:
-                plant_list = models.Plant.objects.all().order_by('time')
-            elif "k2" == button_list[0]:
-                plant_list = models.Plant.objects.all().order_by('mark')
-            elif "k3" == button_list[0]:
-                plant_list = models.Plant.objects.all().order_by('plant_type')
-
-    #分页
-    paginator = Paginator(plant_list, 5)  # 实例化Paginator, 每页显示5条数据
+            if "k1" == button_list:
+                plant_list = models.Plant.objects.all().order_by('-time')
+            elif "k2" == button_list:
+                plant_list = models.Plant.objects.all().order_by('-mark')
+            elif "k3" == button_list:
+                plant_list = models.Plant.objects.all().order_by('name')
+    else:
+        plant_list = models.Plant.objects.all().order_by('-time')
+    # 分页
+    print(plant_list)
+    paginator = Paginator(plant_list, 6)  # 实例化Paginator, 每页显示5条数据
     if pindex == "":  # django中默认返回空值，所以加以判断，并设置默认值为1
         pindex = 1
     else:  # 如果有返回在值，把返回值转为整数型
         int(pindex)
     page = paginator.page(pindex)  # 传递当前页的实例对象到前端
 
-    popular_plant = models.Plant.objects.all().order_by('popularity')[:15]
+    popular_plant = models.Plant.objects.all().order_by('-popularity')[:15]
 
     content = {
         'plant_list': plant_list,
@@ -534,9 +538,9 @@ def showplant(request, pindex):
 
 
 def plantdetail(request, id):
-    plant = models.Plant.objects.filter(id=id)
+    plant = models.Plant.objects.get(id=id)
     content = {
-        plant: plant
+        "plant": plant
     }
     return render(request, 'plant_detail.html', content)
 
@@ -879,6 +883,7 @@ def connect(request):
                 return redirect('/incubator/')
     return redirect('/incubator/')
 
+
 def connect(request):
     if request.method == 'POST':
         incubator_id = request.POST.get('incubator_id')
@@ -894,8 +899,50 @@ def connect(request):
     return redirect('/incubator/')
 
 
-def disconnected(request,incubatorno):
+def disconnected(request, incubatorno):
     incubator = models.Incubator.objects.get(incubator_id=incubatorno)
     incubator.state = False
     incubator.save()
     return redirect('/incubator')
+
+
+def insert(request):
+    tem = request.POST.get('PsTem')
+    hum = request.POST.get('PsHum')
+    press = request.POST.get('PsPress')
+    light = request.POST.get('PsLight')
+    incu_id = request.POST.get('BoxId')
+    plant = request.POST.get('Plant')
+    print(tem)
+    print(hum)
+    print(press)
+    print(light)
+
+    time = datetime.now()
+    print(time)
+    data = models.IncubatorHistory()
+    data.curTime = time
+    data.temperature = tem
+    data.humidity = hum
+    incu = models.Incubator.objects.filter(incubator_id=incu_id)
+    data.incubator = incu[0]
+    data.pressure = press
+    data.light = light
+    data.plant = plant
+    print(data)
+    data.save()
+    return HttpResponse("success")
+
+
+# def plant(request):
+#     plant_list = models.Plant.objects.all()
+#     print(list)
+#     page = request.GET.get('page')
+#     paginator = Paginator(list, 3)
+#     try:
+#         plant_list = paginator.page(page)
+#     except PageNotAnInteger:
+#         plant_list = paginator.page(1)
+#     except EmptyPage:
+#         plant_list = paginator.page(paginator.num_pages)
+#     return render(request, 'show_plant.html', locals())

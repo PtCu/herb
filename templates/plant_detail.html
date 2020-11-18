@@ -63,7 +63,7 @@
                 <li><a href="/">主页</a></li>
                 <li><a href="/bbs">论坛</a></li>
                 <li class="dropdown active">
-                    <a href="/showplant" class="dropdown-toggle">药材 </a>
+                    <a href="/showplant/1" class="dropdown-toggle">药材 </a>
                     <!-- <ul class="dropdown-menu">
                         <li><a href="sidebar-left.html">Left Sidebar</a></li>
                         <li class="active"><a href="sidebar-right.html">Right Sidebar</a></li>
@@ -101,9 +101,9 @@
 {% comment %}内容开始{% endcomment %}
 <div style="margin-left: 50px;margin-right: 50px;width: auto;margin-top: 118px">
     <div class="col-md-12 box-detail-title ">
-        <h1 class="col-md-4 top-margin">杂草一号</h1>
+        <h1 class="col-md-4 top-margin">{{plant.name}}</h1>
         <button class="col-md-offset-6 col-md-2 btn btn-info" style="margin-top: 20px; height: 50px"
-                onclick="window.location.href='/showplant'">返回
+                onclick="window.location.href='/showplant/1'">返回
         </button>
     </div>
     <div id="box-detail" class="col-md-12">
@@ -115,7 +115,7 @@
                 <div class="col-md-12 averinf" style="margin-top: 20px">
 
                     <h3 class="col-md-12">植物简单信息</h3>
-                    <img src="/static/img/1.jpg" class="col-md-3 img-thumbnail top-margin">
+                    <img src="/static/plant-img/{{plant.img}}" class="col-md-3 img-thumbnail top-margin">
                     <div class="col-md-offset-1 col-md-7">
                         <div class="plantname top-margin">
                             <h1>{{plant.name}}</h1>
