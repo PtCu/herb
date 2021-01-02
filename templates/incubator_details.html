@@ -74,7 +74,7 @@
                 {% if request.session.is_login %}
                 <li><a href="/incubator"><img class="head_img"
                                               src="/static/img/personInfo/{{ request.session.userimg }}"></a></li>
-                <li><a href="/logout/">注销</a></li>
+                <li><a onclick="window.location='/logout/'">注销</a></li>
                 {% endif %}
                 {% if not request.session.is_login %}
                 <li><a class="btn" href="/signin">登录/ 注册</a></li>
@@ -105,7 +105,7 @@
                 <!--箱内属性展示  简单表示 -->
                 <div class="row">
                     <div class="col-md-6 ">
-                        <!--<img style="width:700px;height: 500px" src="/{{ plant_image }}" id="incubator_img"
+                        <img style="width:700px;height: 500px" src="/{{ plant_image }}" id="incubator_img"
                              onload="refreshImg()">
                         <script>
                             function refreshImg() {
@@ -118,9 +118,9 @@
                             }
 
 
-                        </script>-->
+                        </script>
+                        <!--
                         <video id="video" style="width:700px;height: 500px"></video>
-
                         <script>
                             var video = document.getElementById('video');
 
@@ -161,7 +161,7 @@
                             }
 
                         </script>
-
+                        -->
                     </div>
 
                     <div class="col-md-5 plant-simple-info">

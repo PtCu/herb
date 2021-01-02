@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
+    'test_app',
+    'home_manage',
 ]
 
 MIDDLEWARE = [
@@ -123,7 +125,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 LANGUAGE_CODE = 'zh-hans'
 
@@ -136,9 +138,6 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = [
-    os.path.join(BASE_DIR, "media"),
-
-]
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 SIMPLEUI_HOME_INFO = False
