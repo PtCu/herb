@@ -60,36 +60,23 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav pull-right">
-                <li><a href="/">主页</a></li>
+                <li class="active"><a href="/">主页</a></li>
                 <li><a href="/bbs">论坛</a></li>
-                <li class="dropdown active">
-                    <a href="/showplant" class="dropdown-toggle">药材 </a>
+                <li class="dropdown">
+                    <a href="/showplant/1" class="dropdown-toggle">药材 </a>
                     <!-- <ul class="dropdown-menu">
                         <li><a href="sidebar-left.html">Left Sidebar</a></li>
                         <li class="active"><a href="sidebar-right.html">Right Sidebar</a></li>
                     </ul> -->
                 </li>
                 <li><a href="/contact">联系我们</a></li>
-                {#                <li><a class="btn" href="signin.html">登录/ 注册</a></li>#}
                 {% if request.session.is_login %}
-                    <li><a href="/incubator"><img class="head_img" src="/static/img/personInfo/{{ request.session.userimg }}"></a></li>
-                    {% comment %}<div class="userimg-sm">
-                        <a href="/incubator">
-                            <img src="/static/img/personInfo/{{ request.session.userimg }}">
-                        </a>
-                    </div>{% endcomment %}
-                    {#                    <h3 style="margin-left: 100px">{{ request.session.username }}</h3>#}
-                    {% comment %}<button class="btn btn-lg btn-danger" style="margin-top: -60px;margin-left: 100px"
-                            onclick="window.location='/logout/'">注销
-                    </button>{% endcomment %}
-                    <li><a onclick="window.location='/logout/'">注销</a></li>
+                <li><a href="/incubator"><img class="head_img"
+                                              src="/static/img/personInfo/{{ request.session.userimg }}"></a></li>
+                <li><a onclick="window.location='/logout/'">注销</a></li>
                 {% endif %}
                 {% if not request.session.is_login %}
-                    {% comment %}<div class="userimg-sm">
-                        <img src="/static/img/wdl.jpg">
-                    </div>
-                    <button class="btn btn-lg btn-info" data-toggle="modal" data-target="#myModal">登录</button>{% endcomment %}
-                    <li><a class="btn" href="/signin">登录/ 注册</a></li>
+                <li><a class="btn" href="/signin">登录/ 注册</a></li>
                 {% endif %}
             </ul>
         </div>
@@ -101,9 +88,9 @@
 {% comment %}内容开始{% endcomment %}
 <div style="margin-left: 50px;margin-right: 50px;width: auto;margin-top: 118px">
     <div class="col-md-12 box-detail-title ">
-        <h1 class="col-md-4 top-margin">杂草一号</h1>
+        <h1 class="col-md-4 top-margin">{{plant.name}}</h1>
         <button class="col-md-offset-6 col-md-2 btn btn-info" style="margin-top: 20px; height: 50px"
-                onclick="window.location.href='/showplant'">返回
+                onclick="window.location.href='/showplant/1'">返回
         </button>
     </div>
     <div id="box-detail" class="col-md-12">
@@ -115,7 +102,7 @@
                 <div class="col-md-12 averinf" style="margin-top: 20px">
 
                     <h3 class="col-md-12">植物简单信息</h3>
-                    <img src="/static/img/1.jpg" class="col-md-3 img-thumbnail top-margin">
+                    <img src="/static/plant-img/{{plant.img}}" class="col-md-3 img-thumbnail top-margin">
                     <div class="col-md-offset-1 col-md-7">
                         <div class="plantname top-margin">
                             <h1>{{plant.name}}</h1>

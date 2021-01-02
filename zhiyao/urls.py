@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, re_path
+from django.urls import path, re_path, include
 
 from app import views
 from django.views.static import serve
@@ -29,6 +29,7 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('incubator/', views.incubator, name='incubator'),
     path('updateUserInfo/', views.updateUserInfo),
+    # path('bbs/', include('bbs.urls')),
     path('bbs/', views.bbs, name='bbs'),
     path('incubatorDetail/<incubatorno>/', views.incubatorDeatil, name='incubatorDetail'),
     path('alterenviroment/<incubatorno>/', views.alterenviroment, name="alterenviroment"),
@@ -52,10 +53,14 @@ urlpatterns = [
     path('oldplantinfo/<incubatorno>/', views.plantinf_old),
     path('howtoplant', views.howtoplant),
     path('showplant/<pindex>', views.showplant),
+    # path('plant', views.plant),
     path('showplant/plantdetail/<id>', views.plantdetail, name="plantdetail"),
-    path('referfix/<incubatorno>/',views.referfix),
-    path('disconnected/<incubatorno>/',views.disconnected),
+    path('referfix/<incubatorno>/', views.referfix),
+    path('disconnected/<incubatorno>/', views.disconnected),
     path('connect/', views.connect),
+    path('insertData/', views.insert),
+    path('monitor/', views.monitor),
+    path('monitorc/', views.hardcontrol),
     #############################路径需要修改
     # path('guide', views.guide),
     # path('changeEnvironment/<incubatorno>/', views.proIncubator, name="changeEnvironment"),

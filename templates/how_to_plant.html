@@ -56,7 +56,7 @@
             <!-- Button for smallest screens -->
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span
                     class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button>
-            <a class="navbar-brand" href="/"><imgsrc="/static/assets/images/logo.png" height="38"
+            <a class="navbar-brand" href="/"><img src="/static/assets/images/logo.png" height="38"
                                                   alt="Progressus HTML5 template"></a>
         </div>
         <div class="navbar-collapse collapse">
@@ -64,34 +64,20 @@
                 <li class="active"><a href="/">主页</a></li>
                 <li><a href="/bbs">论坛</a></li>
                 <li class="dropdown">
-                    <a href="/showplant" class="dropdown-toggle">药材 </a>
+                    <a href="/showplant/1" class="dropdown-toggle">药材 </a>
                     <!-- <ul class="dropdown-menu">
                         <li><a href="sidebar-left.html">Left Sidebar</a></li>
                         <li class="active"><a href="sidebar-right.html">Right Sidebar</a></li>
                     </ul> -->
                 </li>
                 <li><a href="/contact">联系我们</a></li>
-                {#                <li><a class="btn" href="signin.html">登录/ 注册</a></li>#}
                 {% if request.session.is_login %}
-                    <li><a href="/incubator"><img class="head_img"
-                                                  src="/static/img/personInfo/{{ request.session.userimg }}"></a></li>
-                    {% comment %}<div class="userimg-sm">
-                        <a href="/incubator">
-                            <img src="/static/img/personInfo/{{ request.session.userimg }}">
-                        </a>
-                    </div>{% endcomment %}
-                    {#                    <h3 style="margin-left: 100px">{{ request.session.username }}</h3>#}
-                    {% comment %}<button class="btn btn-lg btn-danger" style="margin-top: -60px;margin-left: 100px"
-                            onclick="window.location='/logout/'">注销
-                    </button>{% endcomment %}
-                    <li><a href="/logout/">注销</a></li>
+                <li><a href="/incubator"><img class="head_img"
+                                              src="/static/img/personInfo/{{ request.session.userimg }}"></a></li>
+                <li><a onclick="window.location='/logout/'">注销</a></li>
                 {% endif %}
                 {% if not request.session.is_login %}
-                    {% comment %}<div class="userimg-sm">
-                        <img src="/static/img/wdl.jpg">
-                    </div>
-                    <button class="btn btn-lg btn-info" data-toggle="modal" data-target="#myModal">登录</button>{% endcomment %}
-                    <li><a class="btn" href="/signin">登录/ 注册</a></li>
+                <li><a class="btn" href="/signin">登录/ 注册</a></li>
                 {% endif %}
             </ul>
         </div>
