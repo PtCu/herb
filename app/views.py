@@ -150,10 +150,12 @@ def signin(request):
 # 用户注册
 def signup(request):
     if request.method == 'POST':
+
         userphone = request.POST.get('userphone')
         password = request.POST.get('password')
         usermail = request.POST.get('usermail')
         username = request.POST.get("username")
+        print(username)
         try:
             user = models.User.objects.get(phone=userphone)
             message = '此用户已存在'
