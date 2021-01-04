@@ -17,6 +17,7 @@
     <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
     <link rel="shortcut icon" href="/static/assets/images/gt_favicon.png">
 
+    <link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
     <link rel="stylesheet" href="/static/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/assets/css/font-awesome.min.css">
 
@@ -46,10 +47,10 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav pull-right">
-                <li><a href="/">主页</a></li>
+                <li class="active"><a href="/">主页</a></li>
                 <li><a href="/bbs">论坛</a></li>
                 <li class="dropdown">
-                    <a href="/showplant" class="dropdown-toggle">药材 </a>
+                    <a href="/showplant/1" class="dropdown-toggle">药材 </a>
                     <!-- <ul class="dropdown-menu">
                         <li><a href="sidebar-left.html">Left Sidebar</a></li>
                         <li class="active"><a href="sidebar-right.html">Right Sidebar</a></li>
@@ -57,7 +58,8 @@
                 </li>
                 <li><a href="/contact">联系我们</a></li>
                 {% if request.session.is_login %}
-                <li class="active"><a href="/incubator"><img class="head_img" src="/media/{{ request.session.userimg }}"></a></li>
+                <li><a href="/incubator"><img class="head_img"
+                                              src="/static/img/personInfo/{{ request.session.userimg }}"></a></li>
                 <li><a onclick="window.location='/logout/'">注销</a></li>
                 {% endif %}
                 {% if not request.session.is_login %}
@@ -73,19 +75,66 @@
     <div class="col-md-12 person-inf">
         <ul id="myTab" class="nav nav-tabs">
             <li class="active" id="grinfBtn" style="margin-left: 0">
-                <a href="#inf" data-toggle="tab">
-
-                    个人信息
+                <a href="#box" data-toggle="tab">
+                    我的箱子
                 </a>
             </li>
-            <li><a href="#box" data-toggle="tab">我的箱子</a></li>
+            <li><a href="#inf" data-toggle="tab">个人信息</a></li>
             <!--
             添加往期数据查询
             -->
         </ul>
         <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade in active" id="box">
 
-            <div class="tab-pane fade in active" id="inf">
+                <div class="col-md-offset-1 col-md-6 top-search">
+                    <input type="text">
+                    <button class="btn btn-default">搜索</button>
+                </div>
+
+                <button class="btn btn-info" id="buy">购买新设备</button>
+                <button class="btn btn-info" id="link" data-toggle="modal" data-target="#myModal">
+                    关联新设备
+                </button>
+                <div class="col-md-1"></div>
+                <div class="col-md-offset-1 col-md-10 box-mem">
+                    {% for incubator in incu %}
+                    <div class=" box-inf">
+                        <img class="col-md-3 box-img img-thumbnail" src="/static/img/incubator.jpg">
+
+                        <div class="col-md-8 box-word-head">
+                            <div>
+                                <p class="">培养箱编号:</p>
+                                <p>{{ incubator.0 }}</p>
+                            </div>
+                            <div>
+                                <p class="">正在种植药材:</p>
+                                <p id="linkdata">{{ incubator.1 }}</p>
+                            </div>
+                            <span style="float: right; padding-bottom: 5px">
+                                <button class="btn btn-info offlink"
+                                    onclick="window.location.href='/disconnected/{{ incubator.0 }}/'">取消关联</button>
+                                <form method="get" action="/incubatorDetail/{{ incubator.0 }}/">
+                                    <button class="btn btn-info goinf" type="submit">详细信息</button>
+                                </form>
+                            </span>
+                        </div>
+
+                        <!--
+                        用于填入培养箱的简单信息
+                        -->
+                        <!--<div class="col-md-8 box-word-head">
+                            <p class="">正在种植药材:</p>
+                            <p id="linkdata">{{ incubator.1 }}</p><br/>
+                            <p class="">正在种植药材:</p>
+                        </div>-->
+                    </div>
+                    {% endfor %}
+
+                </div>
+
+            </div>
+            <div class="tab-pane fade" id="inf">
                 <div class="col-md-12 top-space">
 
                     <img class="col-md-offset-1 img-circle userimg" style="height: 100px; width: 100px"
@@ -100,17 +149,13 @@
                     </div>
                     <div class="col-md-offset-1 col-md-10 top-margin"
                          style="border-bottom-color: #8c8c8c; border-bottom-style: solid; border-bottom-width: 3px; font-size: 18px">
-                        <form method="post" id="update_user_info" action="/updateUserInfo/" enctype="multipart/form-data">
+                        <form method="post" id="update_user_info" action="/updateUserInfo/">
                             {% csrf_token %}
                             <input type="hidden" name="userid" value="{{request.session.userid}}">
                             <div class="col-md-12 top-margin" style="padding: 5px">
                                 <p class="col-md-offset-3 col-md-2">用户名:</p>
                                 <input class="col-md-4" name="username" value="{{ request.session.username }}">
                             </div>
-
-                                <p class="col-md-offset-3 col-md-2">用户头像:</p>
-                                 <input type="file"  class="col-md-4" name="img" >
-
                             <!--<div class="col-md-12" style="padding: 5px">
                                 <p class="col-md-offset-3 col-md-2">用户ID:</p>
                                 <input class="col-md-4" value="{{ request.session.userid }}">
@@ -120,23 +165,19 @@
                                 <input class="col-md-4" name="userbirthday" type="date" value="{{request.session.userbirthday}}>
                             </div>-->
                             <div class=" col-md-12" style="padding: 5px">
-                                <p class="col-md-offset-3 col-md-2">用户性别: </p>
-
-                                <select name="sex" >
-                                    <option value="男" selected>男</option>
-                                    <option value="女" selected>女</option>
-                                </select>
-
-
-
-<!--                                <div class="col-md-1 radio" style="margin-top: 20px">-->
-<!--                                    <input id="radio-2" name="sex" value="2" type="radio" ${request.session.usersex=="False"?"checked":""}>-->
-<!--                                    <label for="radio-2" class="radio-label">女</label>-->
-<!--                                </div>-->
-<!--                                <div class="col-md-1 radio " style="margin-top: 20px">-->
-<!--                                    <input id="radio-3" name="sex" value="0" type="radio" ${request.session.usersex=="None"?"checked":"">-->
-<!--                                    <label for="radio-3" class="radio-label">保密</label>-->
-<!--                                </div>-->
+                                <p class="col-md-offset-3 col-md-2">用户性别:</p>
+                                <div class="col-md-1 radio" style="margin-top: 20px">
+                                    <input id="radio-1" name="sex" value="1" type="radio" ${request.session.usersex=="True"?"checked":""}>
+                                    <label for="radio-1" class="radio-label">男</label>
+                                </div>
+                                <div class="col-md-1 radio" style="margin-top: 20px">
+                                    <input id="radio-2" name="sex" value="2" type="radio" ${request.session.usersex=="False"?"checked":""}>
+                                    <label for="radio-2" class="radio-label">女</label>
+                                </div>
+                                <div class="col-md-1 radio " style="margin-top: 20px">
+                                    <input id="radio-3" name="sex" value="0" type="radio" ${request.session.usersex=="None"?"checked":"">
+                                    <label for="radio-3" class="radio-label">保密</label>
+                                </div>
                             </div>
                             <div class="col-md-12" style="padding: 5px;">
                                 <p class="col-md-offset-3 col-md-2">用户简介:</p>
@@ -144,7 +185,7 @@
                                        value="{{ request.session.userintroduction }}">
                             </div>
                             <button class="btn btn-lg btn-danger" id="save"
-                                    style="margin-bottom:40px;margin-left: 32%; margin-top: 30px" type="submit" value="123456">保存
+                                    style="margin-bottom:40px;margin-left: 32%; margin-top: 30px" type="submit">保存
                             </button>
                         </form>
 
@@ -227,52 +268,10 @@
 
                 </div>
             </div>
-            <div class="tab-pane fade" id="box">
-
-                <div class="col-md-offset-1 col-md-6 top-search">
-                    <input type="text">
-                    <button class="btn btn-default">搜索</button>
-                </div>
-
-                <button class="btn btn-info" id="buy">购买新设备</button>
-                <button class="btn btn-info" id="link" data-toggle="modal" data-target="#myModal">
-                    关联新设备
-                </button>
-                <div class="col-md-1"></div>
-                <div class="col-md-offset-1 col-md-10 box-mem">
-                    {% for incubator in incu %}
-                    <div class=" box-inf">
-                        <img class="col-md-3 box-img img-thumbnail" src="/static/img/incubator.jpg">
-
-                        <div class="col-md-8 box-word-head">
-                            <p class="">培养箱编号:</p>
-                            <p>{{ incubator.0 }}</p>
-                            <p class="">正在种植药材:</p>
-                            <p id="linkdata">未知</p>
-                            <span style="float: right; padding-bottom: 5px">
-                                <button class="btn btn-info offlink">取消关联</button>
-                                <form method="get" action="/incubatorDetail/{{ incubator.0 }}/">
-                                    <button class="btn btn-info goinf" type="submit">详细信息</button>
-                                </form>
-                            </span>
-                        </div>
-
-                        <div class="col-md-3"></div>
-                        <!--
-                        用于填入培养箱的简单信息
-                        -->
-                        <div class="col-md-9 box-word-main"></div>
-                    </div>
-                    {% endfor %}
-
-                </div>
-
-            </div>
-
 
         </div>
     </div>
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    <!--<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true"
          style="margin-left: -250px">
         <div class="modal-dialog">
@@ -310,9 +309,9 @@
 
                                         </div>
                                         <div class="col-md-3"></div>
-                                        <!--
+                                        &lt;!&ndash;
                                         用于填入培养箱的简单信息
-                                        -->
+                                        &ndash;&gt;
                                         <div class="col-md-9 box-word-main"></div>
                                     </div>
                                     <button class="col-md-offset-4 col-md-3 btn btn-danger"
@@ -325,9 +324,113 @@
                     </div>
                 </div>
 
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-    </div>
+            </div>&lt;!&ndash; /.modal-content &ndash;&gt;
+        </div>&lt;!&ndash; /.modal &ndash;&gt;
+    </div>-->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title" id="myModalLabel">关联培养箱</h3>
+                    </div>
+                    <div class="panel-body">
+                        <h4 class="thin text-center">请确认您的培养箱已连通电源</h4>
+                        <p class="text-center text-muted">没有培养箱？<a href="/signup">去申请</a></p>
+                        <hr>
+
+                        <form id="signin" method="post" action="/connect/">
+                            {% comment %}防止跨站请求伪造{% endcomment %}
+                            {% csrf_token %}
+                            <div class="top-margin">
+                                <label>培养箱编号<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="incubator_id" placeholder="请输入培养箱背面的编号">
+                                <p id="telephoneError" class="errorMessage">{{message}}</p>
+                            </div>
+                            <div class=" top-margin">
+                                <label>培养箱密钥<span class="text-danger">*</span></label>
+                                <input type="password" class="form-control" name="key" placeholder="请输入培养箱背面的密钥">
+                                <p id="passwordError" class="errorMessage"></p>
+                            </div>
+
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-lg-8">
+                                </div>
+                                <div class="col-lg-4 text-right">
+                                    <button class="btn btn-action" type="submit">连接</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!--<div class="modal-body sensor-detail">
+                        <div id="container"></div>
+                        <p>当前温度：{{ Mtemperatures.0 }}</p>
+                        <p>建议温度：{{ suggest.temperature }}</p>
+                    </div>-->
+                    <!--<div id="main_4" style="width: 600px;height:400px;"></div>
+                    <script type="text/javascript">
+                        //尝试获取数据
+                        var listTime = {{ time|safe }};
+                        var listTemp = {{ temperature|safe }};
+                        // 基于准备好的dom，初始化echarts实例
+                        var myChart = echarts.init(document.getElementById('main_4'));
+
+                        // 指定图表的配置项和数据
+                        var option = {
+                            title: {
+                                text: '温度变化'
+                            },
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            legend: {
+                                data: ['温度']
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            toolbox: {
+                                feature: {
+                                    saveAsImage: {}
+                                }
+                            },
+                            xAxis: {
+                                axisLabel: {
+                                    interval: 0,
+                                    rotate: 90,//倾斜度 -90 至 90 默认为0
+                                    margin: 2,
+                                },
+                                type: 'category',
+                                boundaryGap: false,
+                                data: listTime
+                            },
+                            yAxis: {
+                                type: 'value',
+                                splitNumber:10
+                            },
+                            series: [
+                                {
+                                    name: '温度',
+                                    type: 'line',
+                                    smooth: true,
+                                    data: listTemp
+                                },
+                            ]
+                        };
+
+
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(option);
+                    </script>-->
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
 </div>
 
 <!-- Social links. @TODO: replace by link/instructions in template -->

@@ -1,8 +1,10 @@
+import base64
 import os
-
-from django.contrib import messages
+from datetime import datetime
+from typing import List, Any
+from home_manage.models import *
 from django.core import serializers
-from django.core.files.base import ContentFile
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render
 from django.shortcuts import redirect, reverse
 from django.http import HttpResponseRedirect, JsonResponse
@@ -15,6 +17,8 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 import time
 import json
+
+import home_manage
 from . import predict, models
 
 # 注释掉的内容为解决错误的另一种方法
@@ -57,7 +61,7 @@ from . import predict, models
 #     else:
 #         print('predict else')
 #         return "error"
-from .models import Incubator, FixList, User, Plant
+from .models import Incubator, FixList, User, Plant, IncubatorHistory
 
 
 def index(request):
@@ -66,7 +70,26 @@ def index(request):
     :param request:
     :return:
     """
-    return render(request, 'index1.html')
+    home_image = HomeImage.objects.all().order_by('-create_time')[:3]
+    policy_link = Link.objects.all().filter(link_type='国家政策').order_by('-create_time')[:2]
+    guide_link = Link.objects.all().filter(link_type='中草药培养指南').order_by('-create_time')[:2]
+    using_link = Link.objects.all().filter(link_type='培养箱使用手册').order_by('-create_time')[:2]
+    price_link = Link.objects.all().filter(link_type='草药市场行情').order_by('-create_time')[:2]
+    incubator_info = IncubatorInfo.objects.all().order_by('-create_time')[:3]
+    advantage = Advantage.objects.all().order_by('-time')[:4]
+
+    info = {
+        "home_image": home_image,
+        "policy_link": policy_link,
+        "guide_link": guide_link,
+        "using_link": using_link,
+        "price_link": price_link,
+        "incubator_info": incubator_info,
+        "advantage": advantage,
+    }
+
+    print(info)
+    return render(request, 'index1.html', info)
 
 
 # #实现用户登陆功能
@@ -113,7 +136,6 @@ def register(request):
         password = request.POST.get('password')
         usermail = request.POST.get('usermail')
         username = request.POST.get("username")
-        img = request.POST.get('img')
         try:
             user = models.User.objects.get(userphonenum=userphone)
             message = '此用户已存在'
@@ -136,7 +158,6 @@ def register(request):
                     newUser.username = username
                     newUser.usermail = usermail
                     newUser.password = password
-                    newUser.img = img
                     newUser.save()
                     return redirect('/login/')
     return render(request, '../temp/register.html')
@@ -150,12 +171,10 @@ def signin(request):
 # 用户注册
 def signup(request):
     if request.method == 'POST':
-
         userphone = request.POST.get('userphone')
         password = request.POST.get('password')
         usermail = request.POST.get('usermail')
         username = request.POST.get("username")
-        print(username)
         try:
             user = models.User.objects.get(phone=userphone)
             message = '此用户已存在'
@@ -198,12 +217,19 @@ def getIncubator(userid):
 def incubator(request):
     userphone = request.session['userphone']
     # get是获取单个对象，filte是设置筛选条件
-    incubators = models.Incubator.objects.filter(user=userphone)
+    incubators = models.Incubator.objects.filter(user=userphone).filter(state=True)
     incuID = []
     incu = []
+    plant = []
     for item in incubators:
         incuID.append(item.incubator_id)
-        incu = zip(incuID)
+        p = models.IncubatorHistory.objects.filter(incubator=item.incubator_id).order_by('-curTime')
+        if p:
+            incubator_plant = p[0].plant
+        else:
+            incubator_plant = '未知'
+        plant.append(incubator_plant)
+        incu = zip(incuID, plant)
     print('jump to incubator success')
     return render(request, 'incubator.html', {"incu": incu})
 
@@ -260,7 +286,7 @@ def incubatorDeatil(request, incubatorno):
     # monitorDatas = models.Monitorinform.objects.filter(incubatorusing_iuno=iuno).order_by('mtime')
     # monitorDatas = models.Monitorinform.objects.all().order_by('-mtime')
     # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    # print(monitorDatas)
+    print(monitor_data)
 
     # 获取植物相关信息
     incubator_using = monitor_data[0]
@@ -290,6 +316,10 @@ def incubatorDeatil(request, incubatorno):
     device_info = {'device': device_list}
     info.update(device_info)
 
+    # 获取历史数据
+    old_info = get_old_info(incubatorno)
+    info.update(old_info)
+
     time = []
     temperature = []
     humidity = []
@@ -315,7 +345,8 @@ def incubatorDeatil(request, incubatorno):
     print(lists)
     lists.sort(key=lambda fn: os.path.getmtime(dir + "/" + fn), reverse=True)  # 按时间排序
     print(lists)
-    file_new = os.path.join(dir, lists[0])  # 获取最新的文件保存到file_new
+    # file_new = os.path.join(dir, lists[0])  # 获取最新的文件保存到file_new
+    file_new = dir + "/" + str(lists[0])
     img = {'plant_image': file_new}
     info.update(img)
     print(file_new)
@@ -402,6 +433,7 @@ def getIncubatorID(iuno):
 
 # 修改培养箱的环境信息
 def alterenviroment(request, incubatorno):
+    global url
     print("jingruhanshu")
     if request.method == "POST":
         light = request.POST.get('led_ctl')
@@ -428,22 +460,54 @@ def backendlogin(request):
 
 def backend(request):
     #    adminstrator=request[]
-    incubator1 = Incubator.objects.all()
-    plant = Plant.objects.all()
-    fix = FixList.objects.all()
+    incubators = Incubator.objects.all()
+    plants = Plant.objects.all()
+    fixs = FixList.objects.all()
     # order = Sellpost.objects.all()
-    user = User.objects.all()
+    users = User.objects.all()
     context = {
-        'incubator1': incubator1,
-        'Plant': plant,
-        'fix': fix,
-        'user': user,
+        'incubators': incubators,
+        'plants': plants,
+        'fixs': fixs,
+        'users': users,
     }
     return render(request, 'Backend.html', context)
 
 
-def plantinf_old(request):
-    return render(request, 'old_plant_info.html')
+def get_old_info(incubatorno):
+    history = models.IncubatorHistory.objects.filter(incubator=incubatorno).order_by("curTime")[:20]
+    for data in history:
+        data.curTime = data.curTime.strftime("%Y/%m/%d %H:%M:%S")
+    time = []
+    light = []
+    temperature = []
+    humility = []
+    pressure = []
+    plant = []
+    data_list = list(history)
+    for item in data_list:
+        time.append(str(item.curTime)[:16])
+        light.append(item.light)
+        temperature.append(item.temperature)
+        humility.append(item.humidity)
+        pressure.append(item.pressure)
+        plant.append(item.plant)
+    content = {
+        'history': history,
+        'time': json.dumps(time),
+        'temperature': json.dumps(temperature),
+        'light': json.dumps(light),
+        'pressure': json.dumps(pressure),
+        'humidity': json.dumps(humility),
+        'plant': json.dumps(plant)
+    }
+
+    return content
+
+
+def plantinf_old(request, incubatorno):
+    content = get_old_info(incubatorno)
+    return render(request, 'old_plant_info.html', content)
 
 
 def howtoplant(request):
@@ -454,18 +518,55 @@ def contact(request):
     return render(request, 'contact.html')
 
 
-def showplant(request):
-    plant_list = models.Plant.objects.all().order_by('time')
-    popular_plant = models.Plant.objects.all().order_by('popularity')[:15]
+def showplant(request, pindex):
+    plant_list = []
+    if request.method == "POST":
+        button_list = request.POST.get("choice")
+        print(button_list)
+        search = request.POST.get("search")
+        if search != '':
+            if "k1" == button_list:
+                plant_list = models.Plant.objects.filter(name__icontains=search).order_by('time')
+            elif "k2" == button_list:
+                plant_list = models.Plant.objects.filter(name__icontains=search).order_by('mark')
+            elif "k3" == button_list:
+                plant_list = models.Plant.objects.filter(name__icontains=search).order_by('plant_type')
+        else:
+            if "k1" == button_list:
+                plant_list = models.Plant.objects.all().order_by('-time')
+            elif "k2" == button_list:
+                plant_list = models.Plant.objects.all().order_by('-mark')
+            elif "k3" == button_list:
+                plant_list = models.Plant.objects.all().order_by('name')
+    else:
+        plant_list = models.Plant.objects.all().order_by('-time')
+    # 分页
+    print(plant_list)
+    paginator = Paginator(plant_list, 6)  # 实例化Paginator, 每页显示5条数据
+    if pindex == "":  # django中默认返回空值，所以加以判断，并设置默认值为1
+        pindex = 1
+    else:  # 如果有返回在值，把返回值转为整数型
+        int(pindex)
+    page = paginator.page(pindex)  # 传递当前页的实例对象到前端
+
+    popular_plant = models.Plant.objects.all().order_by('-popularity')[:15]
+
     content = {
         'plant_list': plant_list,
-        'popular_plant': popular_plant
+        'popular_plant': popular_plant,
+        "page": page
     }
     return render(request, 'show_plant.html', content)
 
 
-def plantdetail(request):
-    return render(request, 'plant_detail.html')
+def plantdetail(request, id):
+    plant = models.Plant.objects.get(id=id)
+    plant.popularity = plant.popularity + 1
+    
+    content = {
+        "plant": plant
+    }
+    return render(request, 'plant_detail.html', content)
 
 
 def bbs(request):
@@ -489,7 +590,9 @@ def my(request):
 
 
 def more(request):
-    return render(request, 'more.html')
+    link = Link.objects.all()
+    time_list = []
+    return render(request, 'more.html', {'link': link, 'time': time_list})
 
 
 def writePurchase(request):
@@ -761,31 +864,22 @@ def getCDetail(request, id):
 
 
 def updateUserInfo(request):
-    try:
-            if request.method == 'POST':
-                userid = request.POST.get('userid')
-                user = models.User.objects.get(user_id=userid)
-                user.gender = request.POST.get('sex')
-                user.signature = request.POST.get('userintroduction')
-                # user.birthday = request.POST.get('userbirthday')
-                user.name = request.POST.get('username')
-                imgContent = ContentFile(request.FILES['img'].read())
-                user.img.save(request.FILES['img'].name, imgContent)
-                user.save()
-    except:
-        messages.error(request, '用户名或密码不正确')
-        return redirect('/incubator/')
-    messages.error(request, '用户名或密码不正确')
-    print(type(user.img))
-    request.session['userid'] = user.user_id
-    request.session['userphone'] = user.phone
-    request.session['username'] = user.name
-    request.session['userimg'] = str(user.img)
-    # request.session['userbirthday'] = user.birthday
-    request.session['userintroduction'] = user.signature
-    request.session['usersex'] = user.gender
-
-    print(user)
+    if request.method == 'POST':
+        userid = request.POST.get('userid')
+        user = models.User.objects.get(user_id=userid)
+        user.gender = request.POST.get('sex')
+        user.signature = request.POST.get('userintroduction')
+        # user.birthday = request.POST.get('userbirthday')
+        user.name = request.POST.get('username')
+        user.save()
+        request.session['userid'] = user.user_id
+        request.session['userphone'] = user.phone
+        request.session['username'] = user.name
+        request.session['userimg'] = user.img
+        # request.session['userbirthday'] = user.birthday
+        request.session['userintroduction'] = user.signature
+        request.session['usersex'] = user.gender
+        print(user)
     return redirect('/incubator/')
 
 
@@ -799,3 +893,150 @@ def referfix(request, incubatorno):
     fix_info.save()
     fix_url = "/incubatorDetail/" + incubatorno + "/"
     return redirect(fix_url)
+
+
+def connect(request):
+    if request.method == 'POST':
+        incubator_id = request.POST.get('incubator_id')
+        key = request.POST.get('key')
+        if incubator_id and key:
+            try:
+                incubator = models.Incubator.objects.get(incubator_id=incubator_id)
+                incubator.state = True
+                incubator.save()
+                return redirect('/incubator/')
+            except:
+                return redirect('/incubator/')
+    return redirect('/incubator/')
+
+
+def connect(request):
+    if request.method == 'POST':
+        incubator_id = request.POST.get('incubator_id')
+        key = request.POST.get('key')
+        if incubator_id and key:
+            try:
+                incubator = models.Incubator.objects.get(incubator_id=incubator_id)
+                incubator.state = True
+                incubator.save()
+                return redirect('/incubator/')
+            except:
+                return redirect('/incubator/')
+    return redirect('/incubator/')
+
+
+def disconnected(request, incubatorno):
+    incubator = models.Incubator.objects.get(incubator_id=incubatorno)
+    incubator.state = False
+    incubator.save()
+    return redirect('/incubator')
+
+
+def insert(request):
+    tem = request.POST.get('PsTem')
+    hum = request.POST.get('PsHum')
+    press = request.POST.get('PsPress')
+    light = request.POST.get('PsLight')
+    incu_id = request.POST.get('BoxId')
+    plant = request.POST.get('Plant')
+    print(tem)
+    print(hum)
+    print(press)
+    print(light)
+
+    time = datetime.now()
+    print(time)
+    data = models.IncubatorHistory()
+    data.curTime = time
+    data.temperature = tem
+    data.humidity = hum
+    incu = models.Incubator.objects.filter(incubator_id=incu_id)
+    data.incubator = incu[0]
+    data.pressure = press
+    data.light = light
+    data.plant = plant
+    print(data)
+    data.save()
+    return HttpResponse("success")
+
+
+# def plant(request):
+#     plant_list = models.Plant.objects.all()
+#     print(list)
+#     page = request.GET.get('page')
+#     paginator = Paginator(list, 3)
+#     try:
+#         plant_list = paginator.page(page)
+#     except PageNotAnInteger:
+#         plant_list = paginator.page(1)
+#     except EmptyPage:
+#         plant_list = paginator.page(paginator.num_pages)
+#     return render(request, 'show_plant.html', locals())
+
+
+def monitor(request):
+    data = models.IncubatorHistory()
+    data.pressure = json.loads(request.body).get("y")
+    data.temperature = json.loads(request.body).get("w")
+    data.light = json.loads(request.body).get("g")
+    data.humidity = json.loads(request.body).get("s")
+    incubator_id = json.loads(request.body).get('id')
+    incubator_id = 'i0' + str(incubator_id)
+    print(incubator_id)
+    print(data.temperature)
+    print(data.humidity)
+    incu = models.Incubator.objects.filter(incubator_id=incubator_id)
+    print(incu)
+    data.incubator = incu[0]
+
+    image = base64.b64decode(json.loads(request.body).get("img"))
+    filename = time.strftime('%Y%m%d%H%M%S', time.localtime())
+    filename += '.jpeg'
+    f = open('static/realtime_images/' + filename, 'wb')
+    f.write(image)
+    f.close()
+
+    data.image = 'realtime_images/' + filename
+    print(json.loads(request.body).get("img"))
+    data.save()
+
+    try:
+        control = models.Control.objects.filter(incubator_id=data.incubator).order_by('-time')[0]
+        response = {
+            'w': control.temperature,
+            's': control.humidity,
+            'g': control.light,
+            'y': control.pres,
+        }
+        print(2)
+    except:
+        response = {
+            'w': 15,
+            's': 40,
+            'g': 4000,
+            'y': 101,
+        }
+        print(1)
+    return HttpResponse(json.dumps(response))
+
+
+def hardcontrol(request):
+    control = models.Control()
+    incubator_id = json.loads(request.body).get('id')
+    incu = 'i0' + str(incubator_id)
+    control.incubator_id = incu
+    # incu = models.Incubator.objects.filter(incubator_id=incubator_id)
+    # control.incubator = incu[0]
+    control.humidity = json.loads(request.body).get('s')
+    control.temperature = json.loads(request.body).get('w')
+    control.light = json.loads(request.body).get('g')
+    control.pres = json.loads(request.body).get('y')
+    control.save()
+    con1 = models.Control.objects.filter(incubator_id=control.incubator_id).order_by('-time')[0]
+    response = {
+        'w': con1.temperature,
+        's': con1.humidity,
+        'g': con1.light,
+        'y': con1.pres,
+    }
+    return HttpResponse(json.dumps(response))

@@ -227,13 +227,13 @@
                               </thead>
                               <tbody>
 
-                                {% for plant in Plant %}
+                                {% for plant in plants %}
                                   <tr>
                                   <td>{{plant.id}}</td>
                                  <td>{{plant.name}}</td>
                                  <td>{{plant.state}}</td>
                                       <td>{{plant.mark}}</td>
-                                     <td>{{plant.case}}</td>
+                                     <!-- <td>{{plant.case}}</td> -->
                                 </tr>
                               {% endfor %}
                               </tbody>
@@ -251,7 +251,7 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                  {% for inc in incubator1 %}
+                                  {% for inc in incubators %}
                                   <tr>
                                   <td>{{inc.incubator_id}}</td>
                                   <td>{{inc.incubator_type}}</td>
@@ -299,7 +299,7 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                 {% for f in fix %}
+                                 {% for f in fixs %}
                                   <tr>
                                   <td>{{f.id}}</td>
                                    <td>{{f.time}}</td>
@@ -328,7 +328,7 @@
                     <li class="col-md-12"><a class="col-md-12" href="#allinf" data-toggle="tab">总体信息管理</a></li>
                     <li class="col-md-12"><a class="col-md-12" href="#userinf" data-toggle="tab">用户管理</a></li>
                     <li class="col-md-12"><a class="col-md-12" href="#boxinf" data-toggle="tab">培养箱管理</a></li>
-                    <li class="col-md-12"><a class="col-md-12" href="#ddinf" data-toggle="tab">订单管理</a></li>
+                    <!-- <li class="col-md-12"><a class="col-md-12" href="#ddinf" data-toggle="tab">订单管理</a></li> -->
                     <li class="col-md-12"><a class="col-md-12" href="#fixinf" data-toggle="tab">维修消息</a></li>
 
 
@@ -403,7 +403,7 @@
                                     </div>
 
                                    <div class="panel-group" id="accordion" >
-                                        {% for us in user %}
+                                        {% for us in users %}
                                         <div class="col-md-12 back-user-info">
                                             <div class="col-md-1">
                                                 <img class="img-circle " src="/static/img/personInfo/me.PNG">
@@ -956,7 +956,7 @@
                                             <div class="panel-heading">
                                                 <h4 class="panel-title">
                                                     <a data-toggle="collapse" data-parent="#accordion"
-                                                    href="#wx1">
+                                                    href="#wx2">
                                                     <div class="back-box-mess">
                                                         <p >维修单号:</p>
                                                         <p style="color:gray"> 3213421434141&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
@@ -974,7 +974,7 @@
                                                     </a>
                                                 </h4>
                                             </div>
-                                            <div id="wx1" class="panel-collapse collapse ">
+                                            <div id="wx2" class="panel-collapse collapse ">
                                                 <div class="panel-body">
                                                     <table class="table table-hover">
                                                           <thead>
@@ -1029,7 +1029,7 @@
                                             <div class="panel-heading">
                                                 <h4 class="panel-title">
                                                     <a data-toggle="collapse" data-parent="#accordion"
-                                                    href="#wx1">
+                                                    href="#wx3">
                                                     <div class="back-box-mess">
                                                         <p >维修单号:</p>
                                                         <p style="color:gray"> 3213421434141&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
@@ -1047,7 +1047,7 @@
                                                     </a>
                                                 </h4>
                                             </div>
-                                            <div id="wx1" class="panel-collapse collapse ">
+                                            <div id="wx3" class="panel-collapse collapse ">
                                                 <div class="panel-body">
                                                     <table class="table table-hover">
                                                           <thead>
