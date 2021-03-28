@@ -9,6 +9,7 @@ class LinkAdmin(admin.ModelAdmin):
     list_per_page = 15
     ordering = ("-create_time",)
     list_filter = ("create_time", "link_title", "link_type")
+    search_fields = ("create_time", "link_title", "link_type")
     date_hierarchy = 'create_time'
 
 
@@ -20,6 +21,7 @@ class HomeImageAdmin(admin.ModelAdmin):
     list_per_page = 15
     ordering = ("-create_time",)
     list_filter = ("create_time",)
+    search_fields = ("create_time",)
     date_hierarchy = 'create_time'
 
 
@@ -31,6 +33,7 @@ class IncubatorInfoAdmin(admin.ModelAdmin):
     list_per_page = 15
     ordering = ("-create_time",)
     list_filter = ("create_time", "title")
+    search_fields = ("create_time", "title")
     date_hierarchy = 'create_time'
 
 
@@ -42,6 +45,7 @@ class AdvantageAdmin(admin.ModelAdmin):
     list_per_page = 15
     ordering = ("-time",)
     list_filter = ("time", "type_title")
+    search_fields = ("time", "type_title")
     date_hierarchy = 'time'
 
 

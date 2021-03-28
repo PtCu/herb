@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <title>herber</title>
+    <link rel="stylesheet" href="/static/css/shop-main-1.css">
+    <link rel="stylesheet" href="/static/js/layer/style1.css"/>
     <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/css/all.css"/>
     <link rel="stylesheet" href="/static/css/index.css"/>
@@ -17,7 +19,7 @@
     <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
     <link rel="shortcut icon" href="/static/assets/images/gt_favicon.png">
 
-    <link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+<!--    <link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">-->
     <link rel="stylesheet" href="/static/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/assets/css/font-awesome.min.css">
 
@@ -31,6 +33,10 @@
     <script src="/static/assets/js/html5shiv.js"></script>
     <script src="/static/assets/js/respond.min.js"></script>
     <![endif]-->
+
+    <script type="text/javascript" src="/static/js/layer/layer.js"></script>
+    <script type="text/javascript" src="/static/js/layer/demo.js"></script>
+
 </head>
 
 <body class="home">
@@ -47,7 +53,7 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav pull-right">
-                <li class="active"><a href="/">主页</a></li>
+                <li><a href="/">主页</a></li>
                 <li><a href="/bbs">论坛</a></li>
                 <li class="dropdown">
                     <a href="/showplant/1" class="dropdown-toggle">药材 </a>
@@ -80,6 +86,7 @@
                 </a>
             </li>
             <li><a href="#inf" data-toggle="tab">个人信息</a></li>
+            <li><a href="#order" data-toggle="tab">我的申请</a></li>
             <!--
             添加往期数据查询
             -->
@@ -92,10 +99,20 @@
                     <button class="btn btn-default">搜索</button>
                 </div>
 
-                <button class="btn btn-info" id="buy">购买新设备</button>
+                <button class="btn btn-info" id="buy" onclick="window.location.href='/newIncubator/'">申请新设备</button>
                 <button class="btn btn-info" id="link" data-toggle="modal" data-target="#myModal">
                     关联新设备
                 </button>
+
+                <!--<button class="btn btn-info" id="bLogin" onclick="ShowLoginText()">
+                    关联新设备
+                </button>
+                <div id="loginBox">
+                    <div class="login-item"><input type="text" id="InputUsername" placeholder="请输入培养箱背后编号"/></div>
+                    <div class="login-item"><input type="password" id="InputUserPwd" placeholder="请输入培养箱密钥"/></div>
+                    <div class="login-item"><a href="javascript:;" onclick="Login()">关联</a></div>
+                </div>-->
+
                 <div class="col-md-1"></div>
                 <div class="col-md-offset-1 col-md-10 box-mem">
                     {% for incubator in incu %}
@@ -112,8 +129,11 @@
                                 <p id="linkdata">{{ incubator.1 }}</p>
                             </div>
                             <span style="float: right; padding-bottom: 5px">
-                                <button class="btn btn-info offlink"
-                                    onclick="window.location.href='/disconnected/{{ incubator.0 }}/'">取消关联</button>
+<!--                                <button class="btn btn-info offlink" -->
+                                <!--                                    onclick="window.location.href='/disconnected/{{ incubator.0 }}/'">取消关联</button>-->
+                                <form method="get" action="/disconnected/{{ incubator.0 }}/">
+                                    <button class="btn btn-info offlink" type="submit" onclick="cancel()">取消关联</button>
+                                </form>
                                 <form method="get" action="/incubatorDetail/{{ incubator.0 }}/">
                                     <button class="btn btn-info goinf" type="submit">详细信息</button>
                                 </form>
@@ -134,13 +154,13 @@
                 </div>
 
             </div>
+            <!--            <div class="tab-pane fade" id="inf">-->
             <div class="tab-pane fade" id="inf">
                 <div class="col-md-12 top-space">
 
                     <img class="col-md-offset-1 img-circle userimg" style="height: 100px; width: 100px"
-                         src="/static/img/szc.jpg">
-
-                    <div class="col-md-8 info-name">
+                         src="/static/img/personInfo/{{ request.session.userimg }}">
+                    <div class="col-md-8 info-name" style="margin:0 auto">
                         <p class="col-md-12" style="font-size: 35px">{{ request.session.username }}</p>
                         <div class="col-md-12 top-margin" id="info-mess"
                              style="height: auto; font-size: 14px; padding:10px">
@@ -149,9 +169,17 @@
                     </div>
                     <div class="col-md-offset-1 col-md-10 top-margin"
                          style="border-bottom-color: #8c8c8c; border-bottom-style: solid; border-bottom-width: 3px; font-size: 18px">
-                        <form method="post" id="update_user_info" action="/updateUserInfo/">
+                        <form role="form" method="post" enctype="multipart/form-data" id="update_user_info" action="/updateUserInfo/" enctype="multipart/form-data">
                             {% csrf_token %}
                             <input type="hidden" name="userid" value="{{request.session.userid}}">
+<!--                    <div class="form-group">-->
+<!--                        <label for="pImg" class="sr-only">插入图片</label>-->
+<!--                        <label for="pImg">插入图片</label>-->
+<!--                        <input type="file" id="pImg" name="pImg"/>-->
+<!--                    </div>-->
+<!--                            <img class="col-md-offset-1 img-circle userimg" style="height: 100px; width: 100px"-->
+<!--                         src="/static/img/personInfo/{{ request.session.userimg }}">-->
+<!--                            <input type="file" name="pImag">-->
                             <div class="col-md-12 top-margin" style="padding: 5px">
                                 <p class="col-md-offset-3 col-md-2">用户名:</p>
                                 <input class="col-md-4" name="username" value="{{ request.session.username }}">
@@ -166,26 +194,44 @@
                             </div>-->
                             <div class=" col-md-12" style="padding: 5px">
                                 <p class="col-md-offset-3 col-md-2">用户性别:</p>
-                                <div class="col-md-1 radio" style="margin-top: 20px">
-                                    <input id="radio-1" name="sex" value="1" type="radio" ${request.session.usersex=="True"?"checked":""}>
+                                <select id="usersex" name="usersex">
+                                    <option value="男">男</option>
+                                    <option value="女">女</option>
+                                    <option value="保密">保密</option>
+                                </select>
+                                <!--<div class="col-md-1 radio" style="margin-top: 20px">
+                                    <input id="radio-1" name="sex" value="1" type="radio"
+                                           {{request.session.usersex}}==男?checked:>
                                     <label for="radio-1" class="radio-label">男</label>
                                 </div>
                                 <div class="col-md-1 radio" style="margin-top: 20px">
-                                    <input id="radio-2" name="sex" value="2" type="radio" ${request.session.usersex=="False"?"checked":""}>
+                                    <input id="radio-2" name="sex" value="2" type="radio"
+                                           ${request.session.usersex}=="False"?"checked":""}>
                                     <label for="radio-2" class="radio-label">女</label>
                                 </div>
                                 <div class="col-md-1 radio " style="margin-top: 20px">
-                                    <input id="radio-3" name="sex" value="0" type="radio" ${request.session.usersex=="None"?"checked":"">
+                                    <input id="radio-3" name="sex" value="0" type="radio"
+                                           ${request.session.usersex}=="None"?"checked":"">
                                     <label for="radio-3" class="radio-label">保密</label>
-                                </div>
+                                </div>-->
                             </div>
                             <div class="col-md-12" style="padding: 5px;">
                                 <p class="col-md-offset-3 col-md-2">用户简介:</p>
                                 <input class="col-md-4" name="userintroduction"
                                        value="{{ request.session.userintroduction }}">
                             </div>
-                            <button class="btn btn-lg btn-danger" id="save"
-                                    style="margin-bottom:40px;margin-left: 32%; margin-top: 30px" type="submit">保存
+                            <div class="col-md-12" style="padding: 5px;">
+                                <p class="col-md-offset-3 col-md-2">手机号码:</p>
+                                <input class="col-md-4" name="userphone"
+                                       value="{{ request.session.userphone }}">
+                            </div>
+                            <div class="col-md-12" style="padding: 5px;">
+                                <p class="col-md-offset-3 col-md-2">电子邮箱:</p>
+                                <input class="col-md-4" name="useremail"
+                                       value="{{ request.session.useremail }}">
+                            </div>
+                            <button onclick="return alterEnv()" class="btn btn-lg btn-danger" id="save"
+                                    style="margin-bottom:40px;margin-left: 32%; margin-top: 30px" type="submit">修改
                             </button>
                         </form>
 
@@ -196,77 +242,120 @@
                     <h1>优秀药材介绍</h1>
                     <div class="top-space">
                         <div class="row">
+                            {%for item in popular_plant%}
                             <div class="col-sm-6 col-md-3">
-                                <a href="/showplant/plantdetail" class="thumbnail">
-                                    <img src="/static/img/1.jpg"
-                                         alt="通用的占位符缩略图">
-                                    <p>杂草1号</p>
+                                <a href="/showplant/plantdetail/{{item.id}}" class="thumbnail">
+                                    <img src="/media/{{item.img}}">
+                                    <p>{{item.name}}</p>
                                 </a>
                             </div>
-                            <div class="col-sm-6 col-md-3">
-                                <a href="/showplant/plantdetail" class="thumbnail">
-                                    <img src="/static/img/1.jpg"
-                                         alt="通用的占位符缩略图">
-                                    <p>杂草1号</p>
-                                </a>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <a href="/showplant/plantdetail" class="thumbnail">
-                                    <img src="/static/img/1.jpg"
-                                         alt="通用的占位符缩略图">
-                                    <p>杂草1号</p>
-                                </a>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <a href="/showplant/plantdetail" class="thumbnail">
-                                    <img src="/static/img/1.jpg"
-                                         alt="通用的占位符缩略图">
-                                    <p>杂草1号</p>
-                                </a>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <a href="/showplant/plantdetail" class="thumbnail">
-                                    <img src="/static/img/1.jpg"
-                                         alt="通用的占位符缩略图">
-                                    <p>杂草1号</p>
-                                </a>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <a href="/showplant/plantdetail" class="thumbnail">
-                                    <img src="/static/img/1.jpg"
-                                         alt="通用的占位符缩略图">
-                                    <p>杂草1号</p>
-                                </a>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <a href="/showplant/plantdetail" class="thumbnail">
-                                    <img src="/static/img/1.jpg"
-                                         alt="通用的占位符缩略图">
-                                    <p>杂草1号</p>
-                                </a>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <a href="/showplant/plantdetail" class="thumbnail">
-                                    <img src="/static/img/1.jpg"
-                                         alt="通用的占位符缩略图">
-                                    <p>杂草1号</p>
-                                </a>
-                            </div>
-                            <ul class="pagination" style="margin-left: 32%; padding-right: 0">
-                                <li><a href="#">&laquo;</a></li>
-                                <li><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                                <li><a href="#">&raquo;</a></li>
-                            </ul>
+                            {%endfor%}
+                            <!-- <ul class="pagination" style="margin-left: 32%; padding-right: 0">
+                                 <li><a href="#">&laquo;</a></li>
+                                 <li><a href="#">1</a></li>
+                                 <li><a href="#">2</a></li>
+                                 <li><a href="#">3</a></li>
+                                 <li><a href="#">4</a></li>
+                                 <li><a href="#">5</a></li>
+                                 <li><a href="#">&raquo;</a></li>
+                             </ul>-->
 
                         </div>
                     </div>
 
 
                 </div>
+            </div>
+            <div class="tab-pane fade in" id="order">
+                <div class="container">
+                    <blockquote>
+                        <h4>申请新的培养箱</h4>
+                    </blockquote>
+
+                    <!--<div class="row">
+                        <div class="goods_detail_con clearfix">
+                        <div class="goods_detail_pic fl"><img src="/static/img/培养箱.jpg"></div>
+
+                        <div class="goods_detail_list fr">
+                            <h3>中草药培养箱</h3>
+                            <p>培养箱介绍：该中草药培养箱主要用于中草药的辅助培养与平台的研究测试</p>
+                            <p>订单号：</p>
+                            <p>数量：</p>
+                            <p>申请用途：</p>
+                            <p>我的地址：</p>
+                            <p>申请进度：</p>
+                            &lt;!&ndash;<div class="prize_bar">
+                                <span class="show_pirze">¥<em>0.00</em></span>
+                                <span class="show_unit">所属机构：北京邮电大学科研楼实验室</span>
+                            </div>
+                            <form action="/apply/" method="post">
+                            <div class="goods_num clearfix">
+                                <div class="num_name fl">数 量：</div>
+                                <div class="num_add fl">
+                                    <input type="text" class="num_show fl" name="number" value="1">
+                                    &lt;!&ndash;<a href="javascript:;" class="add fr">+</a>
+                                    <a href="javascript:;" class="minus fr">-</a>&ndash;&gt;
+                                </div>
+                            </div>&ndash;&gt;
+                &lt;!&ndash;			<div class="total">总价：<em>16.80元</em></div>&ndash;&gt;
+                            <div class="operate_btn">
+                &lt;!&ndash;				<a href="javascript:;" class="buy_btn" type="submit">立即申请</a>&ndash;&gt;
+                &lt;!&ndash;				<a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>&ndash;&gt;
+                                <button type="submit" class="buy_btn">立即申请
+                                </button>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                    </div>-->
+                    <div style="overflow: auto; width: 1200px;height: 1500px">
+                        {%for item in order%}
+                        <div class="row">
+                            <div class="goods_detail_con clearfix">
+                                <div class="goods_detail_pic fl"><img src="/static/img/培养箱.jpg"></div>
+
+                                <div class="goods_detail_list fr">
+                                    <h3>中草药培养箱</h3>
+                                    <p>培养箱介绍：该中草药培养箱主要用于中草药的辅助培养与平台的研究测试</p>
+                                    <p>订单号：{{item.id}}</p>
+                                    <p>数量：{{item.number}}</p>
+                                    <p>申请用途：{{item.using}}</p>
+                                    <p>我的地址：{{item.addr}}</p>
+                                    <p>申请进度：{{item.schedule}}</p>
+                                    <!--<div class="prize_bar">
+                                        <span class="show_pirze">¥<em>0.00</em></span>
+                                        <span class="show_unit">所属机构：北京邮电大学科研楼实验室</span>
+                                    </div>
+                                    <form action="/apply/" method="post">
+                                    <div class="goods_num clearfix">
+                                        <div class="num_name fl">数 量：</div>
+                                        <div class="num_add fl">
+                                            <input type="text" class="num_show fl" name="number" value="1">
+                                            &lt;!&ndash;<a href="javascript:;" class="add fr">+</a>
+                                            <a href="javascript:;" class="minus fr">-</a>&ndash;&gt;
+                                        </div>
+                                    </div>-->
+                                    <!--			<div class="total">总价：<em>16.80元</em></div>-->
+                                    <div class="operate_btn">
+                                        <a href="/go_order_issue/{{item.id}}" class="buy_btn" type="submit">联系客服</a>
+                                        {%if item.schedule == '信息不全，拒绝通过'%}
+                                        <a href="/newIncubator/" class="add_cart" id="add_cart">重新申请</a>
+                                        {%endif%}
+                                        <!--                                <button type="submit" class="buy_btn">立即申请-->
+                                        <!--                                </button>-->
+
+                                        <!--                                <button class="buy_btn">立即申请-->
+                                        <!--                                </button>-->
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {%endfor%}
+                    </div>
+
+                </div>
+
             </div>
 
         </div>
@@ -328,109 +417,126 @@
         </div>&lt;!&ndash; /.modal &ndash;&gt;
     </div>-->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h3 class="modal-title" id="myModalLabel">关联培养箱</h3>
-                    </div>
-                    <div class="panel-body">
-                        <h4 class="thin text-center">请确认您的培养箱已连通电源</h4>
-                        <p class="text-center text-muted">没有培养箱？<a href="/signup">去申请</a></p>
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 class="modal-title" id="myModalLabel">关联培养箱</h3>
+                </div>
+                <div class="panel-body">
+                    <h4 class="thin text-center">请确认您的培养箱已连通电源</h4>
+                    <p class="text-center text-muted">没有培养箱？<a href="/newIncubator">去申请</a></p>
+                    <hr>
+
+                    <form id="signin" method="post" action="/connect/" onsubmit="return connect_incubator()">
+                        {% comment %}防止跨站请求伪造{% endcomment %}
+                        {% csrf_token %}
+                        <div class="top-margin">
+                            <label>培养箱编号<span class="text-danger">*</span></label>
+                            <input id="InputUsername" type="text" class="form-control" name="incubator_id"
+                                   placeholder="请输入培养箱背面的编号">
+                        </div>
+                        <div class=" top-margin">
+                            <label>培养箱密钥<span class="text-danger">*</span></label>
+                            <input id="InputUserPwd" type="password" class="form-control" name="key"
+                                   placeholder="请输入培养箱背面的密钥">
+                        </div>
+
                         <hr>
 
-                        <form id="signin" method="post" action="/connect/">
-                            {% comment %}防止跨站请求伪造{% endcomment %}
-                            {% csrf_token %}
-                            <div class="top-margin">
-                                <label>培养箱编号<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="incubator_id" placeholder="请输入培养箱背面的编号">
-                                <p id="telephoneError" class="errorMessage">{{message}}</p>
+                        <div class="row">
+                            <div class="col-lg-8">
                             </div>
-                            <div class=" top-margin">
-                                <label>培养箱密钥<span class="text-danger">*</span></label>
-                                <input type="password" class="form-control" name="key" placeholder="请输入培养箱背面的密钥">
-                                <p id="passwordError" class="errorMessage"></p>
+                            <div class="col-lg-4 text-right">
+                                <button class="btn btn-action" type="submit">连接</button>
                             </div>
+                        </div>
+                    </form>
+                </div>
+                <!--<script type="text/javascript">
+                    function Login(){
+                        var username=$.trim($("#InputUsername").val());//获取用户名trim是去掉空格
+                        var password=$.trim($("#InputUserPwd").val());//获取密码
+                        if(username==""||password==""){
+                            layer.alert("用户名或者密码不能为空!",{
+                            title:"提示",
+                            icon:5,
+                            });
+                        }else{
+                            layer.alert("关联成功!",{
+                            title:"提示",
+                            icon:5,
+                            });
+                        }
+                    }
+                </script>-->
+                <!--<div class="modal-body sensor-detail">
+                    <div id="container"></div>
+                    <p>当前温度：{{ Mtemperatures.0 }}</p>
+                    <p>建议温度：{{ suggest.temperature }}</p>
+                </div>-->
+                <!--<div id="main_4" style="width: 600px;height:400px;"></div>
+                <script type="text/javascript">
+                    //尝试获取数据
+                    var listTime = {{ time|safe }};
+                    var listTemp = {{ temperature|safe }};
+                    // 基于准备好的dom，初始化echarts实例
+                    var myChart = echarts.init(document.getElementById('main_4'));
 
-                            <hr>
-
-                            <div class="row">
-                                <div class="col-lg-8">
-                                </div>
-                                <div class="col-lg-4 text-right">
-                                    <button class="btn btn-action" type="submit">连接</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <!--<div class="modal-body sensor-detail">
-                        <div id="container"></div>
-                        <p>当前温度：{{ Mtemperatures.0 }}</p>
-                        <p>建议温度：{{ suggest.temperature }}</p>
-                    </div>-->
-                    <!--<div id="main_4" style="width: 600px;height:400px;"></div>
-                    <script type="text/javascript">
-                        //尝试获取数据
-                        var listTime = {{ time|safe }};
-                        var listTemp = {{ temperature|safe }};
-                        // 基于准备好的dom，初始化echarts实例
-                        var myChart = echarts.init(document.getElementById('main_4'));
-
-                        // 指定图表的配置项和数据
-                        var option = {
-                            title: {
-                                text: '温度变化'
+                    // 指定图表的配置项和数据
+                    var option = {
+                        title: {
+                            text: '温度变化'
+                        },
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            data: ['温度']
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        toolbox: {
+                            feature: {
+                                saveAsImage: {}
+                            }
+                        },
+                        xAxis: {
+                            axisLabel: {
+                                interval: 0,
+                                rotate: 90,//倾斜度 -90 至 90 默认为0
+                                margin: 2,
                             },
-                            tooltip: {
-                                trigger: 'axis'
+                            type: 'category',
+                            boundaryGap: false,
+                            data: listTime
+                        },
+                        yAxis: {
+                            type: 'value',
+                            splitNumber:10
+                        },
+                        series: [
+                            {
+                                name: '温度',
+                                type: 'line',
+                                smooth: true,
+                                data: listTemp
                             },
-                            legend: {
-                                data: ['温度']
-                            },
-                            grid: {
-                                left: '3%',
-                                right: '4%',
-                                bottom: '3%',
-                                containLabel: true
-                            },
-                            toolbox: {
-                                feature: {
-                                    saveAsImage: {}
-                                }
-                            },
-                            xAxis: {
-                                axisLabel: {
-                                    interval: 0,
-                                    rotate: 90,//倾斜度 -90 至 90 默认为0
-                                    margin: 2,
-                                },
-                                type: 'category',
-                                boundaryGap: false,
-                                data: listTime
-                            },
-                            yAxis: {
-                                type: 'value',
-                                splitNumber:10
-                            },
-                            series: [
-                                {
-                                    name: '温度',
-                                    type: 'line',
-                                    smooth: true,
-                                    data: listTemp
-                                },
-                            ]
-                        };
+                        ]
+                    };
 
 
-                        // 使用刚指定的配置项和数据显示图表。
-                        myChart.setOption(option);
-                    </script>-->
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
-        </div>
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                </script>-->
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 </div>
 
 <!-- Social links. @TODO: replace by link/instructions in template -->
@@ -522,12 +628,44 @@
 </footer>
 
 <!-- JavaScript libs are placed at the end of the document so the pages load faster -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
+<!--<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>-->
 <script src="/static/assets/js/headroom.min.js"></script>
 <script src="/static/assets/js/jQuery.headroom.min.js"></script>
-<script src="/static/assets/js/template.js"></script>
-<script src="/static/assets/js/nt.js"></script>
+<!--<script src="/static/assets/js/template.js"></script>-->
+<!--<script src="/static/assets/js/nt.js"></script>-->
+<script>
+    function connect_incubator() {
+        var username = $.trim($("#InputUsername").val());//获取用户名trim是去掉空格
+        var password = $.trim($("#InputUserPwd").val());//获取密码
+        // var isSucceed=$.trim($("#isSucceed").val());
+        if (username == "" || password == "") {
+            layer.alert("培养箱编号和密码不能为空，请重试", {
+                title: "提示",
+                icon: 5,
+            });
+            return false;
+        } else if (password == '111111') {
+            layer.alert("关联成功,即将返回培养箱界面", {
+                title: "提示",
+                icon: 6,
+            });
+            return true;
+        } else {
+            layer.alert("培养箱编号或密码错误，请重试", {
+                title: "提示",
+                icon: 5,
+            });
+            return false;
+        }
+    }
+
+    function alterEnv() {
+        if (!confirm("是否确认修改个人信息？")) {
+            window.event.returnValue = false;
+        }
+    }
+</script>
 </body>
 
 </html>

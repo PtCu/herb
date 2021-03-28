@@ -20,9 +20,9 @@
     <link href="/static/css/oldplant.css" rel="stylesheet">
     <link href="/static/css/bbs-sell.css" rel="stylesheet">
     <link href="/static/css/incubator/navbar.css" rel="stylesheet">
-    <script src="https://code.highcharts.com.cn/highcharts/highcharts.js"></script>
-    <script src="https://code.highcharts.com.cn/highcharts/modules/exporting.js"></script>
-    <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+<!--    <script src="https://code.highcharts.com.cn/highcharts/highcharts.js"></script>-->
+<!--    <script src="https://code.highcharts.com.cn/highcharts/modules/exporting.js"></script>-->
+<!--    <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>-->
 
     <noscript>
         &lt;link rel="stylesheet" href="/static/css/incubator/noscript.css"/&gt;
@@ -30,7 +30,7 @@
 
     <link rel="shortcut icon" href="/static/assets/images/gt_favicon.png">
 
-    <link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+<!--    <link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">-->
     <link rel="stylesheet" href="/static/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/assets/css/font-awesome.min.css">
 
@@ -101,21 +101,30 @@
 
                 <div class="col-md-12 averinf" style="margin-top: 20px">
 
-                    <h3 class="col-md-12">植物简单信息</h3>
-                    <img src="/static/plant-img/{{plant.img}}" class="col-md-3 img-thumbnail top-margin">
+                    <h3 class="col-md-12">植物信息</h3>
+                    <img src="/media/{{plant.img}}" class="col-md-3 img-thumbnail top-margin">
                     <div class="col-md-offset-1 col-md-7">
                         <div class="plantname top-margin">
                             <h1>{{plant.name}}</h1>
                         </div>
-                        <h4 style ="padding: 10px">植物评分：{{plant.mark}}</h4>
-                        <h4 style="padding: 10px">植物状态：{{plant.state}}</h4>
-
+                        <h4 style="color: #ff0000;display : inline; text-decoration: none;">植物评分：</h4>{{plant.mark}}
+                        <br/><br/>
+                        <h4 style="color: #ff0000;display : inline; text-decoration: none;">植物状态：</h4>{{plant.state}}
+                        <br/><br/>
+                        <h4 style="color: #ff0000;display : inline; text-decoration: none;">产地：</h4>{{plantInfo.place}}
+                        <br/><br/>
+                        <h4 style="color: #ff0000;display : inline; text-decoration: none;">形状：</h4>{{plantInfo.shape}}
+                        <br/><br/>
+                        <h4 style="color: #ff0000;display : inline; text-decoration: none;">功效：</h4>{{plantInfo.effect}}
+                        <br/><br/>
+                        <h4 style="color: #ff0000;display : inline; text-decoration: none;">使用禁忌：</h4>{{plantInfo.taboo}}
+                        <br/><br/>
                     </div>
                 </div>
-                <div class="col-md-12 detinf">
+                <!--<div class="col-md-12 detinf">
                     <h3 class="col-md-12">植物详细生长状态</h3>
                     <div id="szview" style="min-width:400px;height:400px"></div>
-                </div>
+                </div>-->
 
                 <!--箱内属性展示  简单表示 -->
 
@@ -217,12 +226,12 @@
 </footer>
 
 <!-- JavaScript libs are placed at the end of the document so the pages load faster -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
+<!--<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>-->
 <script src="/static/assets/js/headroom.min.js"></script>
 <script src="/static/assets/js/jQuery.headroom.min.js"></script>
-<script src="/static/assets/js/template.js"></script>
-<script src="/static/assets/js/nt.js"></script>
+<!--<script src="/static/assets/js/template.js"></script>-->
+<!--<script src="/static/assets/js/nt.js"></script>-->
 
 <script>
     var chart = Highcharts.chart('szview', {
