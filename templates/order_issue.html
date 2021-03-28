@@ -1,24 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:fb="http://www.w3.org/1999/xhtml" xmlns:g="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:fb="http://www.w3.org/1999/xhtml" xmlns:g="http://www.w3.org/1999/xhtml"
+      xmlns:margin-bottom="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
+    <meta name="author" content="Sergey Pozhilov (GetTemplate.com)">
+
     <title>herber</title>
 
+    <link rel="stylesheet" href="/static/css/shop-main-1.css">
+    <link rel="stylesheet" href="/static/js/layer/style1.css"/>
     <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/css/all.css"/>
     <link rel="stylesheet" href="/static/css/index.css"/>
-    <link rel="stylesheet" href="/static/css/bbs.css"/>
-    <link rel="stylesheet" href="/static/css/bbs-sell.css"/>
+    <link rel="stylesheet" href="/static/css/incubator.css"/>
+    <link rel="stylesheet" href="/static/css/bbs.css">
+
     <script src="/static/js/jquery-3.3.1.js"></script>
     <!--<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>-->
     <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-    <script src="/static/js/bbs.js"></script>
     <link rel="shortcut icon" href="/static/assets/images/gt_favicon.png">
 
-    <link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+<!--    <link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">-->
     <link rel="stylesheet" href="/static/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/assets/css/font-awesome.min.css">
 
@@ -32,9 +37,12 @@
     <script src="/static/assets/js/html5shiv.js"></script>
     <script src="/static/assets/js/respond.min.js"></script>
     <![endif]-->
+
+    <script type="text/javascript" src="/static/js/layer/layer.js"></script>
+    <script type="text/javascript" src="/static/js/layer/demo.js"></script>
 </head>
 
-<body class="home">
+<body>
 
 <!-- Fixed navbar -->
 <div class="navbar navbar-inverse navbar-fixed-top headroom">
@@ -44,40 +52,46 @@
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span
                     class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button>
             <a class="navbar-brand" href="/"><img src="/static/assets/images/logo.png" height="38"
-                                                            alt="Progressus HTML5 template"></a>
+                                                  alt="Progressus HTML5 template"></a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav pull-right">
                 <li><a href="/">主页</a></li>
-                <li  class="active"><a href="/bbs">论坛</a></li>
+                <li><a href="/bbs">论坛</a></li>
                 <li class="dropdown">
-                    <a href="/showplant" class="dropdown-toggle">药材 </a>
+                    <a href="/showplant/1" class="dropdown-toggle">药材 </a>
                     <!-- <ul class="dropdown-menu">
                         <li><a href="sidebar-left.html">Left Sidebar</a></li>
                         <li class="active"><a href="sidebar-right.html">Right Sidebar</a></li>
                     </ul> -->
                 </li>
-                <li><a href="/contact">联系我们</a></li>
-                {#                <li><a class="btn" href="signin.html">登录/ 注册</a></li>#}
+                <li class="active"><a href="/contact">联系我们</a></li>
                 {% if request.session.is_login %}
-                    <li><a href="/incubator"><img class="head_img" src="/static/img/personInfo/{{ request.session.userimg }}"></a></li>
-                    {% comment %}<div class="userimg-sm">
-                        <a href="/incubator">
-                            <img src="/static/img/personInfo/{{ request.session.userimg }}">
-                        </a>
-                    </div>{% endcomment %}
-                    {#                    <h3 style="margin-left: 100px">{{ request.session.username }}</h3>#}
-                    {% comment %}<button class="btn btn-lg btn-danger" style="margin-top: -60px;margin-left: 100px"
-                            onclick="window.location='/logout/'">注销
-                    </button>{% endcomment %}
-                    <li><a onclick="window.location='/logout/'">注销</a></li>
+                <li><a href="/incubator"><img class="head_img"
+                                              src="/static/img/personInfo/{{ request.session.userimg }}"></a></li>
+                {% comment %}
+                <div class="userimg-sm">
+                    <a href="/incubator">
+                        <img src="/static/img/personInfo/{{ request.session.userimg }}">
+                    </a>
+                </div>
+                {% endcomment %}
+                {# <h3 style="margin-left: 100px">{{ request.session.username }}</h3>#}
+                {% comment %}
+                <button class="btn btn-lg btn-danger" style="margin-top: -60px;margin-left: 100px"
+                        onclick="window.location='/logout/'">注销
+                </button>
+                {% endcomment %}
+                <li><a onclick="window.location='/logout/'">注销</a></li>
                 {% endif %}
                 {% if not request.session.is_login %}
-                    {% comment %}<div class="userimg-sm">
-                        <img src="/static/img/wdl.jpg">
-                    </div>
-                    <button class="btn btn-lg btn-info" data-toggle="modal" data-target="#myModal">登录</button>{% endcomment %}
-                    <li><a class="btn" href="/signin">登录/ 注册</a></li>
+                {% comment %}
+                <div class="userimg-sm">
+                    <img src="/static/img/wdl.jpg">
+                </div>
+                <button class="btn btn-lg btn-info" data-toggle="modal" data-target="#myModal">登录</button>
+                {% endcomment %}
+                <li><a class="btn" href="/signin">登录/ 注册</a></li>
                 {% endif %}
             </ul>
         </div>
@@ -86,72 +100,78 @@
 </div>
 <!-- /.navbar -->
 
-{% comment %}内容开始{% endcomment %}
-<div id="body-container" class="col-md-12 bbs-main">
-    <!--
-        container 类不可嵌套使用
-    -->
+<header id="head" class="secondary"></header>
 
+<!-- container -->
+<div class="container">
 
-    <div class="col-md-offset-1 col-md-10 bbs-right">
-        <div style="margin-left:140px;margin-top: 80px;" class="row">
-            <blockquote>
-                <h4>编辑药材展示信息</h4>
-            </blockquote>
-            <div class="col-md-10">
-                <form role="form">
-                    <div class="form-group">
-                        <label for="sMedicine">药材名称</label>
-                        <input class="form-control" type="text" id="sMedicine" name="sMedicine"
-                               placeholder="想要展示什么药材写在这里吧"/>
+    <div class="row">
+
+        <!-- Article main content -->
+        <article class="col-sm-9 maincontent">
+            <header class="page-header">
+                <h1 class="page-title">客服反馈</h1>
+            </header>
+
+            <p>
+                对申请进度有疑惑？或是想要修改已提交的信息？请在下面的表格中填入一些你对该订单的反馈信息，我们会尽快安排客服与您协商
+            </p>
+            <br>
+            <form method="post" action="/submit_order_issue/" onsubmit="return order_issue()">
+                {% comment %}防止跨站请求伪造{% endcomment %}
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="oName" id="oName" placeholder="姓名">
                     </div>
-                    <div class="form-group">
-                        <label for="sDescribe">描述</label>
-                        <textarea class="form-control" rows="8" id="sDescribe" name="sDescribe"
-                                  placeholder="对您即将销售的药材进行描述吧"></textarea>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="oEmail" id="oEmail" placeholder="电子邮箱">
                     </div>
-                    <div class="form-group">
-                        <label for="sPhone">联系方式</label>
-                        <input type="text" class="form-control" id="sPhone" name="sPhone" placeholder="如何通过电话联系到您呢"
-                               onblur="checkSPhone()"/>
-                        <p id="telephoneError" class="errorMessage"></p>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="oPhone" id="oPhone" placeholder="手机号">
                     </div>
-                    <div class="form-group">
-                        <label for="picture" class="sr-only">插入图片</label>
-                        <label for="picture">插入图片</label>
-                        <input type="file" id="picture"/>
+                    <input class="form-control" type="hidden" name="order_id" id="order_id" value="{{order_id}}">
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <textarea name="order_describe" id="order_describe" placeholder="请您描述对订单的疑惑..."
+                                  class="form-control" rows="9"></textarea>
                     </div>
-                    <div class="form-group">
-                        <label for="sScore">系统评分</label>
-                        <p>（此处为所显示的系统评分）</p>
-                        <!--
-                            作者：1758522370@qq.com
-                            时间：2018-10-06
-                            描述：调用一些js，或后台的方法生成
-                        -->
-                        <a href="#">
-                            <button type="button" class="btn btn-success">添加系统评分</button>
-                        </a>
-                    </div>
-                    <div class="form-group">
-                        <a href="/bbs">
-                            <button type="button" class="btn btn-default" class="BBSbutton"
-                                    style="float: right;margin: 10px;">取消
-                            </button>
-                        </a>
-                        <button type="submit" class="btn btn-primary" class="BBSbutton"
-                                style="float: right;margin: 10px;">发表
-                        </button>
-                    </div>
-                </form>
+                </div>
+                <br>
+                <div class="col-sm-6 text-right" style="float:right">
+                    <input class="btn btn-action" type="submit" value="发送">
+                </div>
+            </form>
+
+        </article>
+        <!-- /Article -->
+
+        <!-- Sidebar -->
+        <aside class="col-sm-3 sidebar sidebar-right">
+
+            <div class="widget">
+                <h4>关于我们</h4>
+                <address>
+                    北京邮电大学新科研楼 106实验室,
+                    指导教师：孙艺
+                </address>
+                <h4>联系方式:</h4>
+                <address>
+                    (010) 791-1424
+                </address>
             </div>
-        </div>
+
+        </aside>
+        <!-- /Sidebar -->
+
     </div>
-</div>
-{% comment %}内容结束{% endcomment %}
+</div> <!-- /container -->
+
 
 <!-- Social links. @TODO: replace by link/instructions in template -->
-<section id="social">
+<section id="social" style="margin: 10px">
     <div class="container">
         <div class="wrapper clearfix">
             <!-- AddThis Button BEGIN -->
@@ -165,8 +185,9 @@
         </div>
     </div>
 </section>
+</div>
 
-<footer id="footer" class="top-space">
+<footer id="footer">
 
     <div class="footer1">
         <div class="container">
@@ -194,6 +215,20 @@
                     </div>
                 </div>
 
+
+                <!--<div class="col-md-3 widget">
+                    <h3 class="widget-title">Follow me</h3>
+                    <div class="widget-body">
+                        <p class="follow-me-icons">
+                            <a href=""><i class="fa fa-twitter fa-2"></i></a>
+                            <a href=""><i class="fa fa-dribbble fa-2"></i></a>
+                            <a href=""><i class="fa fa-github fa-2"></i></a>
+                            <a href=""><i class="fa fa-facebook fa-2"></i></a>
+                        </p>
+                    </div>
+                </div>-->
+
+
                 <div class="col-md-6 widget">
                     <h3 class="widget-title">許可</h3>
                     <div class="widget-body">
@@ -204,6 +239,7 @@
                         <p>网络文化经营许可证 京网文[2017]9786-1126号 | 网络出版服务许可证（京）字258号 | 京ICP证000006号 | 京公网安备11000002000008号 </p>
                     </div>
                 </div>
+
 
             </div> <!-- /row of widgets -->
         </div>
@@ -238,13 +274,36 @@
     </div>
 </footer>
 
+
 <!-- JavaScript libs are placed at the end of the document so the pages load faster -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
+<!--<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>-->
 <script src="/static/assets/js/headroom.min.js"></script>
 <script src="/static/assets/js/jQuery.headroom.min.js"></script>
-<script src="/static/assets/js/template.js"></script>
-<script src="/static/assets/js/nt.js"></script>
+<!--<script src="/static/assets/js/template.js"></script>-->
+<!--<script src="/static/assets/js/nt.js"></script>-->
+<script>
+    function order_issue() {
+        var order_describe = $.trim($("#order_describe").val());
+        var order_id = $.trim($("#order_id").val());
+        var name = $.trim($("#oName").val());
+        var email = $.trim($("#oEmail").val());
+        var phone = $.trim($("#oPhone").val());
+        if (order_describe == "" || order_id == "" || name == "" || email == "" || phone == "") {
+            layer.alert("反馈内容不能未空，请重试", {
+                title: "提示",
+                icon: 5,
+            });
+            return false;
+        } else {
+            layer.alert("提交成功,即将返回培养箱界面", {
+                title: "提示",
+                icon: 6,
+            });
+            return true;
+        }
+    }
+</script>
 </body>
 
 </html>

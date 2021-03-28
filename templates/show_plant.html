@@ -17,7 +17,7 @@
     <script src="/static/js/bbs.js"></script>
     <link rel="shortcut icon" href="/static/assets/images/gt_favicon.png">
 
-    <link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+<!--    <link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">-->
     <link rel="stylesheet" href="/static/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/assets/css/font-awesome.min.css">
 
@@ -47,9 +47,9 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav pull-right">
-                <li class="active"><a href="/">主页</a></li>
+                <li><a href="/">主页</a></li>
                 <li><a href="/bbs">论坛</a></li>
-                <li class="dropdown">
+                <li class="active">
                     <a href="/showplant/1" class="dropdown-toggle">药材 </a>
                     <!-- <ul class="dropdown-menu">
                         <li><a href="sidebar-left.html">Left Sidebar</a></li>
@@ -79,7 +79,7 @@
                 container 类不可嵌套使用
             -->
             <div class="col-md-4 bbs-left">
-                <h2 style="margin-top: 25px">当下高分植物</h2>
+                <h2 style="margin-top: 25px">当下流行植物</h2>
                 <ol>
                     {% for item in popular_plant %}
                     <li><a href="/showplant/plantdetail/{{item.id}}">&nbsp;&nbsp;{{ item.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;评分：{{ item.mark}}</a>
@@ -110,7 +110,7 @@
                                 </button>
                             </form>
                             <button type="button" class="col-md-2 btn btn-default  navbar-btn" id="edit-button"
-                                    onclick="window.location='/bbs/writeSelling'"><span
+                                    onclick="window.location='/publishPlant'"><span
                                     class="glyphicon glyphicon-pencil"></span>我要发布
                             </button>
                         </div>
@@ -131,7 +131,7 @@
                             {%for item in page%}
                             <div class="col-sm-6 col-md-4">
                                 <a href="/showplant/plantdetail/{{item.id}}" class="thumbnail">
-                                    <img src="/static/plant-img/{{item.img}}" style="height: 200px;width: 250px">
+                                    <img src="/media/{{item.img}}" style="height: 200px;width: 250px">
                                     <p>{{item.name}}</p>
                                 </a>
                             </div>
@@ -161,7 +161,7 @@
                                         {% endfor %}
 
                                         {% if page.has_next %}
-                                            <li><a href="showplant/{{page.next_page_number}}">
+                                            <li><a href="/showplant/{{page.next_page_number}}">
                                             <span aria-hidden="true">&raquo;</span></a></li>
                                         {% endif %}
        		                        </ul>
@@ -267,12 +267,12 @@
 </footer>
 
 <!-- JavaScript libs are placed at the end of the document so the pages load faster -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
+<!--<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>-->
 <script src="/static/assets/js/headroom.min.js"></script>
 <script src="/static/assets/js/jQuery.headroom.min.js"></script>
-<script src="/static/assets/js/template.js"></script>
-<script src="/static/assets/js/nt.js"></script>
+<!--<script src="/static/assets/js/template.js"></script>-->
+<!--<script src="/static/assets/js/nt.js"></script>-->
 </body>
 
 </html>

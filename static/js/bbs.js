@@ -18,6 +18,7 @@ function checkSPhone() {
 	}
 }
 
+
 function getPurchase() {
 	var xmlhttp;
 	if(window.XMLHttpRequest){

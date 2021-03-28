@@ -9,7 +9,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="/static/js/layer/style1.css"/>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="/static/css/incubator/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
@@ -30,8 +30,8 @@
     </noscript>
 
     <link rel="shortcut icon" href="/static/assets/images/gt_favicon.png">
-
-    <link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+    <link rel="stylesheet" href="/static/css/bbs.css"/>
+<!--    <link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">-->
     <link rel="stylesheet" href="/static/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/assets/css/font-awesome.min.css">
 
@@ -44,7 +44,12 @@
     <!--[if lt IE 9]>
     <script src="/static/assets/js/html5shiv.js"></script>
     <script src="/static/assets/js/respond.min.js"></script>
+    <script src="/static/js/bbs.js"></script>
     <![endif]-->
+
+    <script type="text/javascript" src="/static/js/layer/layer.js"></script>
+    <script type="text/javascript" src="/static/js/layer/demo.js"></script>
+
 </head>
 
 <body class="home">
@@ -90,13 +95,137 @@
 <div class=“top-space” style="margin-left: 50px;margin-right: 50px;width: auto">
     <div class="col-md-12 box-detail-title top-space">
         <h1 class="col-md-4">培养箱参数</h1>
-        <button id="cwtj" class="col-md-offset-3 col-md-2 btn btn-info" style="margin-top: 20px; height: 50px"
+        <!--<button id="cwtj" class="col-md-offset-3 col-md-2 btn btn-info" style="margin-top: 20px; height: 50px"
                 onclick="window.location.href='/referfix/{{ request.session.inid }}/'">故障提交
+        </button>-->
+        <button class="col-md-offset-3 col-md-2 btn btn-info" style="margin-top: 20px; height: 50px"
+                data-toggle="modal" data-target="#myModal">故障提交
         </button>
         <button class="col-md-offset-1 col-md-2 btn btn-info" style="margin-top: 20px; height: 50px"
                 onclick="window.location.href='/oldplantinfo/{{ request.session.inid }}/'">近期数据
         </button>
     </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title">故障信息提交</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form id="signin" method="post" action="/referfix/{{ request.session.inid }}/" onsubmit="return fixSubmit()">
+                            {% comment %}防止跨站请求伪造{% endcomment %}
+                            {% csrf_token %}
+                            <div class="top-margin">
+                                <label>联系方式<span class="text-danger">*</span></label>
+                                <input id="fixPhone" type="text" class="form-control" name="fixPhone" placeholder="请输入正确的联系方式,以便维修人员与您联系" onblur="checkFixPhone()">
+                                <p id="fixTelephoneError" class="errorMessage"></p>
+                            </div>
+                            <div class=" top-margin">
+                                <label>地址<span class="text-danger">*</span></label>
+                                <input id="fixAddress" type="text" class="form-control" name="fixAddress" placeholder="请输入详细地址">
+                            </div>
+                            <div class=" top-margin">
+                                <label>故障描述<span class="text-danger">*</span></label>
+                                <input id="fixDescribe" type="text" class="form-control" name="fixDescribe" placeholder="请描述您的培养箱故障">
+                            </div>
+
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-lg-8">
+                                </div>
+                                <div class="col-lg-4 text-right">
+                                    <button class="btn btn-action" type="submit">提交</button>
+                                </div>
+                                <input type="hidden" id="isSucceed" value="{{request.session.result}}">
+                            </div>
+                        </form>
+                    </div>
+                    <!--<script type="text/javascript">
+                        function Login(){
+                            var username=$.trim($("#InputUsername").val());//获取用户名trim是去掉空格
+                            var password=$.trim($("#InputUserPwd").val());//获取密码
+                            if(username==""||password==""){
+                                layer.alert("用户名或者密码不能为空!",{
+                                title:"提示",
+                                icon:5,
+                                });
+                            }else{
+                                layer.alert("关联成功!",{
+                                title:"提示",
+                                icon:5,
+                                });
+                            }
+                        }
+                    </script>-->
+                    <!--<div class="modal-body sensor-detail">
+                        <div id="container"></div>
+                        <p>当前温度：{{ Mtemperatures.0 }}</p>
+                        <p>建议温度：{{ suggest.temperature }}</p>
+                    </div>-->
+                    <!--<div id="main_4" style="width: 600px;height:400px;"></div>
+                    <script type="text/javascript">
+                        //尝试获取数据
+                        var listTime = {{ time|safe }};
+                        var listTemp = {{ temperature|safe }};
+                        // 基于准备好的dom，初始化echarts实例
+                        var myChart = echarts.init(document.getElementById('main_4'));
+
+                        // 指定图表的配置项和数据
+                        var option = {
+                            title: {
+                                text: '温度变化'
+                            },
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            legend: {
+                                data: ['温度']
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            toolbox: {
+                                feature: {
+                                    saveAsImage: {}
+                                }
+                            },
+                            xAxis: {
+                                axisLabel: {
+                                    interval: 0,
+                                    rotate: 90,//倾斜度 -90 至 90 默认为0
+                                    margin: 2,
+                                },
+                                type: 'category',
+                                boundaryGap: false,
+                                data: listTime
+                            },
+                            yAxis: {
+                                type: 'value',
+                                splitNumber:10
+                            },
+                            series: [
+                                {
+                                    name: '温度',
+                                    type: 'line',
+                                    smooth: true,
+                                    data: listTemp
+                                },
+                            ]
+                        };
+
+
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(option);
+                    </script>-->
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
     <div id="box-detail" class="col-md-12">
 
         <div id="main">
@@ -106,7 +235,7 @@
                 <div class="row">
                     <div class="col-md-6 ">
                         <img style="width:700px;height: 500px" src="/{{ plant_image }}" id="incubator_img"
-                             onload="refreshImg()">
+                             onclick="refreshImg()">
                         <script>
                             function refreshImg() {
                                 setInterval(a, 5000);
@@ -114,7 +243,8 @@
 
                             function a() {
                                 // document.getElementById('incubator_img').src = "/{{ plant_image }}" + Math.random();
-                                document.getElementById('incubator_img').src = "/{{ plant_image }}";
+                                // document.getElementById('incubator_img').src = "/{{ plant_image }}";
+                                document.getElementById('incubator_img').src = "monitor-image." + Math.random() + "?iden=" + "{{ incu_id }}";
                             }
 
 
@@ -167,12 +297,14 @@
                     <div class="col-md-5 plant-simple-info">
                         <div class="plantname">
                             <h2>药材信息</h2>
-                            <div style="overflow:auto; height: 180px">
-                                <a href="#" class="list-group-item">药材种类：{{ plant_name }}</a>
-                                <a href="/test" class="list-group-item">药材生长阶段：开花</a>
-                                <a href="#" class="list-group-item">药材状态：{{ state }} <span
+                            <div style="overflow:auto; height: 180px;width: 480px">
+                                <a class="list-group-item">药材种类：{{ plant_name }}</a>
+                                <a class="list-group-item">药材生长阶段：开花</a>
+<!--                                <a href="/test" class="list-group-item">药材生长阶段：开花</a>-->
+                                <a class="list-group-item">药材状态：{{ state }} <span
                                         class="glyphicon glyphicon-info-sign" style="color:#ff0000;"></span></a>
-                                <a href="/howtoplant" class="list-group-item">药材习性：
+<!--                                <a href="/howtoplant" class="list-group-item">药材习性：-->
+                                <a class="list-group-item">药材习性：
                                     <div class="planteven">
                                         <p>
                                             多肉植物喜通风，需要充足的光照，为避免黑腐，宜控水不宜过度浇水。
@@ -226,6 +358,7 @@
                         </div>
 
                     </div>
+
                 </div>
                 <h2 class="col-md-12" style="border-bottom: 5px solid brown;border-radius: 2px">传感器状态</h2>
                 <div class="col-md-12 sensor-show">
@@ -1106,14 +1239,24 @@
     </div>
 
 </footer>
-
+<script type="text/javascript">
+    function checkFixPhone() {
+	if($.trim(document.getElementById("fixPhone").value).length !=11){
+		$('#fixTelephoneError').html("请输入中国大陆11位手机号码");
+	}
+	else {
+		$('#fixTelephoneError').html("");
+		return true;
+	}
+}
+</script>
 <!-- JavaScript libs are placed at the end of the document so the pages load faster -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
+<!--<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>-->
 <script src="/static/assets/js/headroom.min.js"></script>
 <script src="/static/assets/js/jQuery.headroom.min.js"></script>
-<script src="/static/assets/js/template.js"></script>
-<script src="/static/assets/js/nt.js"></script>
+<!--<script src="/static/assets/js/template.js"></script>-->
+<!--<script src="/static/assets/js/nt.js"></script>-->
 </body>
 
 </html>

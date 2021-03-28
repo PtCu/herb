@@ -36,7 +36,9 @@ urlpatterns = [
     path('bbs/', views.bbs, name="bbs"),
     path("bbs/writePurchase/", views.writePurchase),
     path("bbs/writePurchase/save/<userphone>", views.savePurchase),
-    path('bbs/writeSelling/', views.writeSelling),
+    # path('bbs/writeSelling/', views.writeSelling),
+    path('publishPlant/', views.publishPlant),
+    path('submitPlant/', views.submitPlant),
     path('bbs/writeSelling/save/<userphone>', views.saveSelling),
     path('bbs/writeCommunication/', views.writeCommunication),
     path('bbs/writeCommunication/save/<userphone>', views.saveCommunication),
@@ -45,7 +47,7 @@ urlpatterns = [
     path('getbbs/sellingDetail/<id>', views.getSDetail, name='sDetail'),
     path('getbbs/communicationDetail/<id>', views.getCDetail, name='cDetail'),
     path('my/', views.my),
-    path('more/', views.more),
+    path('more/<pindex>', views.more),
     # path('test/', views.test),
     path('contact/', views.contact),
     path('backendlogin/', views.backendlogin),
@@ -61,6 +63,12 @@ urlpatterns = [
     path('insertData/', views.insert),
     path('monitor/', views.monitor),
     path('monitorc/', views.hardcontrol),
+    path('newIncubator/', views.newIncubator),
+    path('apply/', views.apply),
+    path('submitApply/', views.submitApply),
+    path('my_apply/', views.my_apply),
+    path('go_order_issue/<order_id>/', views.go_order_issue),
+    path('submit_order_issue/', views.submit_order_issue),
     #############################路径需要修改
     # path('guide', views.guide),
     # path('changeEnvironment/<incubatorno>/', views.proIncubator, name="changeEnvironment"),
@@ -68,5 +76,6 @@ urlpatterns = [
     # path('hard', views.proHard),  # 接收本地sock服务器转发的硬件相关数据
     # re_path(r'image.*', views.returnImage),  # 由页面自动发起请求，获取箱内图片
     # 处理图片显示的url,使用Django自带serve,传入参数告诉它去哪个路径找，我们有配置好的路径MEDIAROOT
-    re_path(r'^media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT})
+    re_path(r'^media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT}),
+    re_path(r'.*monitor-image.*', views.return_image, name="monitor-image"),
 ]

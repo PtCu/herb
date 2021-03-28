@@ -10,9 +10,9 @@
 
     <title>herber</title>
 
-    <link rel="shortcut icon" href="/static/assets/images/gt_favicon.png">
+<!--    <link rel="shortcut icon" href="/static/assets/images/gt_favicon.png">-->
 
-    <link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+<!--    <link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">-->
     <link rel="stylesheet" href="/static/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/assets/css/font-awesome.min.css">
 
@@ -275,7 +275,7 @@
             <div class="col-md-4 content-middle2">
                 <a href="single.html"><img src="/media/{{item.image}}" class="img-responsive" alt=""></a>
                 <div class="content-middle3">
-                    <h4><a href="single.html">{{item.title}}</a></h4>
+                    <h4>{{item.title}}</a></h4>
                     <label></label>
                     <p style="color: #0f0f0f">{{item.description}}</p>
                 </div>
@@ -317,16 +317,16 @@
             <div class="col-sm-6">
                 <h3 style="margin-bottom: 10px">国家政策</h3>
                 {%for item in policy_link%}
-                <p><a href="{{item.policy_link}}">{{item.link_title}}</a></p>
+                <p><a href="{{item.policy_link}}" style="color: #2aabd2" target="_blank">{{item.link_title}}</a></p>
                 {%endfor%}
-                <p><a href="/more">更多>></a></p>
+                <p><a href="/more/1" style="color: #2aabd2">更多>></a></p>
             </div>
             <div class="col-sm-6" style="padding-left: 90px">
                 <h3 style="margin-bottom: 10px">中草药培养指南</h3>
                 {%for item in guide_link%}
-                <p><a href="{{item.policy_link}}">{{item.link_title}}</a></p>
+                <p><a href="{{item.policy_link}}" style="color: #2aabd2" target="_blank">{{item.link_title}}</a></p>
                 {%endfor%}
-                <p><a href="/more">更多>></a></p>
+                <p><a href="/more/1" style="color: #2aabd2">更多>></a></p>
             </div>
             <!--
             <div class="col-sm-6">
@@ -361,16 +361,16 @@
             <div class="col-sm-6" style="padding-top: 10px">
                 <h3 style="margin-bottom: 10px">培养箱使用手册</h3>
                 {%for item in using_link%}
-                <p><a href="{{item.policy_link}}">{{item.link_title}}</a></p>
+                <p><a href="{{item.policy_link}}" style="color: #2aabd2" target="_blank">{{item.link_title}}</a></p>
                 {%endfor%}
-                <p><a href="/more">更多>></a></p>
+                <p><a href="/more/1" style="color: #2aabd2">更多>></a></p>
             </div>
             <div class="col-sm-6" style="padding-left: 90px; padding-top: 10px">
                 <h3 style="margin-bottom: 10px">草药市场行情</h3>
                 {%for item in price_link%}
-                <p><a href="{{item.policy_link}}">{{item.link_title}}</a></p>
+                <p><a href="{{item.policy_link}}" style="color: #2aabd2" target="_blank">{{item.link_title}}</a></p>
                 {%endfor%}
-                <p><a href="/more">更多>></a></p>
+                <p><a href="/more/1" style="color: #2aabd2">更多>></a></p>
             </div>
             <!--
             <div class="col-sm-6" style="padding-top: 10px">
@@ -610,12 +610,12 @@
     }
 </script>
 <!-- JavaScript libs are placed at the end of the document so the pages load faster -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
+<!--<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>-->
 <script src="/static/assets/js/headroom.min.js"></script>
 <script src="/static/assets/js/jQuery.headroom.min.js"></script>
-<script src="/static/assets/js/template.js"></script>
-<script src="/static/assets/js/nt.js"></script>
+<!--<script src="/static/assets/js/template.js"></script>-->
+<!--<script src="/static/assets/js/nt.js"></script>-->
 </body>
 
 </html>

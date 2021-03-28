@@ -5,11 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
-    <title>herber</title>
+    <title>相关链接</title>
 
     <link rel="shortcut icon" href="/static/assets/images/gt_favicon.png">
 
-    <link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+    <!--    <link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">-->
     <link rel="stylesheet" href="/static/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/assets/css/font-awesome.min.css">
 
@@ -65,18 +65,64 @@
 <!-- /.navbar -->
 
 <div class="jumbotron">
-<div class="container top-space">
-    <h1 class="text-center thin top-space" style=" margin-bottom:30px; font-size: 40px">相关链接</h1>
-    <table cellpadding="0" cellspacing="30" width="1150" class="top-space">
-        {%for item in link%}
-        <tr>
-            <th><p><a href="{{item.policy_link}}">{{item.link_title}}</a>
-        </p></th>
-            <th><p>{{item.link_type}}</p></th> <th><p>{{item.create_time}}</p></th>
-        </tr>
-        {%endfor%}
-    </table>
-</div>
+    <div class="container top-space">
+        <h1 class="text-center thin top-space" style="margin-top: 50px; margin-bottom:30px; font-size: 40px">相关链接</h1>
+        <div class="row">
+            <form class="col-md-offset-2 col-md-4  navbar-form navbar-left" role="search" method="post"
+                  action="/more/1">
+                {% csrf_token %}
+                <div class="form-group">
+                    <!--<input type="button" class="btn btn-default" name="choice" value="k1" checked>按时间</input>
+                    <input type="button" class="btn btn-default" name="choice" value="k2">按评分</input>
+                    <input type="button" class="btn btn-default" name="choice" value="k3">按药材</input>-->
+                    <button class="btn btn-default" name="choice" value="k1">国家政策</button>
+                    <button class="btn btn-default" name="choice" value="k2">中草药培养指南</button>
+                    <button class="btn btn-default" name="choice" value="k3">培养箱使用手册</button>
+                    <button class="btn btn-default" name="choice" value="k4">草药市场行情</button>
+                    <input type="text" class="form-control" name="search" placeholder="Search"/>
+                </div>
+                <button type="submit" class="btn btn-default">
+                    <span class="glyphicon glyphicon-search" style="margin-right: 0;"></span>
+                </button>
+            </form>
+            <!--<button type="button" class="col-md-2 btn btn-default  navbar-btn" id="edit-button"
+                    onclick="window.location='/publishPlant'"><span
+                    class="glyphicon glyphicon-pencil"></span>我要发布
+            </button>-->
+        </div>
+        <table cellpadding="0" cellspacing="30" width="1150" class="top-space">
+            {%for item in page%}
+            <tr>
+                <th><p><a href="{{item.policy_link}}" target="_blank">{{item.link_title}}</a>
+                </p></th>
+                <th><p>{{item.link_type}}</p></th>
+                <th><p>{{item.create_time}}</p></th>
+            </tr>
+            {%endfor%}
+        </table>
+        <nav aria-label="Page navigation" style="margin-left:auto;margin-right:auto">
+            <div class="pagination">
+                <ul class="pagination">
+                    {% if page.has_previous %}
+                    <li><a href="/more/{{page.previous_page_number}}">
+                        <span aria-hidden="true">&laquo;</span></a></li>
+                    {% endif %}
+                    {% for num in page.paginator.page_range%}
+                    {%if pindex == page.number%}
+                    <li>{{ num }}</li>
+                    {%else%}
+                    <li><a href="/more/{{num}}">{{ num }}</a></li>
+                    {%endif%}
+                    {% endfor %}
+
+                    {% if page.has_next %}
+                    <li><a href="/more/{{page.next_page_number}}">
+                        <span aria-hidden="true">&raquo;</span></a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </div>
 </div>
 
 <!-- Social links. @TODO: replace by link/instructions in template -->
@@ -169,12 +215,12 @@
 </footer>
 
 <!-- JavaScript libs are placed at the end of the document so the pages load faster -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
+<!--<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>-->
 <script src="/static/assets/js/headroom.min.js"></script>
 <script src="/static/assets/js/jQuery.headroom.min.js"></script>
-<script src="/static/assets/js/template.js"></script>
-<script src="/static/assets/js/nt.js"></script>
+<!--<script src="/static/assets/js/template.js"></script>-->
+<!--<script src="/static/assets/js/nt.js"></script>-->
 </body>
 
 </html>
