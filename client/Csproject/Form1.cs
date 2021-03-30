@@ -30,9 +30,9 @@ namespace Csproject
         string y_set = "100";
         FilterInfoCollection videoDevices;
         VideoCaptureDevice videoSource;
-          //创建 1个客户端套接字 和1个负责监听服务端请求的线程  
-         Thread threadclient = null;
-         Socket socketclient = null;
+        //创建 1个客户端套接字 和1个负责监听服务端请求的线程  
+        Thread threadclient = null;
+        Socket socketclient = null;
         private struct RootObject
         {
             public string w { get; set; }
@@ -54,7 +54,7 @@ namespace Csproject
         }
 
 
-      
+
         //初始化socket
         private void InitSocket()
         {
@@ -84,17 +84,17 @@ namespace Csproject
             threadclient.Start();
 
         }
-        //发送字符信息到服务端的方法  
-       private void SendToServer(string sendMsg)
-         {
-             //将输入的内容字符串转换为机器可以识别的字节数组     
-             byte[] arrClientSendMsg = Encoding.UTF8.GetBytes(sendMsg);
-             //调用客户端套接字发送字节数组     
-             socketclient.Send(arrClientSendMsg);
-           
-         }
-    // 接收服务端发来信息的方法
-    private void recvToArduino()
+        //发送字符信息到服务端的。数据格式为byte[]型的json。服务器需要解析
+        private void SendToServer(string sendMsg)
+        {
+            //将输入的内容字符串转换为机器可以识别的字节数组     
+            byte[] arrClientSendMsg = Encoding.UTF8.GetBytes(sendMsg);
+            //调用客户端套接字发送字节数组   
+            socketclient.Send(arrClientSendMsg);
+
+        }
+        // 接收服务端发来信息的方法
+        private void recvToArduino()
         {
             //持续监听服务端发来的消息
             while (true)
@@ -110,10 +110,9 @@ namespace Csproject
                     //将套接字获取到的字符数组转换为人可以看懂的字符串
                     string strRevMsg = Encoding.UTF8.GetString(arrRecvmsg, 0, length);
 
-                    //TODO:
                     //传送至arduino
                     UpdateSet(strRevMsg);
-                    
+
                 }
                 catch (Exception ex)
                 {
@@ -122,7 +121,7 @@ namespace Csproject
                 }
             }
         }
-       
+
         //初始化chart
         private void InitChart()
         {
@@ -172,33 +171,46 @@ namespace Csproject
         //定时器触发回调函数
         private void timer1_Tick(object sender, EventArgs e)
         {
-      /*      if (port != null && port.IsOpen)
-            {
-                port.WriteLine(w_set + '|' + s_set + '|' + g_set + '|' + y_set);
-            }*/
+            /*      if (port != null && port.IsOpen)
+                  {
+                      port.WriteLine(w_set + '|' + s_set + '|' + g_set + '|' + y_set);
+                  }*/
             string data = getData();
             SendToServer(data);
-           // httpToServer(getJson());
+
         }
         private void UpdateSet(string data)
         {
+            if (!port.IsOpen)
+            {
+                try
+                {
+                    port.Open();
+                    port.Write(data);
+                    port.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                }
+            }
         }
         //提交本地设定（设定温度等）
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             try
             {
-       /*         double set_w = double.Parse(toolStripTextBox1.Text);
-                set_w = double.Parse(toolStripTextBox2.Text);
-                set_w = double.Parse(toolStripTextBox3.Text);
-                set_w = double.Parse(toolStripTextBox4.Text);*/
+                /*         double set_w = double.Parse(toolStripTextBox1.Text);
+                         set_w = double.Parse(toolStripTextBox2.Text);
+                         set_w = double.Parse(toolStripTextBox3.Text);
+                         set_w = double.Parse(toolStripTextBox4.Text);*/
                 w_set = toolStripTextBox1.Text;
                 s_set = toolStripTextBox2.Text;
                 g_set = toolStripTextBox3.Text;
                 y_set = toolStripTextBox4.Text;
 
-                UpdateSet(w_set+"|"+s_set+"|"+g_set+"|"+y_set);
+                UpdateSet(w_set + "|" + s_set + "|" + g_set + "|" + y_set);
                 /*var objects = new { id = 1, w = w_set, s = s_set, g = g_set, y = (Convert.ToDouble(y_set) / 1000) };
                 string strings = JsonConvert.SerializeObject(objects);
                 //string _url = "http://localhost:8080/iotSystem/monitorc/";
@@ -242,16 +254,14 @@ namespace Csproject
                 if (!Directory.Exists(fileCapturePath))
                     Directory.CreateDirectory(fileCapturePath);*/
                 //抓到图保存到指定路径
-               /* string data = getData();
-                SendToServer(data);*/
+                /* string data = getData();
+                 SendToServer(data);*/
             }
             catch (Exception ex)
             {
                 MessageBox.Show("捕获图像失败！" + ex.Message, "提示");
             }
         }
-      
-     
 
         private string getData()
         {
@@ -263,8 +273,6 @@ namespace Csproject
                 img = new Bitmap("test.jpg");
 
             }
-
-            //img = new Bitmap("test.jpg");
             MemoryStream ms = new MemoryStream();
             img.Save(ms, ImageFormat.Jpeg);
             byte[] bytes = ms.ToArray();
@@ -325,33 +333,33 @@ namespace Csproject
                 MessageBox.Show(ex.Message, "读取串口错误，提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-        /*        private void httpToServer(string strings)
-                {
-                    //string _url = "http://localhost:8080/iotSystem/monitor/";
-                    string _url = "http://localhost:1900/monitor/";
-                    var request = (HttpWebRequest)WebRequest.Create(_url);
-                    request.Method = "POST";
-                    request.ContentType = "application/json;charset=UTF-8";
-                    byte[] byteData = Encoding.UTF8.GetBytes(strings);
-                    int length = byteData.Length;
-                    request.ContentLength = length;
-                    Stream writer = request.GetRequestStream();
-                    writer.Write(byteData, 0, length);
-                    writer.Close();
+/*        private void httpToServer(string strings)
+        {
+            //string _url = "http://localhost:8080/iotSystem/monitor/";
+            string _url = "http://localhost:1900/monitor/";
+            var request = (HttpWebRequest)WebRequest.Create(_url);
+            request.Method = "POST";
+            request.ContentType = "application/json;charset=UTF-8";
+            byte[] byteData = Encoding.UTF8.GetBytes(strings);
+            int length = byteData.Length;
+            request.ContentLength = length;
+            Stream writer = request.GetRequestStream();
+            writer.Write(byteData, 0, length);
+            writer.Close();
 
-                    var response = (HttpWebResponse)request.GetResponse();
-                    var responseString = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding("utf-8")).ReadToEnd();
-                    RootObject objects2 = JsonConvert.DeserializeObject<RootObject>(responseString.ToString());
-                    if (w_set != objects2.w || s_set != objects2.s || g_set != objects2.g ||
-                        y_set != Convert.ToString((int)(double.Parse(objects2.y) * 1000)))
-                    {
-                        w_set = objects2.w; s_set = objects2.s; g_set = objects2.g;
-                        y_set = Convert.ToString((int)(double.Parse(objects2.y) * 1000));
-                        textBox1.AppendText("set:" + w_set + ' ' + s_set + ' ' + g_set + ' ' + y_set + "\r\n");
-                    }
+            var response = (HttpWebResponse)request.GetResponse();
+            var responseString = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding("utf-8")).ReadToEnd();
+            RootObject objects2 = JsonConvert.DeserializeObject<RootObject>(responseString.ToString());
+            if (w_set != objects2.w || s_set != objects2.s || g_set != objects2.g ||
+                y_set != Convert.ToString((int)(double.Parse(objects2.y) * 1000)))
+            {
+                w_set = objects2.w; s_set = objects2.s; g_set = objects2.g;
+                y_set = Convert.ToString((int)(double.Parse(objects2.y) * 1000));
+                textBox1.AppendText("set:" + w_set + ' ' + s_set + ' ' + g_set + ' ' + y_set + "\r\n");
+            }
 
 
-                }*/
+        }*/
 
 
 
