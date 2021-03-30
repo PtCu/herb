@@ -32,7 +32,8 @@ namespace Csproject
         VideoCaptureDevice videoSource;
         //创建 1个客户端套接字 和1个负责监听服务端请求的线程  
         Thread threadclient = null;
-        Socket socketclient = null;
+        HttpListener _listener;
+        // Socket socketclient = null;
         private struct RootObject
         {
             public string w { get; set; }
@@ -45,7 +46,7 @@ namespace Csproject
         {
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
-            this.InitSocket();
+            this.InitListener();
             this.toolStripComboBox1.Items.AddRange(SerialPort.GetPortNames());
             this.toolStripComboBox1.SelectedIndex = this.toolStripComboBox1.Items.Count - 1;
             this.toolStripButton1.Enabled = true;
@@ -56,70 +57,94 @@ namespace Csproject
 
 
         //初始化socket
-        private void InitSocket()
+        private void InitListener()
         {
-            //定义一个套接字监听
-            socketclient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            _listener.Prefixes.Add("http://127.0.0.1:8080/");
+            _listener.Start();
+            _listener.BeginGetContext(new AsyncCallback(GetContextCallBack), _listener);
 
-            //获取文本框中的IP地址
-            IPAddress address = IPAddress.Parse("127.0.0.1");
+              }
 
-            //将获取的IP地址和端口号绑定在网络节点上
-            IPEndPoint point = new IPEndPoint(address, 8000);
-
-            try
+        string Request(HttpListenerRequest request)
+        {
+            string temp = "welcome to linezero!";
+            if (request.HttpMethod.ToLower().Equals("get"))
             {
-                //客户端套接字连接到网络节点上，用的是Connect
-                socketclient.Connect(point);
+                //GET请求处理
+
             }
-            catch (Exception ex)
+            else if (request.HttpMethod.ToLower().Equals("post"))
             {
-                MessageBox.Show("无法连接远程服务器：" + ex.Message, "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
+
+                //POST请求处理
+                var responseString = new StreamReader(request.InputStream, Encoding.GetEncoding("utf-8")).ReadToEnd();
+                RootObject objects = JsonConvert.DeserializeObject<RootObject>(responseString.ToString());
+                if (w_set != objects.w || s_set != objects.s || g_set != objects.g ||
+               y_set != Convert.ToString((int)(double.Parse(objects.y) * 1000)))
+                {
+                    w_set = objects.w; s_set = objects.s; g_set = objects.g;
+                    y_set = Convert.ToString((int)(double.Parse(objects.y) * 1000));
+                    UpdateSet(w_set + "|" + s_set + "|" + g_set + "|" + y_set);
+                    textBox1.AppendText("set:" + w_set + ' ' + s_set + ' ' + g_set + ' ' + y_set + "\r\n");
+                }
+
             }
-
-            //开一个线程监听服务器
-            threadclient = new Thread(recvToArduino);
-            threadclient.IsBackground = true;
-            threadclient.Start();
-
+            return temp;
         }
-        //发送字符信息到服务端的。数据格式为byte[]型的json。服务器需要解析
+
+
+        /// <summary>
+        /// 输出方法
+        /// </summary>
+        /// <param name="response">response对象</param>
+        /// <param name="responseString">输出值</param>
+        /// <param name="contenttype">输出类型默认为json</param>
+        static void Response(HttpListenerResponse response, string responsestring, string contenttype = "application/json")
+        {
+            response.StatusCode = 200;
+            response.ContentType = contenttype;
+            response.ContentEncoding = Encoding.UTF8;
+            byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responsestring);
+            //对客户端输出相应信息.
+            response.ContentLength64 = buffer.Length;
+            System.IO.Stream output = response.OutputStream;
+            output.Write(buffer, 0, buffer.Length);
+            //关闭输出流，释放相应资源
+            output.Close();
+        }
+
+        //发送字符信息到服务端的。
         private void SendToServer(string sendMsg)
         {
-            //将输入的内容字符串转换为机器可以识别的字节数组     
-            byte[] arrClientSendMsg = Encoding.UTF8.GetBytes(sendMsg);
-            //调用客户端套接字发送字节数组   
-            socketclient.Send(arrClientSendMsg);
+            string _url = "http://localhost:1900/monitor/";
+            var request = (HttpWebRequest)WebRequest.Create(_url);
+            request.Method = "POST";
+            request.ContentType = "application/json;charset=UTF-8";
+            byte[] byteData = Encoding.UTF8.GetBytes(sendMsg);
+            int length = byteData.Length;
+            request.ContentLength = length;
+            Stream writer = request.GetRequestStream();
+            writer.Write(byteData, 0, length);
+            writer.Close();
 
         }
         // 接收服务端发来信息的方法
-        private void recvToArduino()
+        private void GetContextCallBack(IAsyncResult ar)
         {
-            //持续监听服务端发来的消息
-            while (true)
+            try
             {
-                try
-                {
-                    //定义一个1M的内存缓冲区，用于临时性存储接收到的消息
-                    byte[] arrRecvmsg = new byte[1024 * 1024];
-
-                    //将客户端套接字接收到的数据存入内存缓冲区，并获取长度
-                    int length = socketclient.Receive(arrRecvmsg);
-
-                    //将套接字获取到的字符数组转换为人可以看懂的字符串
-                    string strRevMsg = Encoding.UTF8.GetString(arrRecvmsg, 0, length);
-
-                    //传送至arduino
-                    UpdateSet(strRevMsg);
-
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("无法连接远程服务器：" + ex.Message, "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    break;
-                }
+                _listener = ar.AsyncState as HttpListener;
+                HttpListenerContext context = _listener.EndGetContext(ar);
+                //再次监听请求
+                _listener.BeginGetContext(new AsyncCallback(GetContextCallBack), _listener);
+                //处理请求
+                string a = Request(context.Request);
+                //输出请求
+                Response(context.Response, a);
             }
+            catch { }
+
+           
         }
 
         //初始化chart
@@ -333,33 +358,33 @@ namespace Csproject
                 MessageBox.Show(ex.Message, "读取串口错误，提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-/*        private void httpToServer(string strings)
-        {
-            //string _url = "http://localhost:8080/iotSystem/monitor/";
-            string _url = "http://localhost:1900/monitor/";
-            var request = (HttpWebRequest)WebRequest.Create(_url);
-            request.Method = "POST";
-            request.ContentType = "application/json;charset=UTF-8";
-            byte[] byteData = Encoding.UTF8.GetBytes(strings);
-            int length = byteData.Length;
-            request.ContentLength = length;
-            Stream writer = request.GetRequestStream();
-            writer.Write(byteData, 0, length);
-            writer.Close();
+        /*        private void httpToServer(string strings)
+                {
+                    //string _url = "http://localhost:8080/iotSystem/monitor/";
+                    string _url = "http://localhost:1900/monitor/";
+                    var request = (HttpWebRequest)WebRequest.Create(_url);
+                    request.Method = "POST";
+                    request.ContentType = "application/json;charset=UTF-8";
+                    byte[] byteData = Encoding.UTF8.GetBytes(strings);
+                    int length = byteData.Length;
+                    request.ContentLength = length;
+                    Stream writer = request.GetRequestStream();
+                    writer.Write(byteData, 0, length);
+                    writer.Close();
 
-            var response = (HttpWebResponse)request.GetResponse();
-            var responseString = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding("utf-8")).ReadToEnd();
-            RootObject objects2 = JsonConvert.DeserializeObject<RootObject>(responseString.ToString());
-            if (w_set != objects2.w || s_set != objects2.s || g_set != objects2.g ||
-                y_set != Convert.ToString((int)(double.Parse(objects2.y) * 1000)))
-            {
-                w_set = objects2.w; s_set = objects2.s; g_set = objects2.g;
-                y_set = Convert.ToString((int)(double.Parse(objects2.y) * 1000));
-                textBox1.AppendText("set:" + w_set + ' ' + s_set + ' ' + g_set + ' ' + y_set + "\r\n");
-            }
+                    var response = (HttpWebResponse)request.GetResponse();
+                    var responseString = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding("utf-8")).ReadToEnd();
+                    RootObject objects2 = JsonConvert.DeserializeObject<RootObject>(responseString.ToString());
+                    if (w_set != objects2.w || s_set != objects2.s || g_set != objects2.g ||
+                        y_set != Convert.ToString((int)(double.Parse(objects2.y) * 1000)))
+                    {
+                        w_set = objects2.w; s_set = objects2.s; g_set = objects2.g;
+                        y_set = Convert.ToString((int)(double.Parse(objects2.y) * 1000));
+                        textBox1.AppendText("set:" + w_set + ' ' + s_set + ' ' + g_set + ' ' + y_set + "\r\n");
+                    }
 
 
-        }*/
+                }*/
 
 
 
