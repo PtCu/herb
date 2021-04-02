@@ -16,36 +16,26 @@ using System.Windows.Forms.DataVisualization.Charting;
 namespace Csproject
 {
     //这个文件实现与server的交互
+    //server的温度等的数据类型为var
     public partial class ControlWindow : Form
     {
 
-        //初始化socket
-        private void InitListener()
-        {
-            _listener = new HttpListener();
-            _listener.Prefixes.Add("http://127.0.0.1" + listen_port);
-            _listener.Start();
-            _listener.BeginGetContext(new AsyncCallback(GetContextCallBack), _listener);
 
-        }
 
         String Request(HttpListenerRequest request)
         {
             string temp = "";
-            if (request.HttpMethod.ToLower().Equals("get"))
-            {
-                //GET请求处理
-
-            }
-            else if (request.HttpMethod.ToLower().Equals("post"))
-            {
+             if (request.HttpMethod.ToLower().Equals("post"))
+             {
                 //POST请求处理
                 try
                 {
+
                     var responseString = new StreamReader(request.InputStream, Encoding.GetEncoding("utf-8")).ReadToEnd();
                     RootObject obj = JsonConvert.DeserializeObject<RootObject>(responseString.ToString());
                     UpdateSet(obj.temperature + '|' + obj.humidity + '|' + obj.light + '|' + obj.press);
-                    textBox1.AppendText("设置:" + "温度: "+obj.temperature + ' '+"湿度: " + obj.humidity + ' ' + "光强: "  + obj.light + ' ' + "气压: " + obj.press+ "\r\n");
+
+                    //成功则返回"Accept"
                     temp = "Accept";
                 }
                 catch (Exception ex)
@@ -97,10 +87,10 @@ namespace Csproject
         }
 
 
-        //发送字符信息到服务端的。
+        //发送字符信息到服务端。
         private void SendToServer(string sendMsg)
         {
-            string _url = "http://" + host_url + ":" + host_port + "/monitor";
+            string _url = "http://" + host_url + ":" + host_port + "/monitor/";
             var request = (HttpWebRequest)WebRequest.Create(_url);
             request.Method = "POST";
             request.ContentType = "application/json;charset=UTF-8";

@@ -31,6 +31,10 @@ namespace Csproject
         string host_url = "127.0.0.1";  //服务器ip
         string host_port = "8080";      //服务器端口
         string listen_port = "8000"; //本地监听端口
+        readonly double temperature_thre=1; //温度阈值，当当前温度和设定温度之差超过此值时触发加热
+        readonly double humidity_thre=1;
+        readonly double light_thre=10;
+        readonly double press_thre=10;
         FilterInfoCollection videoDevices;
         VideoCaptureDevice videoSource;
 
@@ -50,31 +54,57 @@ namespace Csproject
         {
            
             InitializeComponent();
-            this.InitChart();
             CheckForIllegalCrossThreadCalls = false;
             this.toolStripComboBox1.Items.AddRange(SerialPort.GetPortNames());
             this.toolStripComboBox1.SelectedIndex = this.toolStripComboBox1.Items.Count - 1;
             this.toolStripButton1.Enabled = true;
-        
-            this.InitListener();
+            this.InitChart();
             this.InitialSerialPort();
- 
+            this.InitListener();
+
         }
 
-
+        //如果初始化时对窗口进行写操作会报错
         //初始化chart
         private void InitChart()
         {
-            foreach (var item in tableLayoutPanel1.Controls)
+            try
             {
-                if (item is Chart)
+                foreach (var item in tableLayoutPanel1.Controls)
                 {
-                    Chart chart = item as Chart;
-                    chart.ChartAreas[0].AxisX.LabelStyle.Format = "HH:mm";
-                    chart.ChartAreas[0].AxisX.ScaleView.Size = 10;
-                    chart.ChartAreas[0].AxisX.ScrollBar.Enabled = false;
+                    if (item is Chart)
+                    {
+                        Chart chart = item as Chart;
+                        chart.ChartAreas[0].AxisX.LabelStyle.Format = "HH:mm";
+                        chart.ChartAreas[0].AxisX.ScaleView.Size = 10;
+                        chart.ChartAreas[0].AxisX.ScrollBar.Enabled = false;
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("初始化窗口发生错误：" + ex.Message, "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+
+        }
+        //初始化socket
+        private void InitListener()
+        {
+            try
+            {
+                _listener = new HttpListener();
+                _listener.Prefixes.Add("http://127.0.0.1:" + listen_port + "/");
+                _listener.Start();
+                _listener.BeginGetContext(new AsyncCallback(GetContextCallBack), _listener);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("初始化窗口发生错误：" + ex.Message, "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+
         }
 
         //初始化串口

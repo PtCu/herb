@@ -2,6 +2,7 @@ import base64
 import os
 import random
 from datetime import datetime
+from time import sleep
 from typing import List, Any
 from home_manage.models import *
 from django.core import serializers
@@ -10,6 +11,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect, reverse
 from django.http import HttpResponseRedirect, JsonResponse
 from django.http import HttpResponse
+
 # from app import models
 # from app.models import *
 
@@ -18,7 +20,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 import time
 import json
-
+import requests
 import home_manage
 from zhiyao import settings
 from . import predict, models
@@ -481,20 +483,25 @@ def alterenviroment(request, incubatorno):
         alter_info.pres = pressure
         alter_info.save()
         
-        ip = models.Incubator.objects.filter(incubator_id=incubatorno)[6]
+        ip = models.Incubator.objects.get(incubator_id=incubatorno).ip_address
         post_data = {
             'temperature': temperature,
             'humidity':humidity,
             'light':light,
             'press':pressure
         }
-        response = request.post(ip, data=post_data)
+        ## headers中添加上content-type这个参数，指定为json格式
+        headers = {'Content-Type': 'application/json'}
+        response = requests.post("http://"+ip+":8000/", headers=headers,data=json.dumps(post_data))
         content = response.content
-        while(content!="Accept"):
-            response = request.post(ip, data=post_data)
+        while(content!=b'Accept'):
+            print("Resending to "+ip)
+            response = requests.post("http://"+ip+":8000/", json=post_data)
             content = response.content
-            
+        
         url = "/incubatorDetail/" + incubator_id + "/"
+
+
     return redirect(url)
 
 
@@ -1199,21 +1206,18 @@ def monitor(request):
     data.humidity = json.loads(request.body).get("s")
     incubator_id = json.loads(request.body).get('id')
     incubator_id = 'i0' + str(incubator_id)
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')  # 判断是否使用代理
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]  # 使用代理获取真实的ip
-    else:
-        ip = request.META.get('REMOTE_ADDR')  # 未使用代理获取IP
 
-    
+    data.incubator_id = incubator_id
+    ip = request.META.get('REMOTE_ADDR')  # 未使用代理获取IP
     # print(incubator_id)
     # print(data.temperature)
     # print(data.humidity)
-    incu = models.Incubator.objects.filter(incubator_id=incubator_id)
-    if(incu[6]!=ip):
-        incu[6]=ip
+    incu_ip = models.Incubator.objects.get(incubator_id=incubator_id).ip_address
+
+    if(incu_ip!=ip):
+        incu_ip=ip
     # print(incu)
-    data.incubator = incu[0]
+
 
     image = base64.b64decode(json.loads(request.body).get("img"))
     filename = time.strftime('%Y%m%d%H%M%S', time.localtime())

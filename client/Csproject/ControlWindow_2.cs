@@ -18,10 +18,34 @@ namespace Csproject
     //这个文件实现与arduino的交互
     public partial class ControlWindow : Form
     {
-    
+        void port_DataSend(String s)
+        {
+            try
+            {
+
+                if (port != null && port.IsOpen)
+                {
+                    port.Write(s);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //捕获可能发生的异常并进行处理
+
+                //捕获到异常，创建一个新的对象，之前的不可以再用
+
+                port = new System.IO.Ports.SerialPort();
+                MessageBox.Show("写串口数据发生错误：" + ex.Message, "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+
+
+
+        }
         void port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-           try
+            try
             {
                 if (port != null && port.BytesToRead > 0)
                 {
