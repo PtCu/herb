@@ -48,6 +48,7 @@ class Incubator(models.Model):
                                                   ('正在使用', '正在使用')), default='正在使用', max_length=20)
     key = models.CharField("密钥", max_length=20, default='111111')
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # 培养箱的用户（一个用户可以多个培养箱）
+    ip_address = models.GenericIPAddressField(default='127.0.0.1')
 
     class Meta:
         managed = True

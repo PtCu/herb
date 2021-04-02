@@ -480,7 +480,20 @@ def alterenviroment(request, incubatorno):
         alter_info.humidity = humidity
         alter_info.pres = pressure
         alter_info.save()
-
+        
+        ip = models.Incubator.objects.filter(incubator_id=incubatorno)[6]
+        post_data = {
+            'temperature': temperature,
+            'humidity':humidity,
+            'light':light,
+            'press':pressure
+        }
+        response = request.post(ip, data=post_data)
+        content = response.content
+        while(content!="Accept"):
+            response = request.post(ip, data=post_data)
+            content = response.content
+            
         url = "/incubatorDetail/" + incubator_id + "/"
     return redirect(url)
 
@@ -1186,11 +1199,20 @@ def monitor(request):
     data.humidity = json.loads(request.body).get("s")
     incubator_id = json.loads(request.body).get('id')
     incubator_id = 'i0' + str(incubator_id)
-    print(incubator_id)
-    print(data.temperature)
-    print(data.humidity)
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')  # 判断是否使用代理
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]  # 使用代理获取真实的ip
+    else:
+        ip = request.META.get('REMOTE_ADDR')  # 未使用代理获取IP
+
+    
+    # print(incubator_id)
+    # print(data.temperature)
+    # print(data.humidity)
     incu = models.Incubator.objects.filter(incubator_id=incubator_id)
-    print(incu)
+    if(incu[6]!=ip):
+        incu[6]=ip
+    # print(incu)
     data.incubator = incu[0]
 
     image = base64.b64decode(json.loads(request.body).get("img"))
@@ -1201,7 +1223,7 @@ def monitor(request):
     f.close()
 
     data.image = 'realtime_images/' + filename
-    print(json.loads(request.body).get("img"))
+    #print(json.loads(request.body).get("img"))
     data.save()
 
     try:
