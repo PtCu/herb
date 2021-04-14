@@ -101,86 +101,90 @@
             this.toolStripButton3});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1206, 28);
+            this.toolStrip1.Size = new System.Drawing.Size(1357, 38);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(84, 25);
+            this.toolStripLabel1.Size = new System.Drawing.Size(107, 33);
             this.toolStripLabel1.Text = "串口列表：";
             // 
             // toolStripComboBox1
             // 
             this.toolStripComboBox1.Name = "toolStripComboBox1";
-            this.toolStripComboBox1.Size = new System.Drawing.Size(121, 28);
+            this.toolStripComboBox1.Size = new System.Drawing.Size(136, 38);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 28);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 38);
             // 
             // toolStripLabel2
             // 
             this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Size = new System.Drawing.Size(129, 25);
+            this.toolStripLabel2.Size = new System.Drawing.Size(164, 33);
             this.toolStripLabel2.Text = "环境设定：温度：";
             // 
             // toolStripTextBox1
             // 
+            this.toolStripTextBox1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.toolStripTextBox1.MaxLength = 5;
             this.toolStripTextBox1.Name = "toolStripTextBox1";
-            this.toolStripTextBox1.Size = new System.Drawing.Size(60, 28);
+            this.toolStripTextBox1.Size = new System.Drawing.Size(67, 38);
             this.toolStripTextBox1.Text = "18";
             this.toolStripTextBox1.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // toolStripLabel3
             // 
             this.toolStripLabel3.Name = "toolStripLabel3";
-            this.toolStripLabel3.Size = new System.Drawing.Size(77, 25);
+            this.toolStripLabel3.Size = new System.Drawing.Size(97, 33);
             this.toolStripLabel3.Text = "℃  湿度：";
             // 
             // toolStripTextBox2
             // 
+            this.toolStripTextBox2.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.toolStripTextBox2.MaxLength = 5;
             this.toolStripTextBox2.Name = "toolStripTextBox2";
-            this.toolStripTextBox2.Size = new System.Drawing.Size(60, 28);
+            this.toolStripTextBox2.Size = new System.Drawing.Size(67, 38);
             this.toolStripTextBox2.Text = "40";
             this.toolStripTextBox2.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // toolStripLabel4
             // 
             this.toolStripLabel4.Name = "toolStripLabel4";
-            this.toolStripLabel4.Size = new System.Drawing.Size(75, 25);
+            this.toolStripLabel4.Size = new System.Drawing.Size(94, 33);
             this.toolStripLabel4.Text = "%  光强：";
             // 
             // toolStripTextBox3
             // 
+            this.toolStripTextBox3.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.toolStripTextBox3.MaxLength = 6;
             this.toolStripTextBox3.Name = "toolStripTextBox3";
-            this.toolStripTextBox3.Size = new System.Drawing.Size(65, 28);
+            this.toolStripTextBox3.Size = new System.Drawing.Size(73, 38);
             this.toolStripTextBox3.Text = "6000";
             this.toolStripTextBox3.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // toolStripLabel5
             // 
             this.toolStripLabel5.Name = "toolStripLabel5";
-            this.toolStripLabel5.Size = new System.Drawing.Size(87, 25);
+            this.toolStripLabel5.Size = new System.Drawing.Size(105, 33);
             this.toolStripLabel5.Text = "Lux  气压：";
             // 
             // toolStripTextBox4
             // 
+            this.toolStripTextBox4.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.toolStripTextBox4.MaxLength = 7;
             this.toolStripTextBox4.Name = "toolStripTextBox4";
-            this.toolStripTextBox4.Size = new System.Drawing.Size(80, 28);
+            this.toolStripTextBox4.Size = new System.Drawing.Size(90, 38);
             this.toolStripTextBox4.Text = "101000";
             this.toolStripTextBox4.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // toolStripLabel6
             // 
             this.toolStripLabel6.Name = "toolStripLabel6";
-            this.toolStripLabel6.Size = new System.Drawing.Size(26, 25);
+            this.toolStripLabel6.Size = new System.Drawing.Size(30, 33);
             this.toolStripLabel6.Text = "Pa";
             // 
             // toolStripButton1
@@ -188,7 +192,7 @@
             this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(93, 25);
+            this.toolStripButton1.Size = new System.Drawing.Size(112, 33);
             this.toolStripButton1.Text = "提交设定";
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
@@ -197,7 +201,7 @@
             this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(93, 25);
+            this.toolStripButton2.Size = new System.Drawing.Size(112, 33);
             this.toolStripButton2.Text = "关闭摄像";
             this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
@@ -207,7 +211,7 @@
             this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
             this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(24, 25);
+            this.toolStripButton3.Size = new System.Drawing.Size(34, 33);
             this.toolStripButton3.Text = "toolStripButton3";
             this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
@@ -216,7 +220,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 258F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 290F));
             this.tableLayoutPanel1.Controls.Add(this.chart1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.chart2, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.chart3, 0, 1);
@@ -224,12 +228,13 @@
             this.tableLayoutPanel1.Controls.Add(this.groupBox1, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.videoSourcePlayer1, 2, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 28);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 38);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1206, 463);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1357, 551);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // chart1
@@ -239,7 +244,8 @@
             this.chart1.Dock = System.Windows.Forms.DockStyle.Fill;
             legend1.Name = "Legend1";
             this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(3, 3);
+            this.chart1.Location = new System.Drawing.Point(3, 4);
+            this.chart1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.chart1.Name = "chart1";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
@@ -256,7 +262,7 @@
             series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Time;
             this.chart1.Series.Add(series1);
             this.chart1.Series.Add(series2);
-            this.chart1.Size = new System.Drawing.Size(468, 225);
+            this.chart1.Size = new System.Drawing.Size(527, 267);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
             // 
@@ -267,7 +273,8 @@
             this.chart2.Dock = System.Windows.Forms.DockStyle.Fill;
             legend2.Name = "Legend1";
             this.chart2.Legends.Add(legend2);
-            this.chart2.Location = new System.Drawing.Point(477, 3);
+            this.chart2.Location = new System.Drawing.Point(536, 4);
+            this.chart2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.chart2.Name = "chart2";
             series3.ChartArea = "ChartArea1";
             series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
@@ -284,7 +291,7 @@
             series4.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.DateTime;
             this.chart2.Series.Add(series3);
             this.chart2.Series.Add(series4);
-            this.chart2.Size = new System.Drawing.Size(468, 225);
+            this.chart2.Size = new System.Drawing.Size(527, 267);
             this.chart2.TabIndex = 1;
             this.chart2.Text = "chart2";
             // 
@@ -295,7 +302,8 @@
             this.chart3.Dock = System.Windows.Forms.DockStyle.Fill;
             legend3.Name = "Legend1";
             this.chart3.Legends.Add(legend3);
-            this.chart3.Location = new System.Drawing.Point(3, 234);
+            this.chart3.Location = new System.Drawing.Point(3, 279);
+            this.chart3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.chart3.Name = "chart3";
             series5.ChartArea = "ChartArea1";
             series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
@@ -312,7 +320,7 @@
             series6.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Time;
             this.chart3.Series.Add(series5);
             this.chart3.Series.Add(series6);
-            this.chart3.Size = new System.Drawing.Size(468, 226);
+            this.chart3.Size = new System.Drawing.Size(527, 268);
             this.chart3.TabIndex = 2;
             this.chart3.Text = "chart3";
             // 
@@ -323,7 +331,8 @@
             this.chart4.Dock = System.Windows.Forms.DockStyle.Fill;
             legend4.Name = "Legend1";
             this.chart4.Legends.Add(legend4);
-            this.chart4.Location = new System.Drawing.Point(477, 234);
+            this.chart4.Location = new System.Drawing.Point(536, 279);
+            this.chart4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.chart4.Name = "chart4";
             series7.ChartArea = "ChartArea1";
             series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
@@ -340,7 +349,7 @@
             series8.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Time;
             this.chart4.Series.Add(series7);
             this.chart4.Series.Add(series8);
-            this.chart4.Size = new System.Drawing.Size(468, 226);
+            this.chart4.Size = new System.Drawing.Size(527, 268);
             this.chart4.TabIndex = 3;
             this.chart4.Text = "chart4";
             // 
@@ -348,9 +357,11 @@
             // 
             this.groupBox1.Controls.Add(this.textBox1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Location = new System.Drawing.Point(951, 234);
+            this.groupBox1.Location = new System.Drawing.Point(1069, 279);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(252, 226);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox1.Size = new System.Drawing.Size(285, 268);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "操作日志";
@@ -358,21 +369,23 @@
             // textBox1
             // 
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox1.Location = new System.Drawing.Point(3, 21);
+            this.textBox1.Location = new System.Drawing.Point(3, 25);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox1.MaxLength = 32;
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(246, 202);
+            this.textBox1.Size = new System.Drawing.Size(279, 239);
             this.textBox1.TabIndex = 0;
             // 
             // videoSourcePlayer1
             // 
             this.videoSourcePlayer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.videoSourcePlayer1.Location = new System.Drawing.Point(951, 3);
+            this.videoSourcePlayer1.Location = new System.Drawing.Point(1069, 4);
+            this.videoSourcePlayer1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.videoSourcePlayer1.Name = "videoSourcePlayer1";
-            this.videoSourcePlayer1.Size = new System.Drawing.Size(252, 225);
+            this.videoSourcePlayer1.Size = new System.Drawing.Size(285, 267);
             this.videoSourcePlayer1.TabIndex = 5;
             this.videoSourcePlayer1.Text = "videoSourcePlayer1";
             this.videoSourcePlayer1.VideoSource = null;
@@ -385,11 +398,12 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1206, 491);
+            this.ClientSize = new System.Drawing.Size(1357, 589);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.toolStrip1);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load_1);

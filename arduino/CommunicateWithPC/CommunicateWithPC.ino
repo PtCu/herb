@@ -5,7 +5,6 @@ LiquidCrystal_I2C lcd(0x20, 16, 2);
 dht11 DHT;
 #define DHT11_PIN 4
 boolean readCompleted = false;
-String serialString = "";
 boolean open[4];
 
 void setup()
@@ -33,26 +32,22 @@ void loop()
   //保证原子操作。从串口读取服务器发来的数据
   if (readCompleted)
   {
-    bool open_temper = serialString[0] - '0';
-    bool open_humi = serialString[1] - '0';
-    bool open_light = serialString[2] - '0';
-    bool open_press = serialString[3] - '0';
-    if (open_temper)
+    if (open[0])
     {
       //TODO:开启加热装置
       Serial.print("heat\n");
     }
-    if (open_humi)
+    if (open[1])
     {
       //TODO:开启加热装置
       Serial.print("humi\n");
     }
-    if (open_light)
+    if (open[2])
     {
       //TODO:开启加热装置
       Serial.print("light\n");
     }
-    if (open_press)
+    if (open[3])
     {
       //TODO:开启加热装置
       Serial.print("press\n");
