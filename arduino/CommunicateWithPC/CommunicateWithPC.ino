@@ -10,7 +10,6 @@ boolean open[4];
 void setup()
 {
   Serial.begin(9600);
-  serialString.reserve(200);
 }
 
 void loop()
