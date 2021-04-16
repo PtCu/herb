@@ -63,3 +63,16 @@ D:\Homework\科研\2020\代码\项目相关代码\Csproject\Csproject\Csproject\
 D:\Homework\科研\2020\代码\项目相关代码\Csproject\Csproject\Csproject\obj\Debug\Csproject.csproj.CopyComplete
 D:\Homework\科研\2020\代码\项目相关代码\Csproject\Csproject\Csproject\obj\Debug\Csproject.exe
 D:\Homework\科研\2020\代码\项目相关代码\Csproject\Csproject\Csproject\obj\Debug\Csproject.pdb
+D:\Homework\科研\2020\代码\herb\client\Csproject\bin\Debug\Csproject.exe.config
+D:\Homework\科研\2020\代码\herb\client\Csproject\bin\Debug\Csproject.exe
+D:\Homework\科研\2020\代码\herb\client\Csproject\bin\Debug\Csproject.pdb
+D:\Homework\科研\2020\代码\herb\client\Csproject\bin\Debug\Newtonsoft.Json.dll
+D:\Homework\科研\2020\代码\herb\client\Csproject\bin\Debug\Newtonsoft.Json.xml
+D:\Homework\科研\2020\代码\herb\client\Csproject\obj\Debug\Csproject.csprojAssemblyReference.cache
+D:\Homework\科研\2020\代码\herb\client\Csproject\obj\Debug\Csproject.ControlWindow.resources
+D:\Homework\科研\2020\代码\herb\client\Csproject\obj\Debug\Csproject.Properties.Resources.resources
+D:\Homework\科研\2020\代码\herb\client\Csproject\obj\Debug\Csproject.csproj.GenerateResource.cache
+D:\Homework\科研\2020\代码\herb\client\Csproject\obj\Debug\Csproject.csproj.CoreCompileInputs.cache
+D:\Homework\科研\2020\代码\herb\client\Csproject\obj\Debug\Csproject.csproj.CopyComplete
+D:\Homework\科研\2020\代码\herb\client\Csproject\obj\Debug\Csproject.exe
+D:\Homework\科研\2020\代码\herb\client\Csproject\obj\Debug\Csproject.pdb
